@@ -1,13 +1,3 @@
- OpenLayers 3 Examples
-+
-−
-
-WFS example
-
-This example loads new features from GeoServer WFS when the view extent changes.
-
-Related API documentation: ol.Map,ol.View,ol.format.GeoJSON,ol.layer.Tile,ol.layer.Vector,ol.loadingstrategy,ol.source.BingMaps,ol.source.Vector,ol.style.Stroke,ol.style.Style
-Copy example code  Create JSFiddle
 <!DOCTYPE html>
 <html>
 <head>
@@ -35,10 +25,9 @@ var geojsonFormat = new ol.format.GeoJSON();
 
 var vectorSource = new ol.source.Vector({
   loader: function(extent, resolution, projection) {
-    var url = 'http://demo.boundlessgeo.com/geoserver/wfs?service=WFS&' +
-        'version=1.1.0&request=GetFeature&typename=osm:water_areas&' +
-        'outputFormat=text/javascript&format_options=callback:loadFeatures' +
-        '&srsname=EPSG:3857&bbox=' + extent.join(',') + ',EPSG:3857';
+    var url = 'http://localhost/cgi-bin/nowy_targ/qgis_mapserv.fcgi?SERVICE=WFS&' + 
+  'VERSION=1.0.0&REQUEST=GetFeature&TYPENAME=DZIAŁKI_EWIDENCYJNE&SRSNAME=EPSG:2180' +
+  '&bbox=' + extent.join(',') + ',EPSG:2180';
     // use jsonp: false to prevent jQuery from adding the "callback"
     // parameter to the URL
     $.ajax({url: url, dataType: 'jsonp', jsonp: false});
@@ -67,15 +56,8 @@ var vector = new ol.layer.Vector({
   })
 });
 
-var raster = new ol.layer.Tile({
-  source: new ol.source.BingMaps({
-    imagerySet: 'Aerial',
-    key: 'Ak-dzM4wZjSqTlzveKz5u0d4IQ4bRzVI309GxmkgSVr1ewS6iPSrOvOKhA-CJlm3'
-  })
-});
-
 var map = new ol.Map({
-  layers: [raster, vector],
+  layers: [vector],
   target: document.getElementById('map'),
   view: new ol.View({
     center: [-8908887.277395891, 5381918.072437216],
