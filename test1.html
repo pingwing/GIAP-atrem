@@ -12,9 +12,10 @@
       proj4.defs('EPSG:2180', "+proj=tmerc +lat_0=0 +lon_0=19 +k=0.9993 +x_0=500000 +y_0=-5300000 +ellps=GRS80 +units=m +no_defs");
     
       var vectorSource = new ol.source.Vector({
-        format: new ol.format.GML(),
+        format: new ol.format.WFS(),
         projection: 'EPSG:2180',
-        url: function(extent) {
+        url: function(extent, resolution, projection) {
+          console.log('extent, resolution, projection',extent, resolution, projection);
           console.log('extent', extent);
           var extentProjection2180 = ol.proj.transformExtent(extent, 'EPSG:3857', 'EPSG:2180');
           console.log('extentProjection2180', extentProjection2180);
