@@ -14,7 +14,7 @@
         projection: 'EPSG:2180',
         url: function(extent) {
           console.log('extent', extent);
-          var extentProjection2180 = ol.proj.transformExtent(extent, 'EPSG:3857', 'EPSG:2180');
+          var extentProjection2180 = ol.proj.transformExtent(extent, 'EPSG:3857', new OpenLayers.Projection('EPSG:2180'));
           console.log('extentProjection2180', extentProjection2180);
           return 'http://uslugi.giap.pl/cgi-bin/nowy_targ/qgis_mapserv.fcgi?SERVICE=WFS&' +
               'version=1.0.0&request=GetFeature&typename=DZIAŁKI_EWIDENCYJNE&' +
