@@ -33,17 +33,14 @@
       });
 
       var raster = new ol.layer.Tile({
-        source: new ol.source.BingMaps({
-          imagerySet: 'Aerial',
-          key: 'Your Bing Maps Key from http://bingmapsportal.com/ here'
-        })
-      });
+            source: new ol.source.OSM()
+        });
 
       var map = new ol.Map({
         layers: [raster, vector],
         target: document.getElementById('map'),
         view: new ol.View({
-          center: [-8908887.277395891, 5381918.072437216],
+          center: ol.proj.transform([49.3, 20], 'EPSG:4326', 'EPSG:3857'),
           maxZoom: 19,
           zoom: 12
         })
