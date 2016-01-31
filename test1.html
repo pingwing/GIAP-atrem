@@ -13,10 +13,12 @@
         projection: 'EPSG:2180',
         url: function(extent) {
           console.log('extent', extent);
+          var extentProjection2180 = ol.proj.transform(extent, 'EPSG:3857', 'EPSG:2180');
+          console.log('extentProjection2180', extentProjection2180);
           return 'http://uslugi.giap.pl/cgi-bin/nowy_targ/qgis_mapserv.fcgi?SERVICE=WFS&' +
               'version=1.0.0&request=GetFeature&typename=DZIAŁKI_EWIDENCYJNE&' +
               'srsname=EPSG:2180&' +
-              'bbox=' + extent.join(',') + ',EPSG:2180';
+              'bbox=' + extentProjection2180.join(',') + ',EPSG:2180';
         },
         strategy: ol.loadingstrategy.tile(ol.tilegrid.createXYZ({
           maxZoom: 19
