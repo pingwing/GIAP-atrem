@@ -56,15 +56,12 @@ var vector = new ol.layer.Vector({
   })
 });
 
-var centerpos = [574897.2,180176.1]; // Your original position in LatLon
-var newpos = ol.proj.transform(centerpos,'EPSG:2180','EPSG:900913');
-
 var map = new ol.Map({
   layers: [vector],
   target: document.getElementById('map'),
   view: new ol.View({
   	projection : 'EPSG:900913',
-    center: newpos,
+    center: [2229785,6357285],
     maxZoom: 19,
     zoom: 12
   })
