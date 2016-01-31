@@ -26,7 +26,7 @@ var geojsonFormat = new ol.format.GeoJSON();
 var vectorSource = new ol.source.Vector({
   loader: function(extent, resolution, projection) {
     var url = 'http://uslugi.giap.pl/cgi-bin/nowy_targ/qgis_mapserv.fcgi?SERVICE=WFS&' + 
-  'VERSION=1.0.0&REQUEST=GetFeature&TYPENAME=DZIAŁKI_EWIDENCYJNE&SRSNAME=EPSG:2180' +
+  'VERSION=1.0.0&REQUEST=GetFeature&TYPENAME=DZIAŁKI_EWIDENCYJNE&SRSNAME=EPSG:900913' +
   '&bbox=' + extent.join(',') + ',EPSG:900913';
     // use jsonp: false to prevent jQuery from adding the "callback"
     // parameter to the URL
