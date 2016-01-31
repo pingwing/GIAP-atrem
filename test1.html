@@ -9,11 +9,11 @@
     <div id="map" class="map"></div>
     <script>
       var vectorSource = new ol.source.Vector({
-        format: new ol.format.GeoJSON(),
+        format: new ol.format.GML(),
         url: function(extent) {
           return 'http://uslugi.giap.pl/cgi-bin/nowy_targ/qgis_mapserv.fcgi?SERVICE=WFS&' +
               'version=1.1.0&request=GetFeature&typename=DZIAŁKI_EWIDENCYJNE&' +
-              'outputFormat=application/json&srsname=EPSG:3857&' +
+              'srsname=EPSG:3857&' +
               'bbox=' + extent.join(',') + ',EPSG:3857';
         },
         strategy: ol.loadingstrategy.tile(ol.tilegrid.createXYZ({
