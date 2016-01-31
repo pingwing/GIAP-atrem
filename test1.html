@@ -60,6 +60,7 @@ var map = new ol.Map({
   layers: [vector],
   target: document.getElementById('map'),
   view: new ol.View({
+  	projection: 'EPSG:2180',
     center: [574897.2,180176.1],
     maxZoom: 19,
     zoom: 12
