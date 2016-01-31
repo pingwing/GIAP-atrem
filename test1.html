@@ -12,6 +12,7 @@
         format: new ol.format.GML(),
         projection: 'EPSG:2180',
         url: function(extent) {
+          console.log('extent', extent);
           return 'http://uslugi.giap.pl/cgi-bin/nowy_targ/qgis_mapserv.fcgi?SERVICE=WFS&' +
               'version=1.0.0&request=GetFeature&typename=DZIAŁKI_EWIDENCYJNE&' +
               'srsname=EPSG:2180&' +
