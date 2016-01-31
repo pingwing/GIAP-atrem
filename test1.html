@@ -14,9 +14,8 @@
         url: function(extent) {
           return 'http://uslugi.giap.pl/cgi-bin/nowy_targ/qgis_mapserv.fcgi?SERVICE=WFS&' +
               'version=1.0.0&request=GetFeature&typename=DZIAŁKI_EWIDENCYJNE&' +
-              'srsname=EPSG:2180';
-              //&' +
-              //'bbox=' + extent.join(',') + ',EPSG:2180';
+              'srsname=EPSG:2180&' +
+              'bbox=' + extent.join(',') + ',EPSG:2180';
         },
         strategy: ol.loadingstrategy.tile(ol.tilegrid.createXYZ({
           maxZoom: 19
