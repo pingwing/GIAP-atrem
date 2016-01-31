@@ -27,7 +27,7 @@ var vectorSource = new ol.source.Vector({
   loader: function(extent, resolution, projection) {
     var url = 'http://uslugi.giap.pl/cgi-bin/nowy_targ/qgis_mapserv.fcgi?SERVICE=WFS&' + 
   'VERSION=1.0.0&REQUEST=GetFeature&TYPENAME=DZIAŁKI_EWIDENCYJNE&SRSNAME=EPSG:2180' +
-  '&bbox=' + extent.join(',') + ',EPSG:2180';
+  '&bbox=' + extent.join(',') + ',EPSG:900913';
     // use jsonp: false to prevent jQuery from adding the "callback"
     // parameter to the URL
     $.ajax({url: url, dataType: 'jsonp', jsonp: false});
@@ -56,12 +56,15 @@ var vector = new ol.layer.Vector({
   })
 });
 
+var centerpos = [574897.2,180176.1]; // Your original position in LatLon
+var newpos = ol.proj.transform(centerpos,'EPSG:2180','EPSG:900913');
+
 var map = new ol.Map({
   layers: [vector],
   target: document.getElementById('map'),
   view: new ol.View({
-  	projection: new ol.proj.Projection("EPSG:2180"),
-    center: [574897.2,180176.1],
+  	projection : 'EPSG:900913',
+    center: newpos,
     maxZoom: 19,
     zoom: 12
   })
