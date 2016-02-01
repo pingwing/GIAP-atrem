@@ -35,7 +35,7 @@ function init() {
     // reprojection.
     var wfs = new OpenLayers.Layer.Vector("Nowy Targ", {
         strategies: [new OpenLayers.Strategy.BBOX()],
-        protocol: new OpenLayers.Protocol.WFS({
+        protocol: new OpenLayers.Protocol.WFS.v1_0_0({
             version: "1.0.0",
             srsName: "EPSG:2180", // this is the default
             url:  "http://uslugi.giap.pl/cgi-bin/nowy_targ/qgis_mapserv.fcgi",
