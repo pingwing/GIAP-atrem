@@ -1,77 +1,141 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
     <title>OpenLayers.Editor</title>
-    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/proj4js/1.1.0/proj4js-compressed.min.js"></script>
+    <script type="text/javascript"
+            src="http://cdnjs.cloudflare.com/ajax/libs/proj4js/1.1.0/proj4js-compressed.min.js"></script>
     <script src="http://openlayers.org/api/2.13.1/OpenLayers.js"></script>
     <script type="text/javascript">
 
-        var map, layer, styleMap;
-//OpenLayers.ProxyHost = "proxy.cgi?url=";
+        var map, wfs, styleMap;
+        //OpenLayers.ProxyHost = "proxy.cgi?url=";
+        var DeleteFeature = OpenLayers.Class(OpenLayers.Control, {
+            initialize: function (layer, options) {
+                OpenLayers.Control.prototype.initialize.apply(this, [options]);
+                this.layer = layer;
+                this.handler = new OpenLayers.Handler.Feature(
+                        this, layer, {click: this.clickFeature}
+                );
+            },
+            clickFeature: function (feature) {
+                // if feature doesn't have a fid, destroy it
+                if (feature.fid == undefined) {
+                    this.layer.destroyFeatures([feature]);
+                } else {
+                    feature.state = OpenLayers.State.DELETE;
+                    this.layer.events.triggerEvent("afterfeaturemodified",
+                            {feature: feature});
+                    feature.renderIntent = "select";
+                    this.layer.drawFeature(feature);
+                }
+            },
+            setMap: function (map) {
+                this.handler.setMap(map);
+                OpenLayers.Control.prototype.setMap.apply(this, arguments);
+            },
+            CLASS_NAME: "OpenLayers.Control.DeleteFeature"
+        });
 
-function init() {
-    Proj4js.defs['EPSG:2180'] = "+proj=tmerc +lat_0=0 +lon_0=19 +k=0.9993 +x_0=500000 +y_0=-5300000 +ellps=GRS80 +units=m +no_defs";
-    var geographic = new OpenLayers.Projection("EPSG:2180");
-    var mercator = new OpenLayers.Projection("EPSG:900913");
+        function init() {
+            Proj4js.defs['EPSG:2180'] = "+proj=tmerc +lat_0=0 +lon_0=19 +k=0.9993 +x_0=500000 +y_0=-5300000 +ellps=GRS80 +units=m +no_defs";
+            var geographic = new OpenLayers.Projection("EPSG:2180");
+            var mercator = new OpenLayers.Projection("EPSG:900913");
 
-    // prepare to style the data
-    styleMap = new OpenLayers.StyleMap({
-        strokeColor: "black",
-        strokeWidth: 2,
-        strokeOpacity: 0.5,
-        fillOpacity: 0.2
-    });
+            // prepare to style the data
+            styleMap = new OpenLayers.StyleMap({
+                strokeColor: "black",
+                strokeWidth: 2,
+                strokeOpacity: 0.5,
+                fillOpacity: 0.2
+            });
 
-    // This server supports server-side reprojection, but we're using WFS 1.0
-    // here (which doesn't support reprojection) to illustrate client-side
-    // reprojection.
-    var wfs = new OpenLayers.Layer.Vector("Nowy Targ", {
-        strategies: [new OpenLayers.Strategy.BBOX()],
-        protocol: new OpenLayers.Protocol.WFS.v1_0_0({
-            version: "1.0.0",
-            srsName: "EPSG:2180", // this is the default
-            url:  "http://uslugi.giap.pl/cgi-bin/nowy_targ/qgis_mapserv.fcgi",
-            featureType: "DZIALKI_EWIDENCYJNE"
-        }),
-        projection: geographic, // specified because it is different than the map
-        styleMap: styleMap,
-        minScale:1/5000
-    });
+            var saveStrategy = new OpenLayers.Strategy.Save();
 
-    map = new OpenLayers.Map('map', {
-        projection: mercator,
-        controls: [
-            new OpenLayers.Control.PanZoom(),
-            new OpenLayers.Control.EditingToolbar(wfs)
-        ]
-    });
+            // This server supports server-side reprojection, but we're using WFS 1.0
+            // here (which doesn't support reprojection) to illustrate client-side
+            // reprojection.
+            var wfs = new OpenLayers.Layer.Vector("Nowy Targ", {
+                strategies: [new OpenLayers.Strategy.BBOX(), saveStrategy],
+                protocol: new OpenLayers.Protocol.WFS.v1_0_0({
+                    version: "1.0.0",
+                    srsName: "EPSG:2180", // this is the default
+                    url: "http://uslugi.giap.pl/cgi-bin/nowy_targ/qgis_mapserv.fcgi",
+                    featureType: "DZIALKI_EWIDENCYJNE"
+                }),
+                projection: geographic, // specified because it is different than the map
+                styleMap: styleMap,
+                minScale: 1 / 5000
+            });
 
-    map.addLayer(new OpenLayers.Layer.OSM());
-    map.addControl(new OpenLayers.Control.LayerSwitcher());
+            map = new OpenLayers.Map('map', {
+                projection: mercator,
+                controls: [
+                    new OpenLayers.Control.PanZoom(),
+                    new OpenLayers.Control.Navigation()
+                ]
+            });
 
-    map.addLayer(wfs);
-    
-    // if you want to use Geographic coords, transform to ESPG:900913
-    var ddBounds = new OpenLayers.Bounds(
-        -73.839111,40.287907,-40.214111,50.441624
-    );
-    map.zoomToExtent(
-        ddBounds.transform(geographic, mercator)
-    );
-    map.setCenter(new OpenLayers.LonLat(20.03,49.477778).transform('EPSG:4326', 'EPSG:900913'), 17);
-}
+            map.addLayer(new OpenLayers.Layer.OSM());
+            map.addControl(new OpenLayers.Control.LayerSwitcher());
+
+            map.addLayer(wfs);
+
+            var panel = new OpenLayers.Control.Panel({
+                displayClass: 'customEditingToolbar',
+                allowDepress: true
+            });
+
+            var draw = new OpenLayers.Control.DrawFeature(
+                    wfs, OpenLayers.Handler.Polygon,
+                    {
+                        title: "Draw Feature",
+                        displayClass: "olControlDrawFeaturePolygon",
+                        multi: true
+                    }
+            );
+
+            var edit = new OpenLayers.Control.ModifyFeature(wfs, {
+                title: "Modify Feature",
+                displayClass: "olControlModifyFeature"
+            });
+
+            var del = new DeleteFeature(wfs, {title: "Delete Feature"});
+
+            var save = new OpenLayers.Control.Button({
+                title: "Save Changes",
+                trigger: function() {
+                    if(edit.feature) {
+                        edit.selectControl.unselectAll();
+                    }
+                    saveStrategy.save();
+                },
+                displayClass: "olControlSaveFeatures"
+            });
+
+            panel.addControls([save, del, edit, draw]);
+            map.addControl(panel);
+
+            // if you want to use Geographic coords, transform to ESPG:900913
+            var ddBounds = new OpenLayers.Bounds(
+                    -73.839111, 40.287907, -40.214111, 50.441624
+            );
+            map.zoomToExtent(
+                    ddBounds.transform(geographic, mercator)
+            );
+            map.setCenter(new OpenLayers.LonLat(20.03, 49.477778).transform('EPSG:4326', 'EPSG:900913'), 17);
+        }
     </script>
     <style type="text/css">
-    /* Make map consume all available space */
-    html, body, #map {
-        height:100%;
-        margin:0;
-    }
+        /* Make map consume all available space */
+        html, body, #map {
+            height: 100%;
+            margin: 0;
+        }
     </style>
-    <link rel="stylesheet" href="../theme/geosilk/geosilk.css" type="text/css" />
+    <link rel="stylesheet" href="../theme/geosilk/geosilk.css" type="text/css"/>
 </head>
 <body onload="init()">
-    <div id="map"></div>
+<div id="map"></div>
 </body>
 </html>
