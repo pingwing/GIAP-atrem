@@ -6,6 +6,66 @@
     <script type="text/javascript"
             src="http://cdnjs.cloudflare.com/ajax/libs/proj4js/1.1.0/proj4js-compressed.min.js"></script>
     <script src="http://openlayers.org/api/2.13.1/OpenLayers.js"></script>
+    <!--[if lte IE 6]>
+    <style>
+        .customEditingToolbar {
+            width: 200px;
+        }
+    </style>
+    <![endif]-->
+    <style>
+        .customEditingToolbar {
+            float: right;
+            right: 0px;
+            height: 30px;
+        }
+        .customEditingToolbar div {
+            float: right;
+            margin: 5px;
+            width: 24px;
+            height: 24px;
+        }
+        .olControlNavigationItemActive {
+            background-image: url("img/editing_tool_bar.png");
+            background-repeat: no-repeat;
+            background-position: -103px -23px;
+        }
+        .olControlNavigationItemInactive {
+            background-image: url("img/editing_tool_bar.png");
+            background-repeat: no-repeat;
+            background-position: -103px -0px;
+        }
+        .olControlDrawFeaturePolygonItemInactive {
+            background-image: url("img/editing_tool_bar.png");
+            background-repeat: no-repeat;
+            background-position: -26px 0px;
+        }
+        .olControlDrawFeaturePolygonItemActive {
+            background-image: url("img/editing_tool_bar.png");
+            background-repeat: no-repeat;
+            background-position: -26px -23px ;
+        }
+        .olControlModifyFeatureItemActive {
+            background-image: url("img/move_feature_on.png");
+            background-repeat: no-repeat;
+            background-position: 0px 1px;
+        }
+        .olControlModifyFeatureItemInactive {
+            background-image: url("img/move_feature_off.png"");
+            background-repeat: no-repeat;
+            background-position: 0px 1px;
+        }
+        .olControlDeleteFeatureItemActive {
+            background-image: url("img/remove_point_on.png");
+            background-repeat: no-repeat;
+            background-position: 0px 1px;
+        }
+        .olControlDeleteFeatureItemInactive {
+            background-image: url("img/remove_point_off.png"");
+            background-repeat: no-repeat;
+            background-position: 0px 1px;
+        }
+    </style>
     <script type="text/javascript">
 
         var map, wfs, styleMap;
@@ -116,13 +176,13 @@
             panel.addControls([save, del, edit, draw]);
             map.addControl(panel);
 
-            // if you want to use Geographic coords, transform to ESPG:900913
+            /*// if you want to use Geographic coords, transform to ESPG:900913
             var ddBounds = new OpenLayers.Bounds(
                     -73.839111, 40.287907, -40.214111, 50.441624
             );
             map.zoomToExtent(
                     ddBounds.transform(geographic, mercator)
-            );
+            );*/
             map.setCenter(new OpenLayers.LonLat(20.03, 49.477778).transform('EPSG:4326', 'EPSG:900913'), 17);
         }
     </script>
