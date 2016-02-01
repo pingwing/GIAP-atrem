@@ -17,14 +17,14 @@
             map = new OpenLayers.Map('map');
             map.addLayer(new OpenLayers.Layer.OSM());
             map.addControl(new OpenLayers.Control.LayerSwitcher());
-            map.setCenter(new OpenLayers.LonLat(49.3, 20), 5);
+            map.setCenter(new OpenLayers.LonLat(20, 49.3), 5);
 
             // Persist drawn or modified features instantly
             var saveStrategy = new OpenLayers.Strategy.Save({
                 auto:true
             });
             // Create a vector layer that is bound to a WFS for editing
-            var wfsLayer = new OpenLayers.Layer.Vector("Test Polygons", {
+            var wfsLayer = new OpenLayers.Layer.Vector("Nowy Targ Działki", {
                 strategies: [
                     // Load existing features
                     new OpenLayers.Strategy.BBOX(),
@@ -39,8 +39,7 @@
                     version: "1.0.0",
                     srsName: "EPSG:2180",
                     url: "http://uslugi.giap.pl/cgi-bin/nowy_targ/qgis_mapserv.fcgi",
-                    featureType: "DZIAŁKI_EWIDENCYJNE",
-                    geometryName: "the_geom"
+                    featureType: "DZIAŁKI_EWIDENCYJNE"
                 }),
                 extractAttributes: true,
                 visibility: true
