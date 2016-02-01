@@ -42,7 +42,8 @@ function init() {
             featureType: "DZIALKI_EWIDENCYJNE"
         }),
         projection: geographic, // specified because it is different than the map 
-        styleMap: styleMap
+        styleMap: styleMap,
+        minScale:1/3000
     });
     map.addLayer(wfs);
     
