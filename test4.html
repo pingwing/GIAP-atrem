@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
     <title>OpenLayers.Editor</title>
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/proj4js/1.1.0/proj4js-compressed.min.js"></script>
+    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/proj4js/1.1.0/proj4js-compressed.min.js"></script>
     <script src="http://openlayers.org/api/2.12/OpenLayers.js"></script>
     <script type="text/javascript">
 
@@ -11,7 +11,7 @@
 //OpenLayers.ProxyHost = "proxy.cgi?url=";
 
 function init() {
-    proj4.defs('EPSG:2180', "+proj=tmerc +lat_0=0 +lon_0=19 +k=0.9993 +x_0=500000 +y_0=-5300000 +ellps=GRS80 +units=m +no_defs");
+    Proj4.defs('EPSG:2180', "+proj=tmerc +lat_0=0 +lon_0=19 +k=0.9993 +x_0=500000 +y_0=-5300000 +ellps=GRS80 +units=m +no_defs");
     var geographic = new OpenLayers.Projection("EPSG:2180");
     var mercator = new OpenLayers.Projection("EPSG:900913");
 
