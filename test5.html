@@ -131,7 +131,7 @@
             var wms = new OpenLayers.Layer.WMS(
                     "Nowy Targ WMS",
                     "http://uslugi.giap.pl/cgi-bin/nowy_targ/qgis_mapserv.fcgi",
-                    {layers: 'DZIALKI_EWIDENCYJNE', projection: geographic}
+                    {layers: 'DZIALKI_EWIDENCYJNE', transparent: true}, {isBaseLayer: false}
             );
 
             map = new OpenLayers.Map('map', {
