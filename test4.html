@@ -21,10 +21,8 @@ function init() {
         projection: mercator
     });
 
-    var g = new OpenLayers.Layer.Google("Google Layer", {
-        sphericalMercator: true
-    });
-    map.addLayers([g]);
+    map.addLayer(new OpenLayers.Layer.OSM());
+    map.addControl(new OpenLayers.Control.LayerSwitcher());
 
     // prepare to style the data
     styleMap = new OpenLayers.StyleMap({
