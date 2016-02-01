@@ -54,6 +54,7 @@ function init() {
     map.zoomToExtent(
         ddBounds.transform(geographic, mercator)
     );
+    map.setCenter(new OpenLayers.LonLat(20, 49.3).transform('EPSG:4326', 'EPSG:900913'), 5);
 }
     </script>
     <style type="text/css">
