@@ -25,16 +25,23 @@
     <script type="text/javascript">
         var map, wfs, controls;
         function init(){
-            map = new OpenLayers.Map('map');
+            Proj4js.defs['EPSG:2180'] = "+proj=tmerc +lat_0=0 +lon_0=19 +k=0.9993 +x_0=500000 +y_0=-5300000 +ellps=GRS80 +units=m +no_defs";
+            var geographic = new OpenLayers.Projection("EPSG:2180");
+            var mercator = new OpenLayers.Projection("EPSG:900913");
+
+            map = new OpenLayers.Map('map', {
+                projection: mercator,
+                controls: [
+                    new OpenLayers.Control.PanZoom(),
+                    new OpenLayers.Control.Navigation()
+                ]
+            });
             var wms = OpenLayers.Layer.OSM();
             OpenLayers.Feature.Vector.style['default']['strokeWidth'] = '2';
 
             // allow testing of specific renderers via "?renderer=Canvas", etc
             var renderer = OpenLayers.Util.getParameters(window.location.href).renderer;
             renderer = (renderer) ? [renderer] : OpenLayers.Layer.Vector.prototype.renderers;
-
-            Proj4js.defs['EPSG:2180'] = "+proj=tmerc +lat_0=0 +lon_0=19 +k=0.9993 +x_0=500000 +y_0=-5300000 +ellps=GRS80 +units=m +no_defs";
-            var geographic = new OpenLayers.Projection("EPSG:2180");
 
             // prepare to style the data
             styleMap = new OpenLayers.StyleMap({
