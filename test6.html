@@ -26,8 +26,7 @@
         var map, wfs, controls;
         function init(){
             map = new OpenLayers.Map('map');
-            var wms = new OpenLayers.Layer.WMS( "OpenLayers WMS",
-                    "http://vmap0.tiles.osgeo.org/wms/vmap0?", {layers: 'basic'});
+            var wms = OpenLayers.Layer.OSM();
             OpenLayers.Feature.Vector.style['default']['strokeWidth'] = '2';
 
             // allow testing of specific renderers via "?renderer=Canvas", etc
