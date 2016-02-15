@@ -79,6 +79,7 @@
                 );
             },
             clickFeature: function (feature) {
+                console.log(feature);
                 // if feature doesn't have a fid, destroy it
                 if (feature.fid == undefined) {
                     this.layer.destroyFeatures([feature]);
