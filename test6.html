@@ -1,0 +1,213 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>Modify Feature</title>
+    <link rel="stylesheet" href="../theme/default/style.css" type="text/css">
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <style type="text/css">
+        #controls {
+            width: 512px;
+        }
+        #controlToggle {
+            padding-left: 1em;
+        }
+        #controlToggle li {
+            list-style: none;
+        }
+    </style>
+    <script type="text/javascript"
+            src="http://cdnjs.cloudflare.com/ajax/libs/proj4js/1.1.0/proj4js-compressed.min.js"></script>
+    <script src="http://openlayers.org/api/2.13.1/OpenLayers.js"></script>
+    <script type="text/javascript">
+        var map, wfs, controls;
+        function init(){
+            map = new OpenLayers.Map('map');
+            var wms = new OpenLayers.Layer.WMS( "OpenLayers WMS",
+                    "http://vmap0.tiles.osgeo.org/wms/vmap0?", {layers: 'basic'});
+            OpenLayers.Feature.Vector.style['default']['strokeWidth'] = '2';
+
+            // allow testing of specific renderers via "?renderer=Canvas", etc
+            var renderer = OpenLayers.Util.getParameters(window.location.href).renderer;
+            renderer = (renderer) ? [renderer] : OpenLayers.Layer.Vector.prototype.renderers;
+
+            Proj4js.defs['EPSG:2180'] = "+proj=tmerc +lat_0=0 +lon_0=19 +k=0.9993 +x_0=500000 +y_0=-5300000 +ellps=GRS80 +units=m +no_defs";
+            var geographic = new OpenLayers.Projection("EPSG:2180");
+
+            var saveStrategy = new OpenLayers.Strategy.Save();
+
+            // This server supports server-side reprojection, but we're using WFS 1.0
+            // here (which doesn't support reprojection) to illustrate client-side
+            // reprojection.
+            var wfs = new OpenLayers.Layer.Vector("Nowy Targ", {
+                strategies: [new OpenLayers.Strategy.BBOX(), saveStrategy],
+                protocol: new OpenLayers.Protocol.WFS.v1_0_0({
+                    version: "1.0.0",
+                    srsName: "EPSG:2180", // this is the default
+                    url: "http://uslugi.giap.pl/cgi-bin/nowy_targ/qgis_mapserv.fcgi",
+                    featureType: "DZIALKI_EWIDENCYJNE"
+                }),
+                projection: geographic, // specified because it is different than the map
+                styleMap: styleMap,
+                minScale: 1 / 5000
+            });
+
+            map.addLayers([wms, wfs]);
+            map.addControl(new OpenLayers.Control.LayerSwitcher());
+            map.addControl(new OpenLayers.Control.MousePosition());
+
+            if (console && console.log) {
+                function report(event) {
+                    console.log(event.type, event.feature ? event.feature.id : event.components);
+                }
+                wfs.events.on({
+                    "beforefeaturemodified": report,
+                    "featuremodified": report,
+                    "afterfeaturemodified": report,
+                    "vertexmodified": report,
+                    "sketchmodified": report,
+                    "sketchstarted": report,
+                    "sketchcomplete": report
+                });
+            }
+            controls = {
+                point: new OpenLayers.Control.DrawFeature(wfs,
+                        OpenLayers.Handler.Point),
+                line: new OpenLayers.Control.DrawFeature(wfs,
+                        OpenLayers.Handler.Path),
+                polygon: new OpenLayers.Control.DrawFeature(wfs,
+                        OpenLayers.Handler.Polygon),
+                regular: new OpenLayers.Control.DrawFeature(wfs,
+                        OpenLayers.Handler.RegularPolygon,
+                        {handlerOptions: {sides: 5}}),
+                modify: new OpenLayers.Control.ModifyFeature(wfs)
+            };
+
+            for(var key in controls) {
+                map.addControl(controls[key]);
+            }
+
+            map.setCenter(new OpenLayers.LonLat(0, 0), 3);
+            document.getElementById('noneToggle').checked = true;
+        }
+
+        function update() {
+            // reset modification mode
+            controls.modify.mode = OpenLayers.Control.ModifyFeature.RESHAPE;
+            var rotate = document.getElementById("rotate").checked;
+            if(rotate) {
+                controls.modify.mode |= OpenLayers.Control.ModifyFeature.ROTATE;
+            }
+            var resize = document.getElementById("resize").checked;
+            if(resize) {
+                controls.modify.mode |= OpenLayers.Control.ModifyFeature.RESIZE;
+                var keepAspectRatio = document.getElementById("keepAspectRatio").checked;
+                if (keepAspectRatio) {
+                    controls.modify.mode &= ~OpenLayers.Control.ModifyFeature.RESHAPE;
+                }
+            }
+            var drag = document.getElementById("drag").checked;
+            if(drag) {
+                controls.modify.mode |= OpenLayers.Control.ModifyFeature.DRAG;
+            }
+            if (rotate || drag) {
+                controls.modify.mode &= ~OpenLayers.Control.ModifyFeature.RESHAPE;
+            }
+            controls.modify.createVertices = document.getElementById("createVertices").checked;
+            var sides = parseInt(document.getElementById("sides").value);
+            sides = Math.max(3, isNaN(sides) ? 0 : sides);
+            controls.regular.handler.sides = sides;
+            var irregular =  document.getElementById("irregular").checked;
+            controls.regular.handler.irregular = irregular;
+        }
+
+        function toggleControl(element) {
+            for(key in controls) {
+                var control = controls[key];
+                if(element.value == key && element.checked) {
+                    control.activate();
+                } else {
+                    control.deactivate();
+                }
+            }
+        }
+
+    </script>
+</head>
+<body onload="init()">
+<h1 id="title">OpenLayers Modify Feature Example</h1>
+<div id="tags">
+    vertices, digitizing, draw, drawing
+</div>
+<div id="shortdesc">A demonstration of the ModifyFeature control for editing vector features.</div>
+<div id="map" class="smallmap"></div>
+<div id="controls">
+    <ul id="controlToggle">
+        <li>
+            <input type="radio" name="type" value="none" id="noneToggle"
+                   onclick="toggleControl(this);" checked="checked" />
+            <label for="noneToggle">navigate</label>
+        </li>
+        <li>
+            <input type="radio" name="type" value="point" id="pointToggle" onclick="toggleControl(this);" />
+            <label for="pointToggle">draw point</label>
+        </li>
+        <li>
+            <input type="radio" name="type" value="line" id="lineToggle" onclick="toggleControl(this);" />
+            <label for="lineToggle">draw line</label>
+        </li>
+        <li>
+            <input type="radio" name="type" value="polygon" id="polygonToggle" onclick="toggleControl(this);" />
+            <label for="polygonToggle">draw polygon</label>
+        </li>
+        <li>
+            <input type="radio" name="type" value="regular" id="regularToggle" onclick="toggleControl(this);" />
+            <label for="regularToggle">draw regular polygon</label>
+            <label for="sides"> - sides</label>
+            <input id="sides" type="text" size="2" maxlength="2"
+                   name="sides" value="5" onchange="update()" />
+            <ul>
+                <li>
+                    <input id="irregular" type="checkbox"
+                           name="irregular" onchange="update()" />
+                    <label for="irregular">irregular</label>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <input type="radio" name="type" value="modify" id="modifyToggle"
+                   onclick="toggleControl(this);" />
+            <label for="modifyToggle">modify feature</label>
+            <ul>
+                <li>
+                    <input id="createVertices" type="checkbox" checked
+                           name="createVertices" onchange="update()" />
+                    <label for="createVertices">allow vertices creation</label>
+                </li>
+                <li>
+                    <input id="rotate" type="checkbox"
+                           name="rotate" onchange="update()" />
+                    <label for="rotate">allow rotation</label>
+                </li>
+                <li>
+                    <input id="resize" type="checkbox"
+                           name="resize" onchange="update()" />
+                    <label for="resize">allow resizing</label>
+                    (<input id="keepAspectRatio" type="checkbox"
+                            name="keepAspectRatio" onchange="update()" checked="checked" />
+                    <label for="keepAspectRatio">keep aspect ratio</label>)
+                </li>
+                <li>
+                    <input id="drag" type="checkbox"
+                           name="drag" onchange="update()" />
+                    <label for="drag">allow dragging</label>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</div>
+</body>
+</html>
