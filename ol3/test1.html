@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WFS OL3</title>
+    <script src="http://openlayers.org/en/v3.13.1/build/ol.js" type="text/javascript"></script>
+</head>
+<body>
+<DIV id="map" class="map"></DIV>
+
+<DIV id="customControl" onload="initWFSTransactions()">
+    <input type="button" id="customControlDelete" value="delete"/>
+    <input type="button" id="customControlSave" value="save"/>
+</DIV>
+
+<script type="text/javascript">
+    var map = new ol.Map({
+        target: 'map',
+        layers: [
+            new ol.layer.Tile({
+                source: new ol.source.MapQuest({layer: 'sat'})
+            })
+        ],
+        view: new ol.View({
+            center: ol.proj.fromLonLat([37.41, 8.82]),
+            zoom: 4
+        })
+    });
+
+    var vectorSource = new ol.source.Vector({
+        loader: function (extent, resolution, projection) {
+            var url = "http://uslugi.giap.pl:8080/geoserver/wfs?service=WFS"
+                    + "&version=2.0.0&request=GetFeature"
+                    + '&outputFormat=text/javascript'
+                    + "&typename=nowy_targ:dzialki"
+                    + "&format_options=callback:loadFeatures"
+                    + '&srsname=EPSG:2180';
+            // use jsonp: false to prevent jQuery from adding the "callback"
+            $.ajax({url: url, dataType: 'jsonp', jsonp: false});
+        }
+    });
+
+    /**
+     * JSONP WFS callback function.
+     * @param {Object} response The response object.
+     */
+    window.loadFeatures = function (response) {
+        vectorSource.addFeatures(new ol.format.GeoJSON().readFeatures(response));
+    };
+
+    var vector = new ol.layer.Vector({
+        source: vectorSource,
+        style: new ol.style.Style({
+            stroke: new ol.style.Stroke({
+                color: 'rgba(0, 0, 255, 1.0)',
+                width: 2
+            })
+        })
+    });
+
+    map.addLayer(vector);
+
+    var selectFeat = new ol.interaction.Select();
+    map.addInteraction(selectFeat);
+    var selectedFeat = selectFeat.getFeatures();
+
+    var modifyFeat = new ol.interaction.Modify({
+        features: selectedFeat
+    });
+    map.addInteraction(modifyFeat);
+
+    function deleteFeatures() {
+        if (selectedFeat.getLength() > 0) {
+            var toDeleteFeat = selectFeat.getFeatures().getArray()[0];
+            vectorSource.removeFeature(toDeleteFeat);
+            selectFeat.getFeatures().remove(toDeleteFeat);
+        }
+        else
+            window.alert("Please select a layer first :" + selectedFeat.getLength());
+    }
+
+
+    $('#customControlDelete').on('click', function () {
+        deleteFeatures();
+    });
+
+    var transactWFS = function (p, f) {
+        switch (p) {
+            case 'insert':
+                node = formatWFS.writeTransaction([f], null, null, formatGML);
+                break;
+            case 'update':
+                node = formatWFS.writeTransaction(null, [f], null, formatGML);
+                break;
+            case 'delete':
+                node = formatWFS.writeTransaction(null, null, [f], formatGML);
+                break;
+        }
+        s = new XMLSerializer();
+        str = s.serializeToString(node);
+        $.ajax('http://uslugi.giap.pl:8080/geoserver/wfs', {
+            type: 'POST',
+            dataType: 'xml',
+            processData: false,
+            contentType: 'text/xml',
+            data: str
+        }).done();
+    };
+
+    selectFeat.getFeatures().on('change:length', function (e) {
+        transactWFS('delete', e.target.item(0));
+    });
+</script>
+
+</body>
+</html>
