@@ -66,7 +66,8 @@
                 }),
                 projection: geographic, // specified because it is different than the map
                 styleMap: styleMap,
-                minScale: 1 / 5000
+                minScale: 1 / 5000,
+                renderers: renderer
             });
 
             map.addLayers([wms, wfs]);
