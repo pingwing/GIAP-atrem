@@ -31,7 +31,7 @@
     var vectorSource = new ol.source.Vector({
         format: new ol.format.GeoJSON(),
         url: function(extent) {
-            return 'http://uslugi.giap.pl:8080/geoserver/wfs?service=WFS&' +
+            return 'http://uslugi.giap.pl/geoserver/wfs?service=WFS&' +
                     'version=1.1.0&request=GetFeature&typename=nowy_targ:dzialki&' +
                     'outputFormat=application/json&srsname=EPSG:2180&' +
                     'bbox=' + extent.join(',') + ',EPSG:3857';
