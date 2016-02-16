@@ -80,13 +80,13 @@
     var transactWFS = function (p, f) {
         switch (p) {
             case 'insert':
-                node = new ol.format.WFS()..writeTransaction([f], null, null, formatGML);
+                node = new ol.format.WFS().writeTransaction([f], null, null, formatGML);
                 break;
             case 'update':
-                node = new ol.format.WFS()..writeTransaction(null, [f], null, formatGML);
+                node = new ol.format.WFS().writeTransaction(null, [f], null, formatGML);
                 break;
             case 'delete':
-                node = new ol.format.WFS()..writeTransaction(null, null, [f], formatGML);
+                node = new ol.format.WFS().writeTransaction(null, null, [f], formatGML);
                 break;
         }
         s = new XMLSerializer();
