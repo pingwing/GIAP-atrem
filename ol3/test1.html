@@ -23,8 +23,8 @@
             })
         ],
         view: new ol.View({
-            center: ol.proj.fromLonLat([37.41, 8.82]),
-            zoom: 4
+            center: ol.proj.fromLonLat([20.03, 49.477778]),
+            zoom: 17
         })
     });
 
@@ -33,7 +33,7 @@
         url: function(extent) {
             return 'http://uslugi.giap.pl/geoserver/wfs?service=WFS&' +
                     'version=1.1.0&request=GetFeature&typename=nowy_targ:dzialki&' +
-                    'outputFormat=application/json&srsname=EPSG:2180&' +
+                    'outputFormat=application/json&srsname=EPSG:3857&' +
                     'bbox=' + extent.join(',') + ',EPSG:3857';
         },
         strategy: ol.loadingstrategy.tile(ol.tilegrid.createXYZ({
