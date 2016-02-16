@@ -85,6 +85,8 @@
     });
 
     var transactWFS = function (p, f) {
+        console.log('transactWFS: p', p);
+        console.log('transactWFS: f', f);
         switch (p) {
             case 'insert':
                 node = formatWFS.writeTransaction([f], null, null, formatGML);
