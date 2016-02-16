@@ -10,7 +10,7 @@
 <DIV id="map" class="map"></DIV>
 
 <DIV id="customControl" onload="initWFSTransactions()">
-    <input type="button" id="customControlDelete" value="delete"/>
+    <input type="button" id="customControlDelete" value="delete" onClick="deleteFeature"/>
     <input type="button" id="customControlSave" value="save"/>
 </DIV>
 
@@ -30,7 +30,7 @@
 
     var vectorSource = new ol.source.Vector({
         format: new ol.format.GeoJSON(),
-        url: function(extent) {
+        url: function (extent) {
             return 'http://uslugi.giap.pl/geoserver/wfs?service=WFS&' +
                     'version=1.1.0&request=GetFeature&typename=nowy_targ:dzialki&' +
                     'outputFormat=application/json&srsname=EPSG:3857&' +
@@ -109,9 +109,11 @@
         }).done();
     };
 
-    selectFeat.getFeatures().on('change:length', function (e) {
-        transactWFS('delete', e.target.item(0));
-    });
+    var deleteFeature = function () {
+        selectFeat.getFeatures().on('change:length', function (e) {
+            transactWFS('delete', e.target.item(0));
+        });
+    }
 </script>
 
 </body>
