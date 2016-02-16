@@ -36,7 +36,7 @@
                     new OpenLayers.Control.Navigation()
                 ]
             });
-            var wms = OpenLayers.Layer.OSM();
+            var wms = new OpenLayers.Layer.OSM();
             OpenLayers.Feature.Vector.style['default']['strokeWidth'] = '2';
 
             // allow testing of specific renderers via "?renderer=Canvas", etc
