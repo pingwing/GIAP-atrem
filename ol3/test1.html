@@ -19,7 +19,7 @@
         target: 'map',
         layers: [
             new ol.layer.Tile({
-                source: new ol.source.MapQuest({layer: 'sat'})
+                source: new ol.source.OSM()
             })
         ],
         view: new ol.View({
@@ -30,7 +30,6 @@
 
     var vectorSource = new ol.source.Vector({
         format: new ol.format.GeoJSON(),
-        //crossOrigin: null,
         url: function(extent) {
             return 'http://uslugi.giap.pl/geoserver/wfs?service=WFS&' +
                     'version=1.1.0&request=GetFeature&typename=nowy_targ:dzialki&' +
