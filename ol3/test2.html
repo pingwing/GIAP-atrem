@@ -64,7 +64,7 @@
 
     var getText = function(feature, resolution) {
         var type = 'normal';
-        var maxResolution = 1;
+        var maxResolution = 2;
         var featureValue = feature.get('NUMER');
         var text = '';
         if (featureValue) {
@@ -118,7 +118,7 @@
                 width: 1
             }),
             fill: new ol.style.Fill({
-                color: 'rgba(0, 0, 255, 0.1)'
+                color: 'rgba(0, 0, 255, 0.05)'
             }),
             text: createTextStyle(feature, resolution)
         });
