@@ -62,13 +62,60 @@
         }))
     });
 
+    var getText = function(feature, resolution) {
+        var type = normal;
+        var maxResolution = 1200;
+        var text = feature.get('NUMER');
+
+        if (resolution > maxResolution) {
+            text = '';
+        } else if (type == 'hide') {
+            text = '';
+        } else if (type == 'shorten') {
+            text = text.trunc(12);
+        } else if (type == 'wrap') {
+            text = stringDivider(text, 16, '\n');
+        }
+
+        return text;
+    };
+
+
+    var createTextStyle = function(feature, resolution) {
+        var align = 'center';
+        var baseline = 'middle';
+        var size = '10px';
+        var offsetX = 0;
+        var offsetY = 0;
+        var weight = 'bold';
+        var rotation = 0;
+        var fontName = 'Verdana';
+        var font = weight + ' ' + size + ' ' + fontName;
+        var fillColor = 'blue';
+        var outlineColor = '#ffffff';
+        var outlineWidth = 3;
+
+        return new ol.style.Text({
+            textAlign: align,
+            textBaseline: baseline,
+            font: font,
+            text: getText(feature, resolution),
+            fill: new ol.style.Fill({color: fillColor}),
+            stroke: new ol.style.Stroke({color: outlineColor, width: outlineWidth}),
+            offsetX: offsetX,
+            offsetY: offsetY,
+            rotation: rotation
+        });
+    };
+
     var vector = new ol.layer.Vector({
         source: vectorSource,
         style: new ol.style.Style({
             stroke: new ol.style.Stroke({
                 color: 'rgba(0, 0, 255, 1.0)',
                 width: 2
-            })
+            }),
+            text: createTextStyle(feature, resolution)
         })
     });
 
