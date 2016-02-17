@@ -248,7 +248,7 @@
         var node = formatWFS.writeTransaction(featuresToInsert, featuresToUpdate, featuresToDelete, formatGML);
 
         console.log('PINGWIN: node przed usunoecie', node);
-        //removeLowerCaseGeometryNodeForInsert(node);
+        removeLowerCaseGeometryNodeForInsert(node);
         removeNodeForWfsUpdate(node, "geometry");
         console.log('PINGWIN: node po usunieciu', node);
 
