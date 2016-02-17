@@ -147,8 +147,12 @@
     }
 
     var transactWFS = function () {
-        console.log('PINGWIN: w transactWFS');
         var featuresToUpdate = _.values(featuresToUpdateObject);
+        
+        console.log('PINGWIN: w transactWFS');
+        console.log('PINGWIN: featuresToInsert', featuresToInsert);
+        console.log('PINGWIN: featuresToUpdate', featuresToUpdate);
+        console.log('PINGWIN: featuresToDelete', featuresToDelete);
 
         var node = formatWFS.writeTransaction(featuresToInsert, featuresToUpdate, featuresToDelete, formatGML);
 
