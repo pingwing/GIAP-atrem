@@ -87,6 +87,8 @@
         console.log('PINGWIN: featuresToDelete', featuresToDelete);
     }
 
+    var transformationFromWebToPL = ol.proj.getTransform('EPSG:3857', 'EPSG:2180');
+
     function modifiedFeatures(event) {
         console.log('PINGWIN: in modifiedFeatures');
         var modifiedFeatures = event.features.getArray();
@@ -97,8 +99,8 @@
                 console.log('PINGWIN: modifiedFeat.getGeometryName()', modifiedFeat.getGeometryName());
                 var geometryInMapCRS = modifiedFeat.getGeometry();
                 console.log('PINGWIN: geometryInMapCRS', geometryInMapCRS);
-                var geometryIn2180 = geometryInMapCRS.transform('EPSG:3857', 'EPSG:2180');
-                modifiedFeat.set('the_geom', geometryIn2180);
+                var geometryIn2180 = geometryInMapCRS.applyTransform(transformationFromWebToPL);
+                modifiedFeat.set('the_geom',  geometryIn2180);
                 //modifiedFeat.setGeometryName('the_geom');
                 console.log('PINGWIN: modifiedFeat.getGeometry()', modifiedFeat.getGeometry());
 
