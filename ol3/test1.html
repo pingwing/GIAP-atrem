@@ -89,7 +89,10 @@
         if (event.features.getLength() > 0) {
             _.each(modifiedFeatures, function(modifiedFeat) {
                 var modifiedFeatureId = modifiedFeat.id_;
+                console.log('PINGWIN: modifiedFeat.getGeometry()', modifiedFeat.getGeometry());
                 modifiedFeat.setGeometryName("the_geom");
+                console.log('PINGWIN: modifiedFeat.getGeometry()', modifiedFeat.getGeometry());
+
                 featuresToUpdateObject[modifiedFeatureId] = modifiedFeat;
             });
         }
