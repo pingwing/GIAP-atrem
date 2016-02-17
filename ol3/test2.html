@@ -223,8 +223,8 @@
                 /*var format = new ol.format.GeoJSON();
                  var routeFeatures = format.writeFeature(modifiedFeat);
                  console.log('PINGWIN: routeFeatures', routeFeatures);
-                 console.log('PINGWIN: featuresToUpdateObject', featuresToUpdateObject);
-                 console.log('PINGWIN: WKT', geometryInMapCRSClone.toString());*/
+                 console.log('PINGWIN: featuresToUpdateObject', featuresToUpdateObject);*/
+                 console.log('PINGWIN: WKT', modifiedFeat.getGeometry().toString());
             });
         }
     }
