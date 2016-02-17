@@ -67,7 +67,7 @@
         if (selectedFeat.getLength() > 0) {
             _.each(selectedFeat.getArray(), function(toDeleteFeat) {
                 vectorSource.removeFeature(toDeleteFeat);
-                selectFeat.getFeatures().remove(toDeleteFeat);
+                selectedFeat.remove(toDeleteFeat);
             });
         }
         else
