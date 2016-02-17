@@ -144,10 +144,11 @@
         }
     }
 
-    function onDragPoint(draggedFeature, initialPosition, iconFeature) {
+    function onDragPoint(event) {
         console.log('Feature Moved To:' + this.iconFeature.getGeometry().getCoordinates());
         console.log('PINGWIN: draggedFeature', this.draggedFeature);
         console.log('PINGWIN: initialPosition', this.initialPosition);
+        console.log('PINGWIN: event', event);
     }
 
     // creates a draw interaction
