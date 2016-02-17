@@ -12,7 +12,7 @@
 <body>
 <DIV id="map" class="map"></DIV>
 
-<DIV id="customControl" onload="initWFSTransactions()">
+<DIV id="customControl">
     <div>
         <label>Narzędzie: &nbsp;</label>
         <label>rysuj</label>
@@ -21,7 +21,7 @@
         <input type="radio" id="interaction_type_modify" name="interaction_type" value="modify">
     </div>
     <div>
-        <label>Geometry type</label>
+        <label>Rysuj typ geometrii</label>
         <select id="geom_type">
             <option value="Point" selected>Punkt</option>
             <option value="LineString">Linia</option>
@@ -74,25 +74,55 @@
 
     map.addLayer(vector);
 
+
     var featuresToInsert = [];
     var featuresToUpdateObject = {};
     var featuresToDelete = [];
 
-    var selectFeat = new ol.interaction.Select();
-    map.addInteraction(selectFeat);
-    var selectedFeat = selectFeat.getFeatures();
+    var drawInteraction = null;
+    var selectInteraction = null;
+    var modifyInteraction = null;
 
-    var modifyFeat = new ol.interaction.Modify({
-        features: selectedFeat,
-        deleteCondition: function (event) {
-            return ol.events.condition.shiftKeyOnly(event) &&
-                    ol.events.condition.singleClick(event);
-        }
-    });
-    map.addInteraction(modifyFeat);
-    modifyFeat.on('modifyend', modifiedFeatures);
+    function addModifyInteraction() {
+        // remove other interactions
+        map.removeInteraction(drawInteraction);
+
+        selectInteraction = new ol.interaction.Select();
+        map.addInteraction(selectInteraction);
+        var selectedFeat = selectInteraction.getFeatures();
+
+        modifyInteraction = new ol.interaction.Modify({
+            features: selectedFeat,
+            deleteCondition: function (event) {
+                return ol.events.condition.shiftKeyOnly(event) &&
+                        ol.events.condition.singleClick(event);
+            }
+        });
+
+        map.addInteraction(modifyInteraction);
+        modifyInteraction.on('modifyend', modifiedFeatures);
+    }
+
+    // creates a draw interaction
+    function addDrawInteraction() {
+        // remove other interactions
+        map.removeInteraction(selectInteraction);
+        map.removeInteraction(modifyInteraction);
+
+        // create the interaction
+        drawInteraction = new ol.interaction.Draw({
+            source: vector.getSource(),
+            type: /** @type {ol.geom.GeometryType} */ ($geom_type.val())
+        });
+        // add it to the map
+        map.addInteraction(drawInteraction);
+
+        // when a new feature has been drawn...
+        drawInteraction.on('drawend', addedFeatures);
+    }
 
     function deleteFeatures() {
+        var selectedFeat = selectInteraction.getFeatures();
         if (selectedFeat.getLength() > 0) {
             console.log('PINGWIN: selectedFeat.getArray()', selectedFeat.getArray());
             _.each(selectedFeat.getArray(), function (toDeleteFeat) {
@@ -138,6 +168,28 @@
         console.log('PINGWIN: featuresToUpdateObject', featuresToUpdateObject);
     }
 
+    function addedFeatures(event) {
+        // create a unique id
+        // it is later needed to delete features
+        var id = uid();
+        // give the feature this id
+        event.feature.setId(id);
+        // save the changed data
+        //saveData();
+        console.log('PINGWIN: event', event);
+    }
+
+    // creates unique id's
+    function uid(){
+        var id = 0;
+        return function() {
+            if (arguments[0] === 0) {
+                id = 0;
+            }
+            return id++;
+        }
+    }
+
     $('#customControlDelete').on('click', function () {
         deleteFeatures();
     });
@@ -147,6 +199,7 @@
         featuresToInsert = [];
         featuresToUpdateObject = {};
         featuresToDelete = [];
+        var selectedFeat = selectInteraction.getFeatures();
         selectedFeat.clear();
     });
 
@@ -207,10 +260,32 @@
     };
 
     /*var deleteFeature = function () {
-     selectFeat.getFeatures().on('change:length', function (e) {
+     selectInteraction.getFeatures().on('change:length', function (e) {
      transactWFS('delete', e.target.item(0));
      });
      }*/
+
+    // get the interaction type
+    var $interaction_type = $('[name="interaction_type"]');
+    // rebuild interaction when changed
+    $interaction_type.on('click', function(e) {
+        // add new interaction
+        if (this.value === 'draw') {
+            addDrawInteraction();
+        } else {
+            addModifyInteraction();
+        }
+    });
+
+    // get geometry type
+    var $geom_type = $('#geom_type');
+    // rebuild interaction when the geometry type is changed
+    $geom_type.on('change', function(e) {
+        map.removeInteraction(draw_interaction);
+        addDrawInteraction();
+    });
+
+    addDrawInteraction();
 </script>
 
 </body>
