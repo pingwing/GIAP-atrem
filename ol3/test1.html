@@ -179,7 +179,7 @@
         var geometryInMapCRS = addedFeature.getGeometry();
         var geometryInMapCRSClone = geometryInMapCRS.clone();
         geometryInMapCRSClone.applyTransform(transformationFromWebToPL);
-        geometryInMapCRSClone.applyTransform(transformationFlipCoords);
+        //geometryInMapCRSClone.applyTransform(transformationFlipCoords);
         addedFeature.set('the_geom', geometryInMapCRSClone);
         //modifiedFeat.setGeometryName('the_geom');
 
