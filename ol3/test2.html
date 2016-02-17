@@ -152,8 +152,9 @@
         console.log('PINGWIN: initialPosition', this.initialPosition);
         //console.log('PINGWIN: event', event);
         console.log('PINGWIN: translationVector', translationVector);
-
-        this.draggedFeature.getGeometry().translate(translationVector[0], translationVector[1]);
+        var clonedGeometry = this.draggedFeature.getGeometry().clone();
+        clonedGeometry.translate(translationVector[0], translationVector[1]);
+        this.draggedFeature.setGeometry(clonedGeometry);
     }
 
     // creates a draw interaction
