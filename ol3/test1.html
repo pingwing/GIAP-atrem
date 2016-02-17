@@ -63,7 +63,11 @@
     var selectedFeat = selectFeat.getFeatures();
 
     var modifyFeat = new ol.interaction.Modify({
-        features: selectedFeat
+        features: selectedFeat,
+        deleteCondition: function(event) {
+            return ol.events.condition.shiftKeyOnly(event) &&
+                    ol.events.condition.singleClick(event);
+        }
     });
     map.addInteraction(modifyFeat);
     modifyFeat.on('modifyend', modifiedFeatures);
