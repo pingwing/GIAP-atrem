@@ -91,7 +91,7 @@
                 var modifiedFeatureId = modifiedFeat.id_;
                 console.log('PINGWIN: modifiedFeat.getGeometry()', modifiedFeat.getGeometry());
                 console.log('PINGWIN: modifiedFeat.getGeometryName()', modifiedFeat.getGeometryName());
-                modifiedFeat.values['the_geom'] = modifiedFeat.getGeometry();
+                modifiedFeat.set('the_geom', modifiedFeat.getGeometry());
                 //modifiedFeat.setGeometryName('the_geom');
                 console.log('PINGWIN: modifiedFeat.getGeometry()', modifiedFeat.getGeometry());
 
@@ -119,11 +119,42 @@
         srsName: 'EPSG:3857'
     });
 
+    function removeLowerCaseGeometryNodeForInsert(node)
+    {
+
+        var geometryNodes = node.getElementsByTagName("geometry"), element;
+        while (geometryNode = geometryNodes[0])
+        {
+            geometryNode.parentNode.removeChild(geometryNode);
+        }
+
+    }
+
+    function removeNodeForWfsUpdate(node, valueToRemove)
+    {
+        var propNodes = node.getElementsByTagName("Property");
+        for (var i = 0; i < propNodes.length; i++)
+        {
+            var propNode = propNodes[i];
+            var propNameNode = propNode.firstElementChild;
+            var propNameNodeValue = propNameNode.firstChild;
+            if (propNameNodeValue.nodeValue === valueToRemove)
+            {
+                propNode.parentNode.removeChild(propNode);
+                break;
+            }
+        }
+    }
+
     var transactWFS = function () {
         console.log('PINGWIN: w transactWFS');
         var featuresToUpdate = _.values(featuresToUpdateObject);
 
         var node = formatWFS.writeTransaction(featuresToInsert, featuresToUpdate, featuresToDelete, formatGML);
+
+        removeLowerCaseGeometryNodeForInsert(node);
+        removeNodeForWfsUpdate(node, "geometry");
+
         var s = new XMLSerializer();
         var str = s.serializeToString(node);
         $.ajax('http://uslugi.giap.pl/geoserver/wfs', {
