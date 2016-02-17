@@ -138,16 +138,16 @@
 
             var initialPosition = centerPointOfSelectedFeatureExtent;
             //iconFeature.on('change', onDragPoint(selectedFeature, initialPosition, iconFeature));
-            iconFeature.on('change', onDragPoint, [selectedFeature, initialPosition, iconFeature]);
+            iconFeature.on('change', onDragPoint, {selectedFeature: selectedFeature, initialPosition: initialPosition, iconFeature: iconFeature});
 
             map.addInteraction(dragInteraction);
         }
     }
 
     function onDragPoint(draggedFeature, initialPosition, iconFeature) {
-        console.log('Feature Moved To:' + iconFeature.getGeometry().getCoordinates());
-        console.log('PINGWIN: draggedFeature', draggedFeature);
-        console.log('PINGWIN: initialPosition', initialPosition);
+        console.log('Feature Moved To:' + this.iconFeature.getGeometry().getCoordinates());
+        console.log('PINGWIN: draggedFeature', this.draggedFeature);
+        console.log('PINGWIN: initialPosition', this.initialPosition);
     }
 
     // creates a draw interaction
