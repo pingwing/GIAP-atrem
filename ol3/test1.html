@@ -160,7 +160,7 @@
             if (propNameNodeValue.nodeValue === valueToRemove)
             {
                 propNode.parentNode.removeChild(propNode);
-                break;
+                //break;
             }
         }
     }
@@ -175,10 +175,10 @@
 
         var node = formatWFS.writeTransaction(featuresToInsert, featuresToUpdate, featuresToDelete, formatGML);
 
-        console.log('PINGWIN: node', node);
+        console.log('PINGWIN: node przed usunoecie', node);
         //removeLowerCaseGeometryNodeForInsert(node);
         removeNodeForWfsUpdate(node, "geometry");
-        console.log('PINGWIN: node', node);
+        console.log('PINGWIN: node po usunieciu', node);
 
         var s = new XMLSerializer();
         var str = s.serializeToString(node);
