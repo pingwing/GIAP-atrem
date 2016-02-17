@@ -86,7 +86,7 @@
     function modifiedFeatures(event) {
         console.log('PINGWIN: in modifiedFeatures');
         var modifiedFeatures = event.features.getArray();
-        if (modifiedFeatures.getLength() > 0) {
+        if (event.features.getLength() > 0) {
             _.each(modifiedFeatures, function(modifiedFeat) {
                 var modifiedFeatureId = modifiedFeat.id_;
                 featuresToUpdate[modifiedFeatureId] = modifiedFeat;
