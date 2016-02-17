@@ -112,6 +112,8 @@
         var selectedFeatureExtent = event.selected[0].getGeometry().getExtent();
         var centerPointOfSelectedFeatureExtent = ol.extent.getCenter(selectedFeatureExtent);
 
+        console.log('PINGWIN: centerPointOfSelectedFeatureExtent', centerPointOfSelectedFeatureExtent);
+        
         var iconFeature = new ol.Feature({
             geometry: new ol.geom.Point(centerPointOfSelectedFeatureExtent)
         });
