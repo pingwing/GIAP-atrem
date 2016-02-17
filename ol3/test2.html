@@ -109,7 +109,7 @@
         console.log('PINGWIN: w onSelect');
         console.log('PINGWIN: event', event);
 
-        var selectedFeatureExtent = e.selected[0].getGeometry().getExtent();
+        var selectedFeatureExtent = event.selected[0].getGeometry().getExtent();
         var centerPointOfSelectedFeatureExtent = ol.extent.getCenter(selectedFeatureExtent);
 
         var iconFeature = new ol.Feature({
