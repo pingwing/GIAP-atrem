@@ -220,13 +220,13 @@
                 var modifiedFeatureId = modifiedFeat.id_;
                 featuresToUpdateObject[modifiedFeatureId] = modifiedFeat;
 
-                /*var format = new ol.format.GeoJSON();
-                 var routeFeatures = format.writeFeature(modifiedFeat);
-                 console.log('PINGWIN: routeFeatures', routeFeatures);
-                 console.log('PINGWIN: featuresToUpdateObject', featuresToUpdateObject);*/
                 var WKTWriter = new ol.format.WKT();
-                var featureWKT =  ol.format.WKT().writeFeature(modifiedFeat);
+                var featureWKT = WKTWriter.writeFeature(modifiedFeat);
                 console.log('PINGWIN: WKT', featureWKT);
+
+                var GeoJSONWriter = new ol.format.GeoJSON();
+                var featureGeoJSON = GeoJSONWriter.writeFeature(modifiedFeat);
+                console.log('PINGWIN: GeoJSON', featureGeoJSON);
             });
         }
     }
