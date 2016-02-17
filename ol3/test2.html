@@ -111,7 +111,8 @@
 
         if (event.selected.length > 0) {
 
-            var selectedFeatureExtent = event.selected[0].getGeometry().getExtent();
+            var selectedFeature = event.selected[0];
+            var selectedFeatureExtent = selectedFeature.getGeometry().getExtent();
             var centerPointOfSelectedFeatureExtent = ol.extent.getCenter(selectedFeatureExtent);
 
             console.log('PINGWIN: centerPointOfSelectedFeatureExtent', centerPointOfSelectedFeatureExtent);
@@ -134,12 +135,20 @@
                 features: new ol.Collection([iconFeature])
             });
 
-            iconFeature.on('change', function () {
-                console.log('Feature Moved To:' + this.getGeometry().getCoordinates());
-            }, iconFeature);
+
+            var initialPosition = centerPointOfSelectedFeatureExtent;
+            iconFeature.on('change', onDragPoint(selectedFeature, initialPosition), iconFeature);
 
             map.addInteraction(dragInteraction);
         }
+    }
+
+    function onDragPoint(event, draggedFeature, initialPosition) {
+        console.log('Feature Moved To:' + this.getGeometry().getCoordinates());
+        console.log('PINGWIN: event', event);
+        console.log('PINGWIN: draggedFeature', draggedFeature);
+        console.log('PINGWIN: initialPosition', initialPosition);
+
     }
 
     // creates a draw interaction
