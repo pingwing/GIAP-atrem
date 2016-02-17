@@ -281,7 +281,7 @@
     var $geom_type = $('#geom_type');
     // rebuild interaction when the geometry type is changed
     $geom_type.on('change', function(e) {
-        map.removeInteraction(draw_interaction);
+        map.removeInteraction(drawInteraction);
         addDrawInteraction();
     });
 
