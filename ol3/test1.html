@@ -91,36 +91,27 @@
     proj4.defs("EPSG:2180","+proj=tmerc +lat_0=0 +lon_0=19 +k=0.9993 +x_0=500000 +y_0=-5300000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs");
 
     var transformationFromWebToPL = ol.proj.getTransform('EPSG:3857', 'EPSG:2180');
-    console.log('PINGWIN: transformationFromWebToPL', transformationFromWebToPL);
 
     var transformationFlipCoords = function (a) {
-        console.log('PINGWIN: a', a);
         for (var i = 0; i < a.length; i+=2) {
             var t  = a[i];
             a[i]   = a[i+1];
             a[i+1] = t;
         }
-        console.log('PINGWIN: a', a);
         return a;
     };
 
     function modifiedFeatures(event) {
-        console.log('PINGWIN: in modifiedFeatures');
         var modifiedFeatures = event.features.getArray();
         if (event.features.getLength() > 0) {
             _.each(modifiedFeatures, function(modifiedFeat) {
                 var modifiedFeatureId = modifiedFeat.id_;
-                console.log('PINGWIN: modifiedFeat.getGeometry()', modifiedFeat.getGeometry());
-                console.log('PINGWIN: modifiedFeat.getGeometryName()', modifiedFeat.getGeometryName());
                 var geometryInMapCRS = modifiedFeat.getGeometry();
-                console.log('PINGWIN: geometryInMapCRS', geometryInMapCRS);
                 var geometryInMapCRSClone = geometryInMapCRS.clone();
                 geometryInMapCRSClone.applyTransform(transformationFromWebToPL);
                 geometryInMapCRSClone.applyTransform(transformationFlipCoords);
                 modifiedFeat.set('the_geom',  geometryInMapCRSClone);
-                console.log('PINGWIN: geometryIn2180', geometryInMapCRSClone);
                 //modifiedFeat.setGeometryName('the_geom');
-                console.log('PINGWIN: modifiedFeat.getGeometry()', modifiedFeat.getGeometry());
 
                 featuresToUpdateObject[modifiedFeatureId] = modifiedFeat;
             });
@@ -159,6 +150,7 @@
 
     function removeNodeForWfsUpdate(node, valueToRemove)
     {
+        
         var propNodes = node.getElementsByTagName("Property");
         for (var i = 0; i < propNodes.length; i++)
         {
@@ -183,8 +175,10 @@
 
         var node = formatWFS.writeTransaction(featuresToInsert, featuresToUpdate, featuresToDelete, formatGML);
 
-        removeLowerCaseGeometryNodeForInsert(node);
+        console.log('PINGWIN: node', node);
+        //removeLowerCaseGeometryNodeForInsert(node);
         removeNodeForWfsUpdate(node, "geometry");
+        console.log('PINGWIN: node', node);
 
         var s = new XMLSerializer();
         var str = s.serializeToString(node);
