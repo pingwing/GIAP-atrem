@@ -163,6 +163,8 @@
         var geometryToTranslate = this.initialClonedGeometry.clone();
         geometryToTranslate.translate(translationVector[0], translationVector[1]);
         this.draggedFeature.setGeometry(geometryToTranslate);
+        var modifiedFeatureId = this.draggedFeature.id_;
+        featuresToUpdateObject[modifiedFeatureId] = this.draggedFeature;
     }
 
     // creates a draw interaction
@@ -218,13 +220,6 @@
         if (event.features.getLength() > 0) {
             _.each(modifiedFeatures, function (modifiedFeat) {
                 var modifiedFeatureId = modifiedFeat.id_;
-                var geometryInMapCRS = modifiedFeat.getGeometry();
-                var geometryInMapCRSClone = geometryInMapCRS.clone();
-                geometryInMapCRSClone.applyTransform(transformationFromWebToPL);
-                geometryInMapCRSClone.applyTransform(transformationFlipCoords);
-                modifiedFeat.set('the_geom', geometryInMapCRSClone);
-                //modifiedFeat.setGeometryName('the_geom');
-
                 featuresToUpdateObject[modifiedFeatureId] = modifiedFeat;
 
                 /*var format = new ol.format.GeoJSON();
@@ -308,7 +303,16 @@
     }
 
     var transactWFS = function () {
-        var featuresToUpdate = _.values(featuresToUpdateObject);
+
+        var featuresToUpdate = [];
+        _.each(_.values(featuresToUpdateObject), function(modifiedFeat) {
+            var geometryInMapCRS = modifiedFeat.getGeometry();
+            var geometryInMapCRSClone = geometryInMapCRS.clone();
+            geometryInMapCRSClone.applyTransform(transformationFromWebToPL);
+            geometryInMapCRSClone.applyTransform(transformationFlipCoords);
+            modifiedFeat.set('the_geom', geometryInMapCRSClone);
+            featuresToUpdate.push(modifiedFeat);
+        });
 
         console.log('PINGWIN: w transactWFS');
         console.log('PINGWIN: featuresToInsert', featuresToInsert);
@@ -317,10 +321,8 @@
 
         var node = formatWFS.writeTransaction(featuresToInsert, featuresToUpdate, featuresToDelete, formatGML);
 
-        console.log('PINGWIN: node przed usunoecie', node);
         removeLowerCaseGeometryNodeForInsert(node);
         removeNodeForWfsUpdate(node, "geometry");
-        console.log('PINGWIN: node po usunieciu', node);
 
         var s = new XMLSerializer();
         var str = s.serializeToString(node);
