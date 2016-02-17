@@ -97,7 +97,7 @@
                 console.log('PINGWIN: modifiedFeat.getGeometryName()', modifiedFeat.getGeometryName());
                 var geometryInMapCRS = modifiedFeat.getGeometry();
                 console.log('PINGWIN: geometryInMapCRS', geometryInMapCRS);
-                var geometryIn2180 = ol.proj.transform(geometryInMapCRS, 'EPSG:3857', 'EPSG:2180');
+                var geometryIn2180 = geometryInMapCRS.transform('EPSG:3857', 'EPSG:2180');
                 modifiedFeat.set('the_geom', geometryIn2180);
                 //modifiedFeat.setGeometryName('the_geom');
                 console.log('PINGWIN: modifiedFeat.getGeometry()', modifiedFeat.getGeometry());
