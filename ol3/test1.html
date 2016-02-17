@@ -93,9 +93,15 @@
     var transformationFromWebToPL = ol.proj.getTransform('EPSG:3857', 'EPSG:2180');
     console.log('PINGWIN: transformationFromWebToPL', transformationFromWebToPL);
 
-    var transformationFlipCoords = function (x,y,a,b,c) {
-        console.log('PINGWIN: x,y,a,b,c', x,y,a,b,c);
-        
+    var transformationFlipCoords = function (a) {
+        console.log('PINGWIN: a', a);
+        for (var i = 0; i < a.length; i+=2) {
+            var t  = a[i];
+            a[i]   = a[i+1];
+            a[i+1] = t;
+        }
+        console.log('PINGWIN: a', a);
+        return a;
     };
 
     function modifiedFeatures(event) {
