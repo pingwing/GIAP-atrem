@@ -115,9 +115,6 @@
     }
 
     function onSelect(event) {
-        console.log('PINGWIN: w onSelect');
-        console.log('PINGWIN: event', event);
-
         if (event.deselected.length > 0) {
             map.removeInteraction(dragInteraction);
 
@@ -193,9 +190,7 @@
     function deleteFeatures() {
         var selectedFeat = selectInteraction.getFeatures();
         if (selectedFeat.getLength() > 0) {
-            console.log('PINGWIN: selectedFeat.getArray()', selectedFeat.getArray());
             _.each(selectedFeat.getArray(), function (toDeleteFeat) {
-                console.log('PINGWIN: toDeleteFeat', toDeleteFeat);
                 vectorSource.removeFeature(toDeleteFeat);
                 featuresToDelete.push(toDeleteFeat);
             });
@@ -203,7 +198,6 @@
         }
         else
             window.alert("Wybierz najpierw obiekt do usunięcia");
-        console.log('PINGWIN: featuresToDelete', featuresToDelete);
     }
 
     proj4.defs("EPSG:2180", "+proj=tmerc +lat_0=0 +lon_0=19 +k=0.9993 +x_0=500000 +y_0=-5300000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs");
@@ -233,7 +227,6 @@
                  console.log('PINGWIN: WKT', geometryInMapCRSClone.toString());*/
             });
         }
-        console.log('PINGWIN: featuresToUpdateObject', featuresToUpdateObject);
     }
 
     function addedFeatures(event) {
@@ -247,13 +240,9 @@
         var geometryInMapCRS = addedFeature.getGeometry();
         var geometryInMapCRSClone = geometryInMapCRS.clone();
         geometryInMapCRSClone.applyTransform(transformationFromWebToPL);
-        //geometryInMapCRSClone.applyTransform(transformationFlipCoords);
         addedFeature.set('the_geom', geometryInMapCRSClone);
-        //modifiedFeat.setGeometryName('the_geom');
 
         featuresToInsert.push(addedFeature);
-        console.log('PINGWIN: featuresToInsert', featuresToInsert);
-        console.log('PINGWIN: event', event);
     }
 
     // creates unique id's
