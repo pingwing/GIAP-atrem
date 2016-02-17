@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+    <title>WFS OL3</title>
+    <link rel="stylesheet" href="http://openlayers.org/en/v3.13.1/css/ol.css" type="text/css">
+    <script src="jquery.min.js">//https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js</script>
+    <script src="proj4.js" type="text/javascript">//http://openlayers.org/en/v3.13.1/build/ol-debug.js</script>
+    <script src="ol-debug.js" type="text/javascript">//http://openlayers.org/en/v3.13.1/build/ol-debug.js</script>
+    <script src="underscore.js" type="text/javascript">//http://underscorejs.org/underscore-min.js</script>
+</head>
+<body>
+<DIV id="map" class="map"></DIV>
+
+<DIV id="customControl">
+    <div>
+        <label>Narzędzie: &nbsp;</label>
+        <label>rysuj</label>
+        <input type="radio" id="interaction_type_draw" name="interaction_type" value="draw" checked>
+        <label>edytuj</label>
+        <input type="radio" id="interaction_type_modify" name="interaction_type" value="modify">
+    </div>
+    <div>
+        <label>Rysuj typ geometrii</label>
+        <select id="geom_type">
+            <option value="Point">Punkt</option>
+            <option value="LineString">Linia</option>
+            <option value="Polygon" selected>Wielokąt</option>
+        </select>
+    </div>
+    <div id="delete" style="text-decoration:underline;cursor:pointer">
+        Usuń wszystkie obiekty
+    </div>
+    <input type="button" id="customControlDelete" value="Usuń obiekt"/>
+    <input type="button" id="customControlSave" value="Zapisz zmiany w warstwie"/>
+</DIV>
+
+<script type="text/javascript">
+    var map = new ol.Map({
+        target: 'map',
+        layers: [
+            new ol.layer.Tile({
+                source: new ol.source.OSM()
+            })
+        ],
+        view: new ol.View({
+            center: ol.proj.fromLonLat([20.03, 49.477778]),
+            zoom: 17
+        })
+    });
+
+    var vectorSource = new ol.source.Vector({
+        format: new ol.format.GeoJSON(),
+        url: function (extent) {
+            return 'http://uslugi.giap.pl/geoserver/wfs?service=WFS&' +
+                    'version=1.1.0&request=GetFeature&typename=nowy_targ:dzialki&' +
+                    'outputFormat=application/json&srsname=EPSG:3857&' +
+                    'bbox=' + extent.join(',') + ',EPSG:3857';
+        },
+        strategy: ol.loadingstrategy.tile(ol.tilegrid.createXYZ({
+            maxZoom: 19
+        }))
+    });
+
+    var vector = new ol.layer.Vector({
+        source: vectorSource,
+        style: new ol.style.Style({
+            stroke: new ol.style.Stroke({
+                color: 'rgba(0, 0, 255, 1.0)',
+                width: 2
+            })
+        })
+    });
+
+    map.addLayer(vector);
+
+
+    var featuresToInsert = [];
+    var featuresToUpdateObject = {};
+    var featuresToDelete = [];
+
+    var drawInteraction = null;
+    var selectInteraction = null;
+    var modifyInteraction = null;
+
+    function addModifyInteraction() {
+        // remove other interactions
+        map.removeInteraction(drawInteraction);
+
+        selectInteraction = new ol.interaction.Select();
+        map.addInteraction(selectInteraction);
+        var selectedFeat = selectInteraction.getFeatures();
+
+        modifyInteraction = new ol.interaction.Modify({
+            features: selectedFeat,
+            deleteCondition: function (event) {
+                return ol.events.condition.shiftKeyOnly(event) &&
+                        ol.events.condition.singleClick(event);
+            }
+        });
+
+        map.addInteraction(modifyInteraction);
+        modifyInteraction.on('modifyend', modifiedFeatures);
+    }
+
+    // creates a draw interaction
+    function addDrawInteraction() {
+        // remove other interactions
+        map.removeInteraction(selectInteraction);
+        map.removeInteraction(modifyInteraction);
+
+        // create the interaction
+        drawInteraction = new ol.interaction.Draw({
+            source: vector.getSource(),
+            type: /** @type {ol.geom.GeometryType} */ ($geom_type.val())
+        });
+        // add it to the map
+        map.addInteraction(drawInteraction);
+
+        // when a new feature has been drawn...
+        drawInteraction.on('drawend', addedFeatures);
+    }
+
+    function deleteFeatures() {
+        var selectedFeat = selectInteraction.getFeatures();
+        if (selectedFeat.getLength() > 0) {
+            console.log('PINGWIN: selectedFeat.getArray()', selectedFeat.getArray());
+            _.each(selectedFeat.getArray(), function (toDeleteFeat) {
+                console.log('PINGWIN: toDeleteFeat', toDeleteFeat);
+                vectorSource.removeFeature(toDeleteFeat);
+                featuresToDelete.push(toDeleteFeat);
+            });
+            selectedFeat.clear();
+        }
+        else
+            window.alert("Wybierz najpierw obiekt do usunięcia");
+        console.log('PINGWIN: featuresToDelete', featuresToDelete);
+    }
+
+    proj4.defs("EPSG:2180", "+proj=tmerc +lat_0=0 +lon_0=19 +k=0.9993 +x_0=500000 +y_0=-5300000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs");
+
+    var transformationFromWebToPL = ol.proj.getTransform('EPSG:3857', 'EPSG:2180');
+
+    var transformationFlipCoords = function (a) {
+        for (var i = 0; i < a.length; i += 2) {
+            var t = a[i];
+            a[i] = a[i + 1];
+            a[i + 1] = t;
+        }
+        return a;
+    };
+
+    function modifiedFeatures(event) {
+        var modifiedFeatures = event.features.getArray();
+        if (event.features.getLength() > 0) {
+            _.each(modifiedFeatures, function (modifiedFeat) {
+                var modifiedFeatureId = modifiedFeat.id_;
+                var geometryInMapCRS = modifiedFeat.getGeometry();
+                var geometryInMapCRSClone = geometryInMapCRS.clone();
+                geometryInMapCRSClone.applyTransform(transformationFromWebToPL);
+                geometryInMapCRSClone.applyTransform(transformationFlipCoords);
+                modifiedFeat.set('the_geom', geometryInMapCRSClone);
+                //modifiedFeat.setGeometryName('the_geom');
+
+                featuresToUpdateObject[modifiedFeatureId] = modifiedFeat;
+            });
+        }
+        console.log('PINGWIN: featuresToUpdateObject', featuresToUpdateObject);
+    }
+
+    function addedFeatures(event) {
+        // create a unique id
+        // it is later needed to delete features
+        var id = uid();
+        // give the feature this id
+        var addedFeature = event.feature;
+        addedFeature.setId(id);
+
+        var geometryInMapCRS = addedFeature.getGeometry();
+        var geometryInMapCRSClone = geometryInMapCRS.clone();
+        geometryInMapCRSClone.applyTransform(transformationFromWebToPL);
+        //geometryInMapCRSClone.applyTransform(transformationFlipCoords);
+        addedFeature.set('the_geom', geometryInMapCRSClone);
+        //modifiedFeat.setGeometryName('the_geom');
+
+        featuresToInsert.push(addedFeature);
+        console.log('PINGWIN: featuresToInsert', featuresToInsert);
+        console.log('PINGWIN: event', event);
+    }
+
+    // creates unique id's
+    var id = 0;
+    function uid() {
+        id = id+1;
+        console.log('PINGWIN: id', id);
+        return id;
+    }
+
+    $('#customControlDelete').on('click', function () {
+        deleteFeatures();
+    });
+
+    $('#customControlSave').on('click', function () {
+        transactWFS();
+        featuresToInsert = [];
+        featuresToUpdateObject = {};
+        featuresToDelete = [];
+        if (selectInteraction) selectInteraction.getFeatures().clear();
+    });
+
+    var formatWFS = new ol.format.WFS();
+    var formatGML = new ol.format.GML({
+        featureNS: 'nowy_targ',
+        featureType: 'dzialki',
+        srsName: 'EPSG:2180'
+    });
+
+    function removeLowerCaseGeometryNodeForInsert(node) {
+
+        var geometryNodes = node.getElementsByTagName("geometry"), element;
+        while (geometryNode = geometryNodes[0]) {
+            geometryNode.parentNode.removeChild(geometryNode);
+        }
+
+    }
+
+    function removeNodeForWfsUpdate(node, valueToRemove) {
+
+        var propNodes = node.getElementsByTagName("Property");
+        for (var i = 0; i < propNodes.length; i++) {
+            var propNode = propNodes[i];
+            var propNameNode = propNode.firstElementChild;
+            var propNameNodeValue = propNameNode.firstChild;
+            if (propNameNodeValue.nodeValue === valueToRemove) {
+                propNode.parentNode.removeChild(propNode);
+                //break;
+            }
+        }
+    }
+
+    var transactWFS = function () {
+        var featuresToUpdate = _.values(featuresToUpdateObject);
+
+        console.log('PINGWIN: w transactWFS');
+        console.log('PINGWIN: featuresToInsert', featuresToInsert);
+        console.log('PINGWIN: featuresToUpdate', featuresToUpdate);
+        console.log('PINGWIN: featuresToDelete', featuresToDelete);
+
+        var node = formatWFS.writeTransaction(featuresToInsert, featuresToUpdate, featuresToDelete, formatGML);
+
+        console.log('PINGWIN: node przed usunoecie', node);
+        removeLowerCaseGeometryNodeForInsert(node);
+        removeNodeForWfsUpdate(node, "geometry");
+        console.log('PINGWIN: node po usunieciu', node);
+
+        var s = new XMLSerializer();
+        var str = s.serializeToString(node);
+        $.ajax('http://uslugi.giap.pl/geoserver/wfs', {
+            type: 'POST',
+            dataType: 'xml',
+            processData: false,
+            contentType: 'text/xml',
+            data: str
+        }).done();
+    };
+
+    /*var deleteFeature = function () {
+     selectInteraction.getFeatures().on('change:length', function (e) {
+     transactWFS('delete', e.target.item(0));
+     });
+     }*/
+
+    // get the interaction type
+    var $interaction_type = $('[name="interaction_type"]');
+    // rebuild interaction when changed
+    $interaction_type.on('click', function(e) {
+        // add new interaction
+        if (this.value === 'draw') {
+            addDrawInteraction();
+        } else {
+            addModifyInteraction();
+        }
+    });
+
+    // get geometry type
+    var $geom_type = $('#geom_type');
+    // rebuild interaction when the geometry type is changed
+    $geom_type.on('change', function(e) {
+        map.removeInteraction(drawInteraction);
+        addDrawInteraction();
+    });
+
+    addDrawInteraction();
+</script>
+
+</body>
+</html>
