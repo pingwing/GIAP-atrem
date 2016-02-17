@@ -106,6 +106,14 @@
         modifyInteraction.on('modifyend', modifiedFeatures);
     }
 
+    function clearDragIconPointFeatures () {
+        _.each(dragIconPointFeatures, function (toDeleteFeat) {
+            vectorSource.removeFeature(toDeleteFeat);
+        });
+
+        dragIconPointFeatures = [];
+    }
+
     function onSelect(event) {
         console.log('PINGWIN: w onSelect');
         console.log('PINGWIN: event', event);
@@ -113,11 +121,7 @@
         if (event.deselected.length > 0) {
             map.removeInteraction(dragInteraction);
 
-            _.each(dragIconPointFeatures, function (toDeleteFeat) {
-                vectorSource.removeFeature(toDeleteFeat);
-            });
-
-            dragIconPointFeatures = [];
+            clearDragIconPointFeatures();
         }
 
         if (event.selected.length > 0) {
@@ -270,6 +274,7 @@
         featuresToUpdateObject = {};
         featuresToDelete = [];
         if (selectInteraction) selectInteraction.getFeatures().clear();
+        clearDragIconPointFeatures();
     });
 
     var formatWFS = new ol.format.WFS();
@@ -280,16 +285,13 @@
     });
 
     function removeLowerCaseGeometryNodeForInsert(node) {
-
         var geometryNodes = node.getElementsByTagName("geometry"), element;
         while (geometryNode = geometryNodes[0]) {
             geometryNode.parentNode.removeChild(geometryNode);
         }
-
     }
 
     function removeNodeForWfsUpdate(node, valueToRemove) {
-
         var propNodes = node.getElementsByTagName("Property");
         for (var i = 0; i < propNodes.length; i++) {
             var propNode = propNodes[i];
@@ -297,7 +299,6 @@
             var propNameNodeValue = propNameNode.firstChild;
             if (propNameNodeValue.nodeValue === valueToRemove) {
                 propNode.parentNode.removeChild(propNode);
-                //break;
             }
         }
     }
