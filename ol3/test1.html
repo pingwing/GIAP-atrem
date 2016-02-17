@@ -93,6 +93,11 @@
     var transformationFromWebToPL = ol.proj.getTransform('EPSG:3857', 'EPSG:2180');
     console.log('PINGWIN: transformationFromWebToPL', transformationFromWebToPL);
 
+    var transformationFlipCoords = function (x,y,a,b,c) {
+        console.log('PINGWIN: x,y,a,b,c', x,y,a,b,c);
+        
+    };
+
     function modifiedFeatures(event) {
         console.log('PINGWIN: in modifiedFeatures');
         var modifiedFeatures = event.features.getArray();
@@ -105,6 +110,7 @@
                 console.log('PINGWIN: geometryInMapCRS', geometryInMapCRS);
                 var geometryInMapCRSClone = geometryInMapCRS.clone();
                 geometryInMapCRSClone.applyTransform(transformationFromWebToPL);
+                geometryInMapCRSClone.applyTransform(transformationFlipCoords);
                 modifiedFeat.set('the_geom',  geometryInMapCRSClone);
                 console.log('PINGWIN: geometryIn2180', geometryInMapCRSClone);
                 //modifiedFeat.setGeometryName('the_geom');
