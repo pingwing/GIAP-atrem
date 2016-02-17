@@ -69,8 +69,8 @@
             _.each(selectedFeat.getArray(), function(toDeleteFeat) {
                 console.log('PINGWIN: toDeleteFeat', toDeleteFeat);
                 vectorSource.removeFeature(toDeleteFeat);
-                selectedFeat.remove(toDeleteFeat);
             });
+            selectedFeat.clear();
         }
         else
             window.alert("Wybierz najpierw obiekt do usunięcia:" + selectedFeat.getLength());
