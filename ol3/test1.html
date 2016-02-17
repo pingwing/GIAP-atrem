@@ -85,19 +85,14 @@
 
     function modifiedFeatures(event) {
         console.log('PINGWIN: in modifiedFeatures');
-        console.log('PINGWIN: event', event);
-        console.log('PINGWIN: event.features.getArray()', event.features.getArray());
-        /*if (selectedFeat.getLength() > 0) {
-            console.log('PINGWIN: selectedFeat.getArray()', selectedFeat.getArray());
-            _.each(selectedFeat.getArray(), function(toDeleteFeat) {
-                console.log('PINGWIN: toDeleteFeat', toDeleteFeat);
-                vectorSource.removeFeature(toDeleteFeat);
-                featuresToUpdate.push(toDeleteFeat);
+        var modifiedFeatures = event.features.getArray();
+        if (modifiedFeatures.getLength() > 0) {
+            _.each(modifiedFeatures, function(modifiedFeat) {
+                var modifiedFeatureId = modifiedFeat.id_;
+                featuresToUpdate[modifiedFeatureId] = modifiedFeat;
             });
-            selectedFeat.clear();
         }
-        else
-            window.alert("Wybierz najpierw obiekt do usunięcia");*/
+        console.log('PINGWIN: featuresToUpdate', featuresToUpdate);
     }
 
     $('#customControlDelete').on('click', function () {
