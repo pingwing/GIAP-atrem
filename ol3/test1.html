@@ -5,12 +5,13 @@
     <link rel="stylesheet" href="http://openlayers.org/en/v3.13.1/css/ol.css" type="text/css">
     <script src="jquery.min.js">//https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js</script>
     <script src="ol-debug.js" type="text/javascript">//http://openlayers.org/en/v3.13.1/build/ol-debug.js</script>
+    <script src="underscore.js" type="text/javascript">//http://underscorejs.org/underscore-min.js</script>
 </head>
 <body>
 <DIV id="map" class="map"></DIV>
 
 <DIV id="customControl" onload="initWFSTransactions()">
-    <input type="button" id="customControlDelete" value="delete" onClick="deleteFeature"/>
+    <input type="button" id="customControlDelete" value="delete"/>
     <input type="button" id="customControlSave" value="save"/>
 </DIV>
 
@@ -64,12 +65,13 @@
 
     function deleteFeatures() {
         if (selectedFeat.getLength() > 0) {
-            var toDeleteFeat = selectFeat.getFeatures().getArray()[0];
-            vectorSource.removeFeature(toDeleteFeat);
-            selectFeat.getFeatures().remove(toDeleteFeat);
+            _.each(selectedFeat.getArray(), function(toDeleteFeat) {
+                vectorSource.removeFeature(toDeleteFeat);
+                selectFeat.getFeatures().remove(toDeleteFeat);
+            });
         }
         else
-            window.alert("Please select a layer first :" + selectedFeat.getLength());
+            window.alert("Wybierz najpierw obiekt do usunięcia:" + selectedFeat.getLength());
     }
 
 
