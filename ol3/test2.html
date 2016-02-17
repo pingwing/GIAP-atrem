@@ -165,7 +165,7 @@
                 featuresToUpdateObject[modifiedFeatureId] = modifiedFeat;
 
                 var format = new ol.format.GeoJSON();
-                var routeFeatures = format.writeFeatures(modifiedFeat);
+                var routeFeatures = format.writeFeatures(modifiedFeatures);
                 console.log('PINGWIN: featuresToUpdateObject', featuresToUpdateObject);
                 console.log('PINGWIN: routeFeatures', routeFeatures);
             });
