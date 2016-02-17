@@ -82,6 +82,7 @@
     var drawInteraction = null;
     var selectInteraction = null;
     var modifyInteraction = null;
+    var dragInteraction = null;
 
     function addModifyInteraction() {
         // remove other interactions
@@ -90,6 +91,30 @@
         selectInteraction = new ol.interaction.Select();
         map.addInteraction(selectInteraction);
         var selectedFeat = selectInteraction.getFeatures();
+
+        var iconFeature = new ol.Feature({
+            geometry: new ol.geom.Point(e.coordinate)
+        });
+
+        /*iconFeature.setStyle(new ol.style.Style({
+         image: new ol.style.Circle({
+         radius: 7,
+         fill: new ol.style.Fill({
+         color: '#ffcc33'
+         })
+         })
+         }));*/
+        vector.addFeatures([iconFeature]);
+
+        dragInteraction = new ol.interaction.Modify({
+            features: new ol.Collection([iconFeature])
+        });
+
+        iconFeature.on('change',function(){
+            console.log('Feature Moved To:' + this.getGeometry().getCoordinates());
+        },iconFeature);
+
+        map.addInteraction(dragInteraction);
 
         modifyInteraction = new ol.interaction.Modify({
             features: selectedFeat,
@@ -108,6 +133,7 @@
         // remove other interactions
         map.removeInteraction(selectInteraction);
         map.removeInteraction(modifyInteraction);
+        map.removeInteraction(dragInteraction);
 
         // create the interaction
         drawInteraction = new ol.interaction.Draw({
