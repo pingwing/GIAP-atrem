@@ -90,6 +90,8 @@
             _.each(modifiedFeatures, function(modifiedFeat) {
                 var modifiedFeatureId = modifiedFeat.id_;
                 console.log('PINGWIN: modifiedFeat.getGeometry()', modifiedFeat.getGeometry());
+                console.log('PINGWIN: modifiedFeat.getGeometryName()', modifiedFeat.getGeometryName());
+                modifiedFeat.the_geom = modifiedFeat[modifiedFeat.getGeometryName()];
                 modifiedFeat.setGeometryName("the_geom");
                 console.log('PINGWIN: modifiedFeat.getGeometry()', modifiedFeat.getGeometry());
 
