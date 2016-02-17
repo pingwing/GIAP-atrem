@@ -137,14 +137,14 @@
 
 
             var initialPosition = centerPointOfSelectedFeatureExtent;
-            iconFeature.on('change', onDragPoint(selectedFeature, initialPosition), iconFeature);
+            iconFeature.on('change', onDragPoint(selectedFeature, initialPosition, iconFeature));
 
             map.addInteraction(dragInteraction);
         }
     }
 
-    function onDragPoint(event, draggedFeature, initialPosition) {
-        //console.log('Feature Moved To:' + this.getGeometry().getCoordinates());
+    function onDragPoint(draggedFeature, initialPosition, iconFeature) {
+        console.log('Feature Moved To:' + iconFeature.getGeometry().getCoordinates());
         console.log('PINGWIN: event', event);
         console.log('PINGWIN: draggedFeature', draggedFeature);
         console.log('PINGWIN: initialPosition', initialPosition);
