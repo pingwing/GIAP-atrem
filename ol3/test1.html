@@ -63,17 +63,21 @@
     });
     map.addInteraction(modifyFeat);
 
+    var featuresToDelete = [];
+
     function deleteFeatures() {
         if (selectedFeat.getLength() > 0) {
             console.log('PINGWIN: selectedFeat.getArray()', selectedFeat.getArray());
             _.each(selectedFeat.getArray(), function(toDeleteFeat) {
                 console.log('PINGWIN: toDeleteFeat', toDeleteFeat);
                 vectorSource.removeFeature(toDeleteFeat);
+                featuresToDelete.push(toDeleteFeat);
             });
             selectedFeat.clear();
         }
         else
-            window.alert("Wybierz najpierw obiekt do usunięcia:" + selectedFeat.getLength());
+            window.alert("Wybierz najpierw obiekt do usunięcia");
+        console.log('PINGWIN: featuresToDelete', featuresToDelete);
     }
 
 
@@ -112,7 +116,7 @@
             data: str
         }).done();
     };
-
+    
     /*var deleteFeature = function () {
         selectFeat.getFeatures().on('change:length', function (e) {
             transactWFS('delete', e.target.item(0));
