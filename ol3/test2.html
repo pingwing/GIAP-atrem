@@ -110,6 +110,16 @@
         console.log('PINGWIN: w onSelect');
         console.log('PINGWIN: event', event);
 
+        if (event.deselected.length > 0) {
+            map.removeInteraction(dragInteraction);
+
+            _.each(dragIconPointFeatures, function (toDeleteFeat) {
+                vectorSource.removeFeature(toDeleteFeat);
+            });
+
+            dragIconPointFeatures = [];
+        }
+
         if (event.selected.length > 0) {
             var selectedFeature = event.selected[0];
             var selectedFeatureExtent = selectedFeature.getGeometry().getExtent();
@@ -144,15 +154,6 @@
 
             map.addInteraction(dragInteraction);
             dragIconPointFeatures.push(dragIconPointFeature);
-
-        } else if (event.deselected.length > 0) {
-            map.removeInteraction(dragInteraction);
-
-            _.each(dragIconPointFeatures, function (toDeleteFeat) {
-                vectorSource.removeFeature(toDeleteFeat);
-            });
-
-            dragIconPointFeatures = [];
         }
     }
 
