@@ -138,7 +138,7 @@
 
             var initialPosition = centerPointOfSelectedFeatureExtent;
             //iconFeature.on('change', onDragPoint(selectedFeature, initialPosition, iconFeature));
-            iconFeature.on('change', onDragPoint, {selectedFeature: selectedFeature, initialPosition: initialPosition, iconFeature: iconFeature});
+            iconFeature.on('change', onDragPoint, {draggedFeature: selectedFeature, initialPosition: initialPosition, iconFeature: iconFeature});
 
             map.addInteraction(dragInteraction);
         }
