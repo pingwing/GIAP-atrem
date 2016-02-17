@@ -208,8 +208,7 @@
         featuresToInsert = [];
         featuresToUpdateObject = {};
         featuresToDelete = [];
-        var selectedFeat = selectInteraction.getFeatures();
-        selectedFeat.clear();
+        if (selectInteraction) selectInteraction.getFeatures().clear();
     });
 
     var formatWFS = new ol.format.WFS();
