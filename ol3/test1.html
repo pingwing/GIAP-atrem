@@ -12,8 +12,34 @@
 <DIV id="map" class="map"></DIV>
 
 <DIV id="customControl" onload="initWFSTransactions()">
-    <input type="button" id="customControlDelete" value="delete"/>
-    <input type="button" id="customControlSave" value="save"/>
+    <div>
+        <label>Interaction type:  &nbsp;</label>
+        <label>draw</label>
+        <input type="radio" id="interaction_type_draw" name="interaction_type" value="draw" checked>
+        <label>modify</label>
+        <input type="radio" id="interaction_type_modify" name="interaction_type" value="modify">
+    </div>
+    <div>
+        <label>Geometry type</label>
+        <select id="geom_type">
+            <option value="Point" selected>Point</option>
+            <option value="LineString">LineString</option>
+            <option value="Polygon">Polygon</option>
+        </select>
+    </div>
+    <div>
+        <label>Data type</label>
+        <select id="data_type">
+            <option value="GeoJSON" selected>GeoJSON</option>
+            <option value="KML">KML</option>
+            <option value="GPX">GPX</option>
+        </select>
+    </div>
+    <div id="delete" style="text-decoration:underline;cursor:pointer">
+        Delete all features
+    </div>
+    <input type="button" id="customControlDelete" value="Usuń obiekt"/>
+    <input type="button" id="customControlSave" value="Zapisz zmiany w warstwie"/>
 </DIV>
 
 <script type="text/javascript">
@@ -128,6 +154,7 @@
         featuresToInsert = [];
         featuresToUpdateObject = {};
         featuresToDelete = [];
+        selectedFeat.clear();
     });
 
     var formatWFS = new ol.format.WFS();
