@@ -164,10 +164,10 @@
 
                 featuresToUpdateObject[modifiedFeatureId] = modifiedFeat;
 
-                var format = new ol.format.GeoJSON();
-                var routeFeatures = format.writeFeatures(modifiedFeatures);
+//                var format = new ol.format.GeoJSON();
+//                var routeFeatures = format.writeFeatures(modifiedFeatures);
                 console.log('PINGWIN: featuresToUpdateObject', featuresToUpdateObject);
-                console.log('PINGWIN: routeFeatures', routeFeatures);
+                console.log('PINGWIN: WKT', geometryInMapCRSClone.toString());
             });
         }
         console.log('PINGWIN: featuresToUpdateObject', featuresToUpdateObject);
