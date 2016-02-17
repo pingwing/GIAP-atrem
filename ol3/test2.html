@@ -91,7 +91,7 @@
         map.addInteraction(selectInteraction);
         var selectedFeat = selectInteraction.getFeatures();
 
-        selectInteraction.on('selected'; onSelect);
+        selectInteraction.on('selected', onSelect);
 
         modifyInteraction = new ol.interaction.Modify({
             features: selectedFeat,
@@ -108,7 +108,7 @@
     function onSelect(event) {
         console.log('PINGWIN: w onSelect');
         console.log('PINGWIN: event', event);
-        
+
         var iconFeature = new ol.Feature({
             geometry: new ol.geom.Point(event.coordinate)
         });
