@@ -110,7 +110,7 @@
         console.log('PINGWIN: event', event);
 
         if (event.selected.length > 0) {
-            
+
             var selectedFeatureExtent = event.selected[0].getGeometry().getExtent();
             var centerPointOfSelectedFeatureExtent = ol.extent.getCenter(selectedFeatureExtent);
 
@@ -120,14 +120,14 @@
                 geometry: new ol.geom.Point(centerPointOfSelectedFeatureExtent)
             });
 
-            /*iconFeature.setStyle(new ol.style.Style({
+            iconFeature.setStyle(new ol.style.Style({
              image: new ol.style.Circle({
              radius: 7,
              fill: new ol.style.Fill({
              color: '#ffcc33'
              })
              })
-             }));*/
+             }));
             vectorSource.addFeatures([iconFeature]);
 
             dragInteraction = new ol.interaction.Modify({
