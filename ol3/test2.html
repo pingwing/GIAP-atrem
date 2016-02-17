@@ -82,6 +82,7 @@
     var selectInteraction = null;
     var modifyInteraction = null;
     var dragInteraction = null;
+    var dragIconPointFeature = null;
 
     function addModifyInteraction() {
         // remove other interactions
@@ -110,52 +111,53 @@
         console.log('PINGWIN: event', event);
 
         if (event.selected.length > 0) {
-
             var selectedFeature = event.selected[0];
             var selectedFeatureExtent = selectedFeature.getGeometry().getExtent();
             var centerPointOfSelectedFeatureExtent = ol.extent.getCenter(selectedFeatureExtent);
 
-            console.log('PINGWIN: centerPointOfSelectedFeatureExtent', centerPointOfSelectedFeatureExtent);
-
-            var iconFeature = new ol.Feature({
+            dragIconPointFeature = new ol.Feature({
                 geometry: new ol.geom.Point(centerPointOfSelectedFeatureExtent)
             });
 
-            iconFeature.setStyle(new ol.style.Style({
-             image: new ol.style.Circle({
-             radius: 7,
-             fill: new ol.style.Fill({
-             color: '#0000ff'
-             })
-             })
-             }));
-            vectorSource.addFeatures([iconFeature]);
+            dragIconPointFeature.setStyle(new ol.style.Style({
+                image: new ol.style.Circle({
+                    radius: 7,
+                    fill: new ol.style.Fill({
+                        color: '#0000ff'
+                    })
+                })
+            }));
+            vectorSource.addFeatures([dragIconPointFeature]);
 
             dragInteraction = new ol.interaction.Modify({
-                features: new ol.Collection([iconFeature])
+                features: new ol.Collection([dragIconPointFeature])
             });
-
 
             var initialPosition = centerPointOfSelectedFeatureExtent;
             var initialClonedGeometry = selectedFeature.getGeometry().clone();
-            //iconFeature.on('change', onDragPoint(selectedFeature, initialPosition, iconFeature));
-            iconFeature.on('change', onDragPoint, {draggedFeature: selectedFeature, initialPosition: initialPosition, iconFeature: iconFeature, initialClonedGeometry: initialClonedGeometry});
+            dragIconPointFeature.on('change', onDragPoint, {
+                draggedFeature: selectedFeature,
+                initialPosition: initialPosition,
+                dragIconPointFeature: dragIconPointFeature,
+                initialClonedGeometry: initialClonedGeometry
+            });
 
             map.addInteraction(dragInteraction);
         }
+
+        if (event.deselected.length > 0) {
+            map.removeInteraction(dragInteraction);
+
+            vectorSource.removeFeature(dragIconPointFeature);
+        }
     }
 
-    function onDragPoint(event) {
-        var newCoords = this.iconFeature.getGeometry().getCoordinates();
-        var translationVector = [newCoords[0]-this.initialPosition[0], newCoords[1]-this.initialPosition[1]]
-        console.log('Feature Moved To:', newCoords);
-        //console.log('PINGWIN: draggedFeature', this.draggedFeature);
-        console.log('PINGWIN: initialPosition', this.initialPosition);
-        //console.log('PINGWIN: event', event);
-        console.log('PINGWIN: translationVector', translationVector);
-        var clonedGeometry = this.initialClonedGeometry.clone();
-        clonedGeometry.translate(translationVector[0], translationVector[1]);
-        this.draggedFeature.setGeometry(clonedGeometry);
+    function onDragPoint() {
+        var newCoords = this.dragIconPointFeature.getGeometry().getCoordinates();
+        var translationVector = [newCoords[0] - this.initialPosition[0], newCoords[1] - this.initialPosition[1]]
+        var geometryToTranslate = this.initialClonedGeometry.clone();
+        geometryToTranslate.translate(translationVector[0], translationVector[1]);
+        this.draggedFeature.setGeometry(geometryToTranslate);
     }
 
     // creates a draw interaction
