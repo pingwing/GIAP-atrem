@@ -83,9 +83,10 @@
         console.log('PINGWIN: featuresToDelete', featuresToDelete);
     }
 
-    function modifiedFeatures(features) {
+    function modifiedFeatures(event) {
         console.log('PINGWIN: in modifiedFeatures');
-        console.log('PINGWIN: features', features);
+        console.log('PINGWIN: event', event);
+        console.log('PINGWIN: event.features.getArray()', event.features.getArray());
         /*if (selectedFeat.getLength() > 0) {
             console.log('PINGWIN: selectedFeat.getArray()', selectedFeat.getArray());
             _.each(selectedFeat.getArray(), function(toDeleteFeat) {
