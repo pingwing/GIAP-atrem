@@ -89,6 +89,7 @@
         if (event.features.getLength() > 0) {
             _.each(modifiedFeatures, function(modifiedFeat) {
                 var modifiedFeatureId = modifiedFeat.id_;
+                modifiedFeat.setGeometryName("the_geom");
                 featuresToUpdateObject[modifiedFeatureId] = modifiedFeat;
             });
         }
