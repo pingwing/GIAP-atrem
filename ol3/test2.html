@@ -135,7 +135,8 @@
 
     var vector = new ol.layer.Vector({
         source: vectorSource,
-        style: polygonStyleFunction
+        style: polygonStyleFunction,
+        minResolution: 100
     });
 
     map.addLayer(vector);
