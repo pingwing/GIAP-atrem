@@ -104,9 +104,9 @@
                 var geometryInMapCRS = modifiedFeat.getGeometry();
                 console.log('PINGWIN: geometryInMapCRS', geometryInMapCRS);
                 var geometryInMapCRSClone = geometryInMapCRS.clone();
-                var geometryIn2180 = geometryInMapCRSClone.applyTransform(transformationFromWebToPL);
-                modifiedFeat.set('the_geom',  geometryIn2180);
-                console.log('PINGWIN: geometryIn2180', geometryIn2180);
+                geometryInMapCRSClone.applyTransform(transformationFromWebToPL);
+                modifiedFeat.set('the_geom',  geometryInMapCRSClone);
+                console.log('PINGWIN: geometryIn2180', geometryInMapCRSClone);
                 //modifiedFeat.setGeometryName('the_geom');
                 console.log('PINGWIN: modifiedFeat.getGeometry()', modifiedFeat.getGeometry());
 
