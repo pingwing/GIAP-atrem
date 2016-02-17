@@ -74,7 +74,6 @@
 
     map.addLayer(vector);
 
-
     var featuresToInsert = [];
     var featuresToUpdateObject = {};
     var featuresToDelete = [];
@@ -82,6 +81,8 @@
     var drawInteraction = null;
     var selectInteraction = null;
     var modifyInteraction = null;
+    var dragInteraction = null;
+    var dragIconPointFeatures = [];
 
     function addModifyInteraction() {
         // remove other interactions
@@ -90,6 +91,8 @@
         selectInteraction = new ol.interaction.Select();
         map.addInteraction(selectInteraction);
         var selectedFeat = selectInteraction.getFeatures();
+
+        selectInteraction.on('select', onSelect);
 
         modifyInteraction = new ol.interaction.Modify({
             features: selectedFeat,
@@ -103,11 +106,74 @@
         modifyInteraction.on('modifyend', modifiedFeatures);
     }
 
+    function clearDragIconPointFeatures () {
+        _.each(dragIconPointFeatures, function (toDeleteFeat) {
+            vectorSource.removeFeature(toDeleteFeat);
+        });
+
+        dragIconPointFeatures = [];
+    }
+
+    function onSelect(event) {
+        if (event.deselected.length > 0) {
+            map.removeInteraction(dragInteraction);
+
+            clearDragIconPointFeatures();
+        }
+
+        if (event.selected.length > 0) {
+            var selectedFeature = event.selected[0];
+            var selectedFeatureExtent = selectedFeature.getGeometry().getExtent();
+            var centerPointOfSelectedFeatureExtent = ol.extent.getCenter(selectedFeatureExtent);
+
+            var dragIconPointFeature = new ol.Feature({
+                geometry: new ol.geom.Point(centerPointOfSelectedFeatureExtent)
+            });
+
+            dragIconPointFeature.setStyle(new ol.style.Style({
+                image: new ol.style.Circle({
+                    radius: 7,
+                    fill: new ol.style.Fill({
+                        color: '#0000ff'
+                    })
+                })
+            }));
+            vectorSource.addFeatures([dragIconPointFeature]);
+
+            dragInteraction = new ol.interaction.Modify({
+                features: new ol.Collection([dragIconPointFeature])
+            });
+
+            var initialPosition = centerPointOfSelectedFeatureExtent;
+            var initialClonedGeometry = selectedFeature.getGeometry().clone();
+            dragIconPointFeature.on('change', onDragPoint, {
+                draggedFeature: selectedFeature,
+                initialPosition: initialPosition,
+                dragIconPointFeature: dragIconPointFeature,
+                initialClonedGeometry: initialClonedGeometry
+            });
+
+            map.addInteraction(dragInteraction);
+            dragIconPointFeatures.push(dragIconPointFeature);
+        }
+    }
+
+    function onDragPoint() {
+        var newCoords = this.dragIconPointFeature.getGeometry().getCoordinates();
+        var translationVector = [newCoords[0] - this.initialPosition[0], newCoords[1] - this.initialPosition[1]]
+        var geometryToTranslate = this.initialClonedGeometry.clone();
+        geometryToTranslate.translate(translationVector[0], translationVector[1]);
+        this.draggedFeature.setGeometry(geometryToTranslate);
+        var modifiedFeatureId = this.draggedFeature.id_;
+        featuresToUpdateObject[modifiedFeatureId] = this.draggedFeature;
+    }
+
     // creates a draw interaction
     function addDrawInteraction() {
         // remove other interactions
         map.removeInteraction(selectInteraction);
         map.removeInteraction(modifyInteraction);
+        map.removeInteraction(dragInteraction);
 
         // create the interaction
         drawInteraction = new ol.interaction.Draw({
@@ -124,9 +190,7 @@
     function deleteFeatures() {
         var selectedFeat = selectInteraction.getFeatures();
         if (selectedFeat.getLength() > 0) {
-            console.log('PINGWIN: selectedFeat.getArray()', selectedFeat.getArray());
             _.each(selectedFeat.getArray(), function (toDeleteFeat) {
-                console.log('PINGWIN: toDeleteFeat', toDeleteFeat);
                 vectorSource.removeFeature(toDeleteFeat);
                 featuresToDelete.push(toDeleteFeat);
             });
@@ -134,7 +198,6 @@
         }
         else
             window.alert("Wybierz najpierw obiekt do usunięcia");
-        console.log('PINGWIN: featuresToDelete', featuresToDelete);
     }
 
     proj4.defs("EPSG:2180", "+proj=tmerc +lat_0=0 +lon_0=19 +k=0.9993 +x_0=500000 +y_0=-5300000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs");
@@ -155,17 +218,17 @@
         if (event.features.getLength() > 0) {
             _.each(modifiedFeatures, function (modifiedFeat) {
                 var modifiedFeatureId = modifiedFeat.id_;
-                var geometryInMapCRS = modifiedFeat.getGeometry();
-                var geometryInMapCRSClone = geometryInMapCRS.clone();
-                geometryInMapCRSClone.applyTransform(transformationFromWebToPL);
-                geometryInMapCRSClone.applyTransform(transformationFlipCoords);
-                modifiedFeat.set('the_geom', geometryInMapCRSClone);
-                //modifiedFeat.setGeometryName('the_geom');
-
                 featuresToUpdateObject[modifiedFeatureId] = modifiedFeat;
+
+                var WKTWriter = new ol.format.WKT();
+                var featureWKT = WKTWriter.writeFeature(modifiedFeat);
+                console.log('PINGWIN: WKT', featureWKT);
+
+                var GeoJSONWriter = new ol.format.GeoJSON();
+                var featureGeoJSON = GeoJSONWriter.writeFeature(modifiedFeat);
+                console.log('PINGWIN: GeoJSON', featureGeoJSON);
             });
         }
-        console.log('PINGWIN: featuresToUpdateObject', featuresToUpdateObject);
     }
 
     function addedFeatures(event) {
@@ -179,19 +242,15 @@
         var geometryInMapCRS = addedFeature.getGeometry();
         var geometryInMapCRSClone = geometryInMapCRS.clone();
         geometryInMapCRSClone.applyTransform(transformationFromWebToPL);
-        //geometryInMapCRSClone.applyTransform(transformationFlipCoords);
         addedFeature.set('the_geom', geometryInMapCRSClone);
-        //modifiedFeat.setGeometryName('the_geom');
 
         featuresToInsert.push(addedFeature);
-        console.log('PINGWIN: featuresToInsert', featuresToInsert);
-        console.log('PINGWIN: event', event);
     }
 
     // creates unique id's
     var id = 0;
     function uid() {
-        id = id+1;
+        id = id + 1;
         console.log('PINGWIN: id', id);
         return id;
     }
@@ -206,6 +265,7 @@
         featuresToUpdateObject = {};
         featuresToDelete = [];
         if (selectInteraction) selectInteraction.getFeatures().clear();
+        clearDragIconPointFeatures();
     });
 
     var formatWFS = new ol.format.WFS();
@@ -216,16 +276,13 @@
     });
 
     function removeLowerCaseGeometryNodeForInsert(node) {
-
         var geometryNodes = node.getElementsByTagName("geometry"), element;
         while (geometryNode = geometryNodes[0]) {
             geometryNode.parentNode.removeChild(geometryNode);
         }
-
     }
 
     function removeNodeForWfsUpdate(node, valueToRemove) {
-
         var propNodes = node.getElementsByTagName("Property");
         for (var i = 0; i < propNodes.length; i++) {
             var propNode = propNodes[i];
@@ -233,13 +290,21 @@
             var propNameNodeValue = propNameNode.firstChild;
             if (propNameNodeValue.nodeValue === valueToRemove) {
                 propNode.parentNode.removeChild(propNode);
-                //break;
             }
         }
     }
 
     var transactWFS = function () {
-        var featuresToUpdate = _.values(featuresToUpdateObject);
+
+        var featuresToUpdate = [];
+        _.each(_.values(featuresToUpdateObject), function(modifiedFeat) {
+            var geometryInMapCRS = modifiedFeat.getGeometry();
+            var geometryInMapCRSClone = geometryInMapCRS.clone();
+            geometryInMapCRSClone.applyTransform(transformationFromWebToPL);
+            geometryInMapCRSClone.applyTransform(transformationFlipCoords);
+            modifiedFeat.set('the_geom', geometryInMapCRSClone);
+            featuresToUpdate.push(modifiedFeat);
+        });
 
         console.log('PINGWIN: w transactWFS');
         console.log('PINGWIN: featuresToInsert', featuresToInsert);
@@ -248,10 +313,8 @@
 
         var node = formatWFS.writeTransaction(featuresToInsert, featuresToUpdate, featuresToDelete, formatGML);
 
-        console.log('PINGWIN: node przed usunoecie', node);
         removeLowerCaseGeometryNodeForInsert(node);
         removeNodeForWfsUpdate(node, "geometry");
-        console.log('PINGWIN: node po usunieciu', node);
 
         var s = new XMLSerializer();
         var str = s.serializeToString(node);
@@ -273,7 +336,7 @@
     // get the interaction type
     var $interaction_type = $('[name="interaction_type"]');
     // rebuild interaction when changed
-    $interaction_type.on('click', function(e) {
+    $interaction_type.on('click', function (e) {
         // add new interaction
         if (this.value === 'draw') {
             addDrawInteraction();
@@ -285,7 +348,7 @@
     // get geometry type
     var $geom_type = $('#geom_type');
     // rebuild interaction when the geometry type is changed
-    $geom_type.on('change', function(e) {
+    $geom_type.on('change', function (e) {
         map.removeInteraction(drawInteraction);
         addDrawInteraction();
     });
