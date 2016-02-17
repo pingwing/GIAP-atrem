@@ -82,7 +82,7 @@
     var selectInteraction = null;
     var modifyInteraction = null;
     var dragInteraction = null;
-    var dragIconPointFeature = null;
+    var dragIconPointFeatures = [];
 
     function addModifyInteraction() {
         // remove other interactions
@@ -115,7 +115,7 @@
             var selectedFeatureExtent = selectedFeature.getGeometry().getExtent();
             var centerPointOfSelectedFeatureExtent = ol.extent.getCenter(selectedFeatureExtent);
 
-            dragIconPointFeature = new ol.Feature({
+            var dragIconPointFeature = new ol.Feature({
                 geometry: new ol.geom.Point(centerPointOfSelectedFeatureExtent)
             });
 
@@ -143,12 +143,17 @@
             });
 
             map.addInteraction(dragInteraction);
+            dragIconPointFeatures.push(dragIconPointFeature);
         }
 
         if (event.deselected.length > 0) {
             map.removeInteraction(dragInteraction);
 
-            vectorSource.removeFeature(dragIconPointFeature);
+            _.each(dragIconPointFeatures, function (toDeleteFeat) {
+                vectorSource.removeFeature(toDeleteFeat);
+            });
+
+            dragIconPointFeatures = [];
         }
     }
 
