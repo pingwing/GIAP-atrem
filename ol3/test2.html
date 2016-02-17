@@ -91,7 +91,7 @@
         map.addInteraction(selectInteraction);
         var selectedFeat = selectInteraction.getFeatures();
 
-        selectInteraction.on('selected', onSelect);
+        selectInteraction.on('select', onSelect);
 
         modifyInteraction = new ol.interaction.Modify({
             features: selectedFeat,
