@@ -173,9 +173,18 @@
         // it is later needed to delete features
         var id = uid();
         // give the feature this id
-        event.feature.setId(id);
-        // save the changed data
-        //saveData();
+        var addedFeature = event.feature;
+        addedFeature.setId(id);
+
+        var geometryInMapCRS = addedFeature.getGeometry();
+        var geometryInMapCRSClone = geometryInMapCRS.clone();
+        geometryInMapCRSClone.applyTransform(transformationFromWebToPL);
+        geometryInMapCRSClone.applyTransform(transformationFlipCoords);
+        addedFeature.set('the_geom', geometryInMapCRSClone);
+        //modifiedFeat.setGeometryName('the_geom');
+
+        featuresToInsert.push(addedFeature);
+        console.log('PINGWIN: featuresToInsert', featuresToInsert);
         console.log('PINGWIN: event', event);
     }
 
