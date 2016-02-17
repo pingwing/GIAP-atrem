@@ -106,6 +106,7 @@
                 var geometryInMapCRSClone = geometryInMapCRS.clone();
                 var geometryIn2180 = geometryInMapCRSClone.applyTransform(transformationFromWebToPL);
                 modifiedFeat.set('the_geom',  geometryIn2180);
+                console.log('PINGWIN: geometryIn2180', geometryIn2180);
                 //modifiedFeat.setGeometryName('the_geom');
                 console.log('PINGWIN: modifiedFeat.getGeometry()', modifiedFeat.getGeometry());
 
