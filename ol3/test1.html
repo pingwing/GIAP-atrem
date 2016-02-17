@@ -54,6 +54,10 @@
 
     map.addLayer(vector);
 
+    var featuresToInsert = [];
+    var featuresToUpdate = {};
+    var featuresToDelete = [];
+
     var selectFeat = new ol.interaction.Select();
     map.addInteraction(selectFeat);
     var selectedFeat = selectFeat.getFeatures();
@@ -62,8 +66,7 @@
         features: selectedFeat
     });
     map.addInteraction(modifyFeat);
-
-    var featuresToDelete = [];
+    modifyFeat.on('modifyend', modifiedFeatures);
 
     function deleteFeatures() {
         if (selectedFeat.getLength() > 0) {
@@ -80,6 +83,21 @@
         console.log('PINGWIN: featuresToDelete', featuresToDelete);
     }
 
+    function modifiedFeatures(features) {
+        console.log('PINGWIN: in modifiedFeatures');
+        console.log('PINGWIN: features', features);
+        /*if (selectedFeat.getLength() > 0) {
+            console.log('PINGWIN: selectedFeat.getArray()', selectedFeat.getArray());
+            _.each(selectedFeat.getArray(), function(toDeleteFeat) {
+                console.log('PINGWIN: toDeleteFeat', toDeleteFeat);
+                vectorSource.removeFeature(toDeleteFeat);
+                featuresToUpdate.push(toDeleteFeat);
+            });
+            selectedFeat.clear();
+        }
+        else
+            window.alert("Wybierz najpierw obiekt do usunięcia");*/
+    }
 
     $('#customControlDelete').on('click', function () {
         deleteFeatures();
