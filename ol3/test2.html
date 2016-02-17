@@ -137,8 +137,9 @@
 
 
             var initialPosition = centerPointOfSelectedFeatureExtent;
+            var initialClonedGeometry = this.draggedFeature.getGeometry().clone();
             //iconFeature.on('change', onDragPoint(selectedFeature, initialPosition, iconFeature));
-            iconFeature.on('change', onDragPoint, {draggedFeature: selectedFeature, initialPosition: initialPosition, iconFeature: iconFeature});
+            iconFeature.on('change', onDragPoint, {draggedFeature: selectedFeature, initialPosition: initialPosition, iconFeature: iconFeature, initialClonedGeometry: initialClonedGeometry});
 
             map.addInteraction(dragInteraction);
         }
@@ -152,7 +153,7 @@
         console.log('PINGWIN: initialPosition', this.initialPosition);
         //console.log('PINGWIN: event', event);
         console.log('PINGWIN: translationVector', translationVector);
-        var clonedGeometry = this.draggedFeature.getGeometry().clone();
+        var clonedGeometry = initialClonedGeometry.clone();
         clonedGeometry.translate(translationVector[0], translationVector[1]);
         this.draggedFeature.setGeometry(clonedGeometry);
     }
