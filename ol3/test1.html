@@ -189,14 +189,10 @@
     }
 
     // creates unique id's
-    function uid(){
+    function uid() {
         var id = 0;
-        return function() {
-            if (arguments[0] === 0) {
-                id = 0;
-            }
-            return id++;
-        }
+        console.log('PINGWIN: id', id);
+        return id++;
     }
 
     $('#customControlDelete').on('click', function () {
