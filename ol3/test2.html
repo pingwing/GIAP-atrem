@@ -65,7 +65,11 @@
     var getText = function(feature, resolution) {
         var type = 'normal';
         var maxResolution = 1200;
-        var text = feature.get('NUMER');
+        var featureValue = feature.get('NUMER');
+        var text = '';
+        if (featureValue) {
+            text = featureValue;
+        }
 
         if (resolution > maxResolution) {
             text = '';
