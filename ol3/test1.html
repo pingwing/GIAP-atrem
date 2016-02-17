@@ -95,7 +95,10 @@
                 var modifiedFeatureId = modifiedFeat.id_;
                 console.log('PINGWIN: modifiedFeat.getGeometry()', modifiedFeat.getGeometry());
                 console.log('PINGWIN: modifiedFeat.getGeometryName()', modifiedFeat.getGeometryName());
-                modifiedFeat.set('the_geom', modifiedFeat.getGeometry());
+                var geometryInMapCRS = modifiedFeat.getGeometry();
+                console.log('PINGWIN: geometryInMapCRS', geometryInMapCRS);
+                var geometryIn2180 = ol.proj.transform(geometryInMapCRS, 'EPSG:3857', 'EPSG:2180');
+                modifiedFeat.set('the_geom', geometryIn2180);
                 //modifiedFeat.setGeometryName('the_geom');
                 console.log('PINGWIN: modifiedFeat.getGeometry()', modifiedFeat.getGeometry());
 
