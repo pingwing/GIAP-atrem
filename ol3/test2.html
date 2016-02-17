@@ -109,34 +109,37 @@
         console.log('PINGWIN: w onSelect');
         console.log('PINGWIN: event', event);
 
-        var selectedFeatureExtent = event.selected[0].getGeometry().getExtent();
-        var centerPointOfSelectedFeatureExtent = ol.extent.getCenter(selectedFeatureExtent);
+        if (event.selected.length > 0) {
+            
+            var selectedFeatureExtent = event.selected[0].getGeometry().getExtent();
+            var centerPointOfSelectedFeatureExtent = ol.extent.getCenter(selectedFeatureExtent);
 
-        console.log('PINGWIN: centerPointOfSelectedFeatureExtent', centerPointOfSelectedFeatureExtent);
-        
-        var iconFeature = new ol.Feature({
-            geometry: new ol.geom.Point(centerPointOfSelectedFeatureExtent)
-        });
+            console.log('PINGWIN: centerPointOfSelectedFeatureExtent', centerPointOfSelectedFeatureExtent);
 
-        /*iconFeature.setStyle(new ol.style.Style({
-         image: new ol.style.Circle({
-         radius: 7,
-         fill: new ol.style.Fill({
-         color: '#ffcc33'
-         })
-         })
-         }));*/
-        vectorSource.addFeatures([iconFeature]);
+            var iconFeature = new ol.Feature({
+                geometry: new ol.geom.Point(centerPointOfSelectedFeatureExtent)
+            });
 
-        dragInteraction = new ol.interaction.Modify({
-            features: new ol.Collection([iconFeature])
-        });
+            /*iconFeature.setStyle(new ol.style.Style({
+             image: new ol.style.Circle({
+             radius: 7,
+             fill: new ol.style.Fill({
+             color: '#ffcc33'
+             })
+             })
+             }));*/
+            vectorSource.addFeatures([iconFeature]);
 
-        iconFeature.on('change',function(){
-            console.log('Feature Moved To:' + this.getGeometry().getCoordinates());
-        },iconFeature);
+            dragInteraction = new ol.interaction.Modify({
+                features: new ol.Collection([iconFeature])
+            });
 
-        map.addInteraction(dragInteraction);
+            iconFeature.on('change', function () {
+                console.log('Feature Moved To:' + this.getGeometry().getCoordinates());
+            }, iconFeature);
+
+            map.addInteraction(dragInteraction);
+        }
     }
 
     // creates a draw interaction
@@ -202,10 +205,10 @@
                 featuresToUpdateObject[modifiedFeatureId] = modifiedFeat;
 
                 /*var format = new ol.format.GeoJSON();
-                var routeFeatures = format.writeFeature(modifiedFeat);
-                console.log('PINGWIN: routeFeatures', routeFeatures);
-                console.log('PINGWIN: featuresToUpdateObject', featuresToUpdateObject);
-                console.log('PINGWIN: WKT', geometryInMapCRSClone.toString());*/
+                 var routeFeatures = format.writeFeature(modifiedFeat);
+                 console.log('PINGWIN: routeFeatures', routeFeatures);
+                 console.log('PINGWIN: featuresToUpdateObject', featuresToUpdateObject);
+                 console.log('PINGWIN: WKT', geometryInMapCRSClone.toString());*/
             });
         }
         console.log('PINGWIN: featuresToUpdateObject', featuresToUpdateObject);
@@ -234,7 +237,7 @@
     // creates unique id's
     var id = 0;
     function uid() {
-        id = id+1;
+        id = id + 1;
         console.log('PINGWIN: id', id);
         return id;
     }
@@ -316,7 +319,7 @@
     // get the interaction type
     var $interaction_type = $('[name="interaction_type"]');
     // rebuild interaction when changed
-    $interaction_type.on('click', function(e) {
+    $interaction_type.on('click', function (e) {
         // add new interaction
         if (this.value === 'draw') {
             addDrawInteraction();
@@ -328,7 +331,7 @@
     // get geometry type
     var $geom_type = $('#geom_type');
     // rebuild interaction when the geometry type is changed
-    $geom_type.on('change', function(e) {
+    $geom_type.on('change', function (e) {
         map.removeInteraction(drawInteraction);
         addDrawInteraction();
     });
