@@ -66,6 +66,7 @@
     function deleteFeatures() {
         if (selectedFeat.getLength() > 0) {
             _.each(selectedFeat.getArray(), function(toDeleteFeat) {
+                console.log('PINGWIN: toDeleteFeat', toDeleteFeat);
                 vectorSource.removeFeature(toDeleteFeat);
                 selectedFeat.remove(toDeleteFeat);
             });
