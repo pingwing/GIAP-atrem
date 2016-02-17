@@ -224,7 +224,8 @@
                  var routeFeatures = format.writeFeature(modifiedFeat);
                  console.log('PINGWIN: routeFeatures', routeFeatures);
                  console.log('PINGWIN: featuresToUpdateObject', featuresToUpdateObject);*/
-                 console.log('PINGWIN: WKT', modifiedFeat.getGeometry().toString());
+                 var featureWKT =  ol.format.WKT.writeFeature(modifiedFeat);
+                 console.log('PINGWIN: WKT', featureWKT);
             });
         }
     }
