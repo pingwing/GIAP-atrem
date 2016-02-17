@@ -137,7 +137,8 @@
 
 
             var initialPosition = centerPointOfSelectedFeatureExtent;
-            iconFeature.on('change', onDragPoint(selectedFeature, initialPosition, iconFeature));
+            //iconFeature.on('change', onDragPoint(selectedFeature, initialPosition, iconFeature));
+            iconFeature.on('change', onDragPoint);
 
             map.addInteraction(dragInteraction);
         }
@@ -145,10 +146,8 @@
 
     function onDragPoint(draggedFeature, initialPosition, iconFeature) {
         console.log('Feature Moved To:' + iconFeature.getGeometry().getCoordinates());
-        console.log('PINGWIN: event', event);
         console.log('PINGWIN: draggedFeature', draggedFeature);
         console.log('PINGWIN: initialPosition', initialPosition);
-
     }
 
     // creates a draw interaction
