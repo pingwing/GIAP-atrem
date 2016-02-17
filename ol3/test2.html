@@ -163,12 +163,14 @@
                 //modifiedFeat.setGeometryName('the_geom');
 
                 featuresToUpdateObject[modifiedFeatureId] = modifiedFeat;
+
+                var format = new ol.format.GeoJSON();
+                var routeFeatures = format.writeFeatures(modifiedFeat);
+                console.log('PINGWIN: featuresToUpdateObject', featuresToUpdateObject);
+                console.log('PINGWIN: routeFeatures', routeFeatures);
             });
         }
-        var format = new ol.format.GeoJSON();
-        var routeFeatures = format.writeFeatures(_.values(featuresToUpdateObject));
         console.log('PINGWIN: featuresToUpdateObject', featuresToUpdateObject);
-        console.log('PINGWIN: routeFeatures', routeFeatures);
     }
 
     function addedFeatures(event) {
