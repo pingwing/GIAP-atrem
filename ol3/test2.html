@@ -74,7 +74,6 @@
 
     map.addLayer(vector);
 
-
     var featuresToInsert = [];
     var featuresToUpdateObject = {};
     var featuresToDelete = [];
@@ -92,8 +91,26 @@
         map.addInteraction(selectInteraction);
         var selectedFeat = selectInteraction.getFeatures();
 
+        selectInteraction.on('selected'; onSelect);
+
+        modifyInteraction = new ol.interaction.Modify({
+            features: selectedFeat,
+            deleteCondition: function (event) {
+                return ol.events.condition.shiftKeyOnly(event) &&
+                        ol.events.condition.singleClick(event);
+            }
+        });
+
+        map.addInteraction(modifyInteraction);
+        modifyInteraction.on('modifyend', modifiedFeatures);
+    }
+
+    function onSelect(event) {
+        console.log('PINGWIN: w onSelect');
+        console.log('PINGWIN: event', event);
+        
         var iconFeature = new ol.Feature({
-            geometry: new ol.geom.Point(e.coordinate)
+            geometry: new ol.geom.Point(event.coordinate)
         });
 
         /*iconFeature.setStyle(new ol.style.Style({
@@ -115,17 +132,6 @@
         },iconFeature);
 
         map.addInteraction(dragInteraction);
-
-        modifyInteraction = new ol.interaction.Modify({
-            features: selectedFeat,
-            deleteCondition: function (event) {
-                return ol.events.condition.shiftKeyOnly(event) &&
-                        ol.events.condition.singleClick(event);
-            }
-        });
-
-        map.addInteraction(modifyInteraction);
-        modifyInteraction.on('modifyend', modifiedFeatures);
     }
 
     // creates a draw interaction
