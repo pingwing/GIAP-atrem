@@ -144,9 +144,8 @@
 
             map.addInteraction(dragInteraction);
             dragIconPointFeatures.push(dragIconPointFeature);
-        }
 
-        if (event.deselected.length > 0) {
+        } else if (event.deselected.length > 0) {
             map.removeInteraction(dragInteraction);
 
             _.each(dragIconPointFeatures, function (toDeleteFeat) {
