@@ -137,7 +137,7 @@
 
 
             var initialPosition = centerPointOfSelectedFeatureExtent;
-            var initialClonedGeometry = this.draggedFeature.getGeometry().clone();
+            var initialClonedGeometry = selectedFeature.getGeometry().clone();
             //iconFeature.on('change', onDragPoint(selectedFeature, initialPosition, iconFeature));
             iconFeature.on('change', onDragPoint, {draggedFeature: selectedFeature, initialPosition: initialPosition, iconFeature: iconFeature, initialClonedGeometry: initialClonedGeometry});
 
