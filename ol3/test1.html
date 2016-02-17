@@ -55,7 +55,7 @@
     map.addLayer(vector);
 
     var featuresToInsert = [];
-    var featuresToUpdate = {};
+    var featuresToUpdateObject = {};
     var featuresToDelete = [];
 
     var selectFeat = new ol.interaction.Select();
@@ -89,14 +89,21 @@
         if (event.features.getLength() > 0) {
             _.each(modifiedFeatures, function(modifiedFeat) {
                 var modifiedFeatureId = modifiedFeat.id_;
-                featuresToUpdate[modifiedFeatureId] = modifiedFeat;
+                featuresToUpdateObject[modifiedFeatureId] = modifiedFeat;
             });
         }
-        console.log('PINGWIN: featuresToUpdate', featuresToUpdate);
+        console.log('PINGWIN: featuresToUpdateObject', featuresToUpdateObject);
     }
 
     $('#customControlDelete').on('click', function () {
         deleteFeatures();
+    });
+
+    $('#customControlSave').on('click', function () {
+        transactWFS();
+        featuresToInsert = [];
+        featuresToUpdateObject = {};
+        featuresToDelete = [];
     });
 
     var formatWFS = new ol.format.WFS();
@@ -106,20 +113,11 @@
         srsName: 'EPSG:3857'
     });
 
-    var transactWFS = function (p, f) {
-        console.log('transactWFS: p', p);
-        console.log('transactWFS: f', f);
-        switch (p) {
-            case 'insert':
-                node = formatWFS.writeTransaction([f], null, null, formatGML);
-                break;
-            case 'update':
-                node = formatWFS.writeTransaction(null, [f], null, formatGML);
-                break;
-            case 'delete':
-                node = formatWFS.writeTransaction(null, null, [f], formatGML);
-                break;
-        }
+    var transactWFS = function () {
+        console.log('PINGWIN: w transactWFS');
+        var featuresToUpdate = _.values(featuresToUpdateObject);
+
+        var node = formatWFS.writeTransaction(featuresToInsert, featuresToUpdate, featuresToDelete, formatGML);
         var s = new XMLSerializer();
         var str = s.serializeToString(node);
         $.ajax('http://uslugi.giap.pl/geoserver/wfs', {
