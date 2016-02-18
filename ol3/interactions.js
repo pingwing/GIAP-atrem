@@ -33,10 +33,10 @@ function deleteFeatures(currentEditLayerName) {
             featuresToDelete[currentEditLayerName].push(toDeleteFeat);
         });
         selectedFeat.clear();
-        _.each(_.values(editableLayers), function (layer) {
+        /*_.each(_.values(editableLayers), function (layer) {
             console.log('PINGWIN: layer', layer);
             clearDragIconPointFeatures(layer.name);
-        });
+        });*/
     }
     else
         window.alert("Wybierz najpierw obiekt do usunięcia");
