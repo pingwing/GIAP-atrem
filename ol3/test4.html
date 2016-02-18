@@ -377,10 +377,10 @@
         featuresToInsert = [];
         featuresToUpdateObject = {};
         featuresToDelete = [];
-        vector.getSource().clear();
-        vector2.getSource().clear();
         if (selectInteraction) selectInteraction.getFeatures().clear();
         clearDragIconPointFeatures();
+        vector.getSource().clear();
+        vector2.getSource().clear();
     });
 
     $('#customControlSave').on('click', function () {
