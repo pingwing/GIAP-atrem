@@ -175,7 +175,7 @@ function onSelect(event) {
         });
 
         map.addInteraction(dragInteraction);
-        dragIconPointFeatures.push(dragIconPointFeature);
+        dragIconPointFeatures[currentEditLayerName].push(dragIconPointFeature);
     }
 }
 
