@@ -19,7 +19,9 @@ function deleteFeatures() {
             featuresToDelete.push(toDeleteFeat);
         });
         selectedFeat.clear();
-        clearDragIconPointFeatures();
+        _.each(_.values(editableLayers), function (layer) {
+            clearDragIconPointFeatures(layer.vectorSource);
+        });
     }
     else
         window.alert("Wybierz najpierw obiekt do usunięcia");
@@ -91,10 +93,10 @@ function addModifyInteraction(currentEditLayer) {
     modifyInteraction.on('modifyend', modifiedFeatures);
 }
 
-function clearDragIconPointFeatures (currentEditLayer) {
+function clearDragIconPointFeatures (currentEditLayerVectorSource) {
     console.log('PINGWIN: currentEditLayer', currentEditLayer);
     _.each(dragIconPointFeatures, function (toDeleteFeat) {
-        editableLayers[currentEditLayer].vectorSource.removeFeature(toDeleteFeat);
+        currentEditLayerVectorSource.removeFeature(toDeleteFeat);
     });
 
     dragIconPointFeatures = [];
@@ -104,7 +106,7 @@ function onSelect(event) {
     if (event.deselected.length > 0) {
         map.removeInteraction(dragInteraction);
         console.log('PINGWIN:onSelect deselect this', this);
-        clearDragIconPointFeatures(this);
+        clearDragIconPointFeatures(editableLayers[this].vectorSource);
     }
 
     if (event.selected.length > 0) {
