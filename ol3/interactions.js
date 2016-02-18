@@ -92,6 +92,7 @@ function addModifyInteraction(currentEditLayer) {
 }
 
 function clearDragIconPointFeatures (currentEditLayer) {
+    console.log('PINGWIN: currentEditLayer', currentEditLayer);
     _.each(dragIconPointFeatures, function (toDeleteFeat) {
         editableLayers[currentEditLayer].vectorSource.removeFeature(toDeleteFeat);
     });
