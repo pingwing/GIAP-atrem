@@ -26,7 +26,6 @@ function clearTransactionFeatures(currentEditLayerName) {
 clearTransactionFeatures();
 
 function deleteFeatures(currentEditLayerName) {
-    var currentEditLayerName = this;
     var selectedFeat = selectInteraction.getFeatures();
     if (selectedFeat.getLength() > 0) {
         _.each(selectedFeat.getArray(), function (toDeleteFeat) {
