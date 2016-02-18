@@ -90,13 +90,17 @@ function uid() {
     return id;
 }
 
-function addModifyInteraction(currentEditLayer) {
-    console.log('PINGWIN: addModifyInteraction: currentEditLayer', currentEditLayer);
-    // remove other interactions
+function removeAllInteractions () {
     map.removeInteraction(selectInteraction);
     map.removeInteraction(modifyInteraction);
     map.removeInteraction(dragInteraction);
     map.removeInteraction(drawInteraction);
+}
+
+function addModifyInteraction(currentEditLayer) {
+    console.log('PINGWIN: addModifyInteraction: currentEditLayer', currentEditLayer);
+    // remove other interactions
+    removeAllInteractions();
 
     selectInteraction = new ol.interaction.Select({layers: [editableLayers[currentEditLayer].vector]});
     map.addInteraction(selectInteraction);
@@ -184,10 +188,7 @@ function onDragPoint() {
 function addDrawInteraction(currentEditLayer, geometryType) {
     console.log('PINGWIN: addDrawInteraction: currentEditLayer, geometryType', currentEditLayer, geometryType);
     // remove other interactions
-    map.removeInteraction(selectInteraction);
-    map.removeInteraction(modifyInteraction);
-    map.removeInteraction(dragInteraction);
-    map.removeInteraction(drawInteraction);
+    removeAllInteractions();
 
     // create the interaction
     drawInteraction = new ol.interaction.Draw({
