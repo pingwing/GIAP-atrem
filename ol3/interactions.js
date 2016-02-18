@@ -20,6 +20,7 @@ function deleteFeatures() {
         });
         selectedFeat.clear();
         _.each(_.values(editableLayers), function (layer) {
+            console.log('PINGWIN: layer', layer);
             clearDragIconPointFeatures(layer.vectorSource);
         });
     }
