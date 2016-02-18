@@ -1,6 +1,10 @@
 /**
  * Created by przemek on 18.02.2016.
  */
+// get geometry type
+var $drawGeometryType = $('#geom_type');
+var drawingMode = $drawGeometryType.val();
+
 $('#customControlDelete').on('click', function () {
     deleteFeatures();
 });
@@ -24,25 +28,22 @@ $('#customControlSave').on('click', function () {
     clearDragIconPointFeatures();
 });
 
-
 // get the interaction type
 var $interaction_type = $('[name="interaction_type"]');
 // rebuild interaction when changed
 $interaction_type.on('click', function (e) {
     // add new interaction
     if (this.value === 'draw') {
-        addDrawInteraction();
+        addDrawInteraction(drawingMode);
     } else {
         addModifyInteraction();
     }
 });
 
-// get geometry type
-var $geom_type = $('#geom_type');
 // rebuild interaction when the geometry type is changed
-$geom_type.on('change', function (e) {
+$drawGeometryType.on('change', function (e) {
     map.removeInteraction(drawInteraction);
-    addDrawInteraction($geom_type.val());
+    addDrawInteraction(drawingMode);
 });
 
-addDrawInteraction($geom_type.val());
+addDrawInteraction(drawingMode);
