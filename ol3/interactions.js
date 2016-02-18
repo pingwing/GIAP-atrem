@@ -69,6 +69,7 @@ function uid() {
 }
 
 function addModifyInteraction(currentEditLayer) {
+    console.log('PINGWIN: addModifyInteraction: currentEditLayer', currentEditLayer);
     // remove other interactions
     map.removeInteraction(drawInteraction);
 
@@ -154,6 +155,7 @@ function onDragPoint() {
 
 // creates a draw interaction
 function addDrawInteraction(currentEditLayer, geometryType) {
+    console.log('PINGWIN: addDrawInteraction: currentEditLayer, geometryType', currentEditLayer, geometryType);
     // remove other interactions
     map.removeInteraction(selectInteraction);
     map.removeInteraction(modifyInteraction);
