@@ -46,8 +46,8 @@
             })
         ],
         view: new ol.View({
-            center: ol.proj.fromLonLat([20.03, 49.477778]),
-            zoom: 18
+            center: ol.proj.fromLonLat([16.916667, 52.4]),
+            zoom: 10
         }),
         controls: ol.control.defaults({
             attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
@@ -62,7 +62,7 @@
         format: new ol.format.GeoJSON(),
         url: function (extent) {
             return 'http://uslugi.giap.pl/geoserver/wfs?service=WFS&' +
-                    'version=1.1.0&request=GetFeature&typename=atrem:dzialki&' +
+                    'version=1.1.0&request=GetFeature&typename=atrem:rury_gazociagu&' +
                     'outputFormat=application/json&srsname=EPSG:3857&' +
                     'bbox=' + extent.join(',') + ',EPSG:3857';
         },
@@ -73,8 +73,8 @@
 
     var getText = function(feature, resolution) {
         var type = 'normal';
-        var maxResolution = 1;
-        var featureValue = feature.get('NUMER');
+        var maxResolution = 100;
+        var featureValue = feature.get('atrs1');
         var text = '';
         if (featureValue) {
             text = featureValue;
@@ -120,12 +120,29 @@
         });
     };
 
+    function createStrokeStyle(feature, resolution) {
+        var featureValue = feature.get('srednica');
+        var diameter = 400;
+        if (featureValue) {
+            diameter = featureValue;
+        }
+
+        var strokeColor = 'rgba(255, 239, 8, 255)';
+        var strokeWidth = 3;
+        if (diameter < 150) {strokeWidth = 2; strokeColor = 'rgba(255, 133, 62, 255)'}
+        else if (diameter >= 150 && diameter < 350) strokeWidth = 3;
+        else if (diameter >= 350 && diameter < 500) strokeWidth = 4;
+        else if (diameter >= 500) strokeWidth = 5;
+
+        return new ol.style.Stroke({
+            color: strokeColor,
+            width: strokeWidth
+        });
+    }
+
     function polygonStyleFunction(feature, resolution) {
         return new ol.style.Style({
-            stroke: new ol.style.Stroke({
-                color: 'blue',
-                width: 1
-            }),
+            stroke: createStrokeStyle(feature, resolution),
             fill: new ol.style.Fill({
                 color: 'rgba(0, 0, 255, 0.05)'
             }),
@@ -136,7 +153,7 @@
     var vector = new ol.layer.Vector({
         source: vectorSource,
         style: polygonStyleFunction,
-        maxResolution: 50
+        //maxResolution: 50
     });
 
     map.addLayer(vector);
