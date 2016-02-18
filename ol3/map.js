@@ -47,7 +47,7 @@ var editableLayer = function (workspace, layerName, WFSurl) {
 var rury_gazociagu = new editableLayer('atrem', 'rury_gazociagu', 'http://uslugi.giap.pl/geoserver/wfs');
 var stacje_gazowe = new editableLayer('atrem', 'stacje_gazowe', 'http://uslugi.giap.pl/geoserver/wfs');
 
-var editableLayers = {'rury_gazociagu': rury_gazociagu, 'stacje_gazowe': stacje_gazowe];
+var editableLayers = {'rury_gazociagu': rury_gazociagu, 'stacje_gazowe': stacje_gazowe};
 
 _.each(_.values(editableLayers), function (layer) {
     map.addLayer(layer.vector);
