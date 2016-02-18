@@ -9,7 +9,6 @@ var dragInteraction = null;
 var featuresToInsert = {};
 var featuresToUpdateObject = {};
 var featuresToDelete = {};
-var dragIconPointFeatures = {};
 
 function clearTransactionFeatures() {
     featuresToInsert = {};
@@ -22,6 +21,7 @@ function clearTransactionFeatures() {
     });
 }
 
+var dragIconPointFeatures = {};
 function initiateDragIconPointFeatures() {
     dragIconPointFeatures = {};
     _.each(editableLayers, function (layer) {
@@ -61,9 +61,9 @@ function modifiedFeatures(event) {
             var featureWKT = WKTWriter.writeFeature(modifiedFeat);
             console.log('PINGWIN: WKT', featureWKT);*/
 
-            var GeoJSONWriter = new ol.format.GeoJSON();
+            /*var GeoJSONWriter = new ol.format.GeoJSON();
             var featureGeoJSON = GeoJSONWriter.writeFeature(modifiedFeat);
-            console.log('PINGWIN: GeoJSON', featureGeoJSON);
+            console.log('PINGWIN: GeoJSON', featureGeoJSON);*/
         });
     }
 }
