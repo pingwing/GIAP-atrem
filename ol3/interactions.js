@@ -73,7 +73,7 @@ function addModifyInteraction(currentEditLayer) {
     // remove other interactions
     map.removeInteraction(drawInteraction);
 
-    selectInteraction = new ol.interaction.Select({layers: [editableLayers[currentEditLayer]]});
+    selectInteraction = new ol.interaction.Select({layers: [editableLayers[currentEditLayer].vector]});
     map.addInteraction(selectInteraction);
     var selectedFeat = selectInteraction.getFeatures();
 
