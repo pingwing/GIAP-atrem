@@ -1,6 +1,9 @@
 /**
  * Created by przemek on 18.02.2016.
  */
+// get active layer
+var currentEditLayer = $('#layer_to_edit').val();
+
 // get geometry type
 var $drawGeometryType = $('#geom_type');
 var drawingMode = $drawGeometryType.val();
@@ -34,16 +37,16 @@ var $interaction_type = $('[name="interaction_type"]');
 $interaction_type.on('click', function (e) {
     // add new interaction
     if (this.value === 'draw') {
-        addDrawInteraction(drawingMode);
+        addDrawInteraction(currentEditLayer, drawingMode);
     } else {
-        addModifyInteraction();
+        addModifyInteraction(currentEditLayer);
     }
 });
 
 // rebuild interaction when the geometry type is changed
 $drawGeometryType.on('change', function (e) {
     map.removeInteraction(drawInteraction);
-    addDrawInteraction(drawingMode);
+    addDrawInteraction(currentEditLayer, drawingMode);
 });
 
-addDrawInteraction(drawingMode);
+addDrawInteraction(currentEditLayer, drawingMode);

@@ -68,11 +68,11 @@ function uid() {
     return id;
 }
 
-function addModifyInteraction() {
+function addModifyInteraction(currentEditLayer) {
     // remove other interactions
     map.removeInteraction(drawInteraction);
 
-    selectInteraction = new ol.interaction.Select();
+    selectInteraction = new ol.interaction.Select({layers: [editableLayers[currentEditLayer]]});
     map.addInteraction(selectInteraction);
     var selectedFeat = selectInteraction.getFeatures();
 
@@ -153,7 +153,7 @@ function onDragPoint() {
 }
 
 // creates a draw interaction
-function addDrawInteraction(geometryType) {
+function addDrawInteraction(currentEditLayer, geometryType) {
     // remove other interactions
     map.removeInteraction(selectInteraction);
     map.removeInteraction(modifyInteraction);
@@ -161,7 +161,7 @@ function addDrawInteraction(geometryType) {
 
     // create the interaction
     drawInteraction = new ol.interaction.Draw({
-        source: vector.getSource(),
+        source: currentEditLayer.vectorSource,
         type: /** @type {ol.geom.GeometryType} */ (geometryType)
     });
     // add it to the map
