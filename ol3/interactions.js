@@ -184,6 +184,7 @@ function addDrawInteraction(currentEditLayer, geometryType) {
     map.removeInteraction(selectInteraction);
     map.removeInteraction(modifyInteraction);
     map.removeInteraction(dragInteraction);
+    map.removeInteraction(drawInteraction);
 
     // create the interaction
     drawInteraction = new ol.interaction.Draw({
