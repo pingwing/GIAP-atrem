@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+    <title>WFS OL3</title>
+    <link rel="stylesheet" href="http://openlayers.org/en/v3.13.1/css/ol.css" type="text/css">
+    <script src="jquery.min.js">//https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js</script>
+    <script src="proj4.js" type="text/javascript">//http://openlayers.org/en/v3.13.1/build/ol-debug.js</script>
+    <script src="ol-debug.js" type="text/javascript">//http://openlayers.org/en/v3.13.1/build/ol-debug.js</script>
+    <script src="underscore.js" type="text/javascript">//http://underscorejs.org/underscore-min.js</script>
+    <script src="vectorStyles_min.js" type="text/javascript"></script>
+    <script src="tools_min.js" type="text/javascript"></script>
+    <script src="writeWFS_min.js" type="text/javascript"></script>
+</head>
+<body>
+<DIV id="map" class="map"></DIV>
+
+<DIV id="customControl">
+    <div>
+        <label>Narzędzie: &nbsp;</label>
+        <label>rysuj</label>
+        <input type="radio" id="interaction_type_draw" name="interaction_type" value="draw" checked>
+        <label>edytuj</label>
+        <input type="radio" id="interaction_type_modify" name="interaction_type" value="modify">
+    </div>
+    <div>
+        <label>Wybierz warstwę do edycji</label>
+        <select id="layer_to_edit">
+            <option value="rury_gazociagu" selected>rury_gazociagu</option>
+            <option value="stacje_gazowe">stacje_gazowe</option>
+        </select>
+    </div>
+    <div>
+        <label>Rysuj typ geometrii</label>
+        <select id="geom_type">
+            <option value="MultiPoint">Punkt</option>
+            <option value="MultiLineString" selected>Linia</option>
+            <option value="Polygon">Wielokąt</option>
+        </select>
+    </div>
+    <input type="button" id="customControlDelete" value="Usuń obiekt"/>
+    <input type="button" id="customControlUndo" value="Cofnij zmiany w warstwie"/>
+    <input type="button" id="customControlSave" value="Zapisz zmiany w warstwie"/>
+    <div id="point_position"></div>
+    <div>Współrzędne kursora: <span id="pointer_position"></span></div>
+</DIV>
+
+<script src="map_min.js" type="text/javascript"></script>
+<script src="interactions_min.js" type="text/javascript"></script>
+<script src="ui_min.js" type="text/javascript"></script>
+</body>
+</html>
