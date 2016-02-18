@@ -26,6 +26,7 @@ var editableLayer = function(workspace, layerName, WFSurl) {
 };
 
 var rury_gazociagu = new editableLayer('atrem', 'rury_gazociagu', 'http://uslugi.giap.pl/geoserver/wfs');
+map.addLayer(rury_gazociagu.vector);
 
 console.log('PINGWIN: rury_gazociagu', rury_gazociagu);
 
