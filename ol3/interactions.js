@@ -5,21 +5,29 @@ var drawInteraction = null;
 var selectInteraction = null;
 var modifyInteraction = null;
 var dragInteraction = null;
-var dragIconPointFeatures = [];
 
 var featuresToInsert = {};
 var featuresToUpdateObject = {};
 var featuresToDelete = {};
+var dragIconPointFeatures = {};
 
-function clearTransactionFeatures(currentEditLayerName) {
+function clearTransactionFeatures() {
     featuresToInsert = {};
     featuresToUpdateObject = {};
     featuresToDelete = {};
+    dragIconPointFeatures = {};
     _.each(editableLayers, function (layer) {
-        console.log('PINGWIN: layer', layer);
         featuresToInsert[layer.name] = [];
         featuresToUpdateObject[layer.name] = {};
         featuresToDelete[layer.name] = [];
+        dragIconPointFeatures[layer.name] = [];
+    });
+}
+
+function clearDragIconPointFeatures() {
+    dragIconPointFeatures = {};
+    _.each(editableLayers, function (layer) {
+        dragIconPointFeatures[layer.name] = [];
     });
 }
 
@@ -33,10 +41,7 @@ function deleteFeatures(currentEditLayerName) {
             featuresToDelete[currentEditLayerName].push(toDeleteFeat);
         });
         selectedFeat.clear();
-        /*_.each(_.values(editableLayers), function (layer) {
-            console.log('PINGWIN: layer', layer);
-            clearDragIconPointFeatures(layer.name);
-        });*/
+        clearDragIconPointFeatures();
     }
     else
         window.alert("Wybierz najpierw obiekt do usunięcia");
@@ -119,12 +124,14 @@ function addModifyInteraction(currentEditLayerName) {
     modifyInteraction.on('modifyend', modifiedFeatures, currentEditLayerName);
 }
 
-function clearDragIconPointFeatures (currentEditLayerName) {
-    _.each(dragIconPointFeatures, function (toDeleteFeat) {
-        editableLayers[currentEditLayerName].vectorSource.removeFeature(toDeleteFeat);
+function clearDragIconPointFeatures() {
+    _.each(_.values(editableLayers), function (layer) {
+        _.each(dragIconPointFeatures[layer.name], function (toDeleteFeat) {
+            editableLayers[layer.name].vectorSource.removeFeature(toDeleteFeat);
+        });
     });
 
-    dragIconPointFeatures = [];
+    clearDragIconPointFeatures();
 }
 
 function onSelect(event) {
@@ -132,7 +139,7 @@ function onSelect(event) {
     if (event.deselected.length > 0) {
         map.removeInteraction(dragInteraction);
         console.log('PINGWIN:onSelect deselect currentEditLayerName', currentEditLayerName);
-        clearDragIconPointFeatures(currentEditLayerName);
+        clearDragIconPointFeatures();
     }
 
     if (event.selected.length > 0) {
