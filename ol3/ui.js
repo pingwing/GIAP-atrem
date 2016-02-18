@@ -9,7 +9,6 @@ var $drawGeometryType = $('#geom_type');
 
 // get the interaction type
 var $interaction_type = $('[name="interaction_type"]');
-var $interaction_type_checked = $('[name="interaction_type"]:checked');
 
 $('#customControlDelete').on('click', function () {
     deleteFeatures();
@@ -36,12 +35,13 @@ $('#customControlSave').on('click', function () {
 });
 
 $currentEditLayerChoice.on('change', function () {
-    console.log('PINGWIN: $interaction_type_checked', $('[name="interaction_type"]:checked').val());
     if ($('[name="interaction_type"]:checked').val() === 'draw') {
         if (this.value == 'rury_gazociagu') {
+            $drawGeometryType.val("LineString");
             addDrawInteraction($currentEditLayerChoice.val(), 'LineString');
         }
         else if (this.value == 'stacje_gazowe') {
+            $drawGeometryType.val("Point");
             addDrawInteraction($currentEditLayerChoice.val(), 'Point');
         }
         else {
