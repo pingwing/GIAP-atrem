@@ -2,10 +2,13 @@
  * Created by przemek on 18.02.2016.
  */
 // get active layer
-var currentEditLayer = $('#layer_to_edit').val();
+var $currentEditLayerChoice = $('#layer_to_edit');
 
 // get geometry type
 var $drawGeometryType = $('#geom_type');
+
+// get the interaction type
+var $interaction_type = $('[name="interaction_type"]');
 
 $('#customControlDelete').on('click', function () {
     deleteFeatures();
@@ -31,16 +34,23 @@ $('#customControlSave').on('click', function () {
     clearDragIconPointFeatures();
 });
 
-// get the interaction type
-var $interaction_type = $('[name="interaction_type"]');
+$currentEditLayerChoice.on('change', function() {
+    if ($interaction_type.val() === 'draw') {
+        $drawGeometryType.enable();
+        addDrawInteraction($currentEditLayerChoice.val(), $drawGeometryType.val());
+    } else {
+        $drawGeometryType.disable();
+        addModifyInteraction($currentEditLayerChoice.val());
+    }
+});
 
 // rebuild interaction when changed
 $interaction_type.on('click', function (e) {
     // add new interaction
     if (this.value === 'draw') {
-        addDrawInteraction(currentEditLayer, $drawGeometryType.val());
+        addDrawInteraction($currentEditLayerChoice.val(), $drawGeometryType.val());
     } else {
-        addModifyInteraction(currentEditLayer);
+        addModifyInteraction($currentEditLayerChoice.val());
     }
 });
 
@@ -48,7 +58,7 @@ $interaction_type.on('click', function (e) {
 $drawGeometryType.on('change', function (e) {
     console.log('PINGWIN: $drawGeometryType.val()', $drawGeometryType.val());
     map.removeInteraction(drawInteraction);
-    addDrawInteraction(currentEditLayer, $drawGeometryType.val());
+    addDrawInteraction($currentEditLayerChoice.val(), $drawGeometryType.val());
 });
 
-addDrawInteraction(currentEditLayer, $drawGeometryType.val());
+addDrawInteraction($currentEditLayerChoice.val(), $drawGeometryType.val());
