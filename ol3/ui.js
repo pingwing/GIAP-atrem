@@ -49,6 +49,12 @@ $currentEditLayerChoice.on('change', function () {
         }
 
     } else {
+        if (this.value == 'rury_gazociagu') {
+            $drawGeometryType.val("LineString");
+        }
+        else if (this.value == 'stacje_gazowe') {
+            $drawGeometryType.val("Point");
+        }
         addModifyInteraction($currentEditLayerChoice.val());
     }
 });
@@ -57,10 +63,10 @@ $currentEditLayerChoice.on('change', function () {
 $interaction_type.on('click', function (e) {
     // add new interaction
     if (this.value === 'draw') {
-        //$drawGeometryType.prop("disabled", false);
+        $drawGeometryType.prop("disabled", false);
         addDrawInteraction($currentEditLayerChoice.val(), $drawGeometryType.val());
     } else {
-        //$drawGeometryType.prop("disabled", true);
+        $drawGeometryType.prop("disabled", true);
         addModifyInteraction($currentEditLayerChoice.val());
     }
 });
