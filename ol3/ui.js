@@ -6,7 +6,6 @@ var currentEditLayer = $('#layer_to_edit').val();
 
 // get geometry type
 var $drawGeometryType = $('#geom_type');
-var drawingMode = $drawGeometryType.val();
 
 $('#customControlDelete').on('click', function () {
     deleteFeatures();
@@ -38,7 +37,7 @@ var $interaction_type = $('[name="interaction_type"]');
 $interaction_type.on('click', function (e) {
     // add new interaction
     if (this.value === 'draw') {
-        addDrawInteraction(currentEditLayer, drawingMode);
+        addDrawInteraction(currentEditLayer, $drawGeometryType.val());
     } else {
         addModifyInteraction(currentEditLayer);
     }
@@ -46,9 +45,9 @@ $interaction_type.on('click', function (e) {
 
 // rebuild interaction when the geometry type is changed
 $drawGeometryType.on('change', function (e) {
-    console.log('PINGWIN: drawingMode', drawingMode);
+    console.log('PINGWIN: $drawGeometryType.val()', $drawGeometryType.val());
     map.removeInteraction(drawInteraction);
-    addDrawInteraction(currentEditLayer, drawingMode);
+    addDrawInteraction(currentEditLayer, $drawGeometryType.val());
 });
 
-addDrawInteraction(currentEditLayer, drawingMode);
+addDrawInteraction(currentEditLayer, $drawGeometryType.val());
