@@ -246,7 +246,7 @@ function onDragPoint() {
 }
 
 // creates a draw interaction
-function addDrawInteraction() {
+function addDrawInteraction(geometryType) {
     // remove other interactions
     map.removeInteraction(selectInteraction);
     map.removeInteraction(modifyInteraction);
@@ -255,7 +255,7 @@ function addDrawInteraction() {
     // create the interaction
     drawInteraction = new ol.interaction.Draw({
         source: vector.getSource(),
-        type: /** @type {ol.geom.GeometryType} */ ($geom_type.val())
+        type: /** @type {ol.geom.GeometryType} */ (geometryType)
     });
     // add it to the map
     map.addInteraction(drawInteraction);
@@ -442,4 +442,6 @@ $geom_type.on('change', function (e) {
     addDrawInteraction();
 });
 
-addDrawInteraction();
+$(document).ready(function(){
+    addDrawInteraction($geom_type.val());
+});
