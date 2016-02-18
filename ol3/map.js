@@ -3,6 +3,26 @@
  */
 var scaleLineControl = new ol.control.ScaleLine();
 
+var map = new ol.Map({
+    target: 'map',
+    layers: [
+        new ol.layer.Tile({
+            source: new ol.source.OSM()
+        })
+    ],
+    view: new ol.View({
+        center: ol.proj.fromLonLat([16.916667, 52.4]),
+        zoom: 10
+    }),
+    controls: ol.control.defaults({
+        attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
+            collapsible: false
+        })
+    }).extend([
+        scaleLineControl
+    ])
+});
+
 var editableLayer = function(workspace, layerName, WFSurl) {
     this.vectorSource = new ol.source.Vector({
         format: new ol.format.GeoJSON(),
@@ -31,26 +51,6 @@ map.addLayer(rury_gazociagu.vector);
 console.log('PINGWIN: rury_gazociagu', rury_gazociagu);
 
 var editableLayers = {};
-
-var map = new ol.Map({
-    target: 'map',
-    layers: [
-        new ol.layer.Tile({
-            source: new ol.source.OSM()
-        })
-    ],
-    view: new ol.View({
-        center: ol.proj.fromLonLat([16.916667, 52.4]),
-        zoom: 10
-    }),
-    controls: ol.control.defaults({
-        attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
-            collapsible: false
-        })
-    }).extend([
-        scaleLineControl
-    ])
-});
 
 var vectorSource2 = new ol.source.Vector({
     format: new ol.format.GeoJSON(),
