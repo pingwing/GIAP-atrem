@@ -91,9 +91,9 @@ function addModifyInteraction(currentEditLayer) {
     modifyInteraction.on('modifyend', modifiedFeatures);
 }
 
-function clearDragIconPointFeatures () {
+function clearDragIconPointFeatures (currentEditLayer) {
     _.each(dragIconPointFeatures, function (toDeleteFeat) {
-        vectorSource.removeFeature(toDeleteFeat);
+        editableLayers[currentEditLayer].vectorSource.removeFeature(toDeleteFeat);
     });
 
     dragIconPointFeatures = [];
@@ -103,7 +103,7 @@ function onSelect(event) {
     if (event.deselected.length > 0) {
         map.removeInteraction(dragInteraction);
 
-        clearDragIconPointFeatures();
+        clearDragIconPointFeatures(this);
     }
 
     if (event.selected.length > 0) {
