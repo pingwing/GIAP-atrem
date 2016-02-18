@@ -434,14 +434,14 @@ $interaction_type.on('click', function (e) {
     }
 });
 
-// get geometry type
-var $geom_type = $('#geom_type');
-// rebuild interaction when the geometry type is changed
-$geom_type.on('change', function (e) {
-    map.removeInteraction(drawInteraction);
-    addDrawInteraction();
-});
-
 $(document).ready(function(){
+    // get geometry type
+    var $geom_type = $('#geom_type');
+// rebuild interaction when the geometry type is changed
+    $geom_type.on('change', function (e) {
+        map.removeInteraction(drawInteraction);
+        addDrawInteraction($geom_type.val());
+    });
+
     addDrawInteraction($geom_type.val());
 });
