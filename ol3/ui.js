@@ -36,6 +36,7 @@ $('#customControlSave').on('click', function () {
 
 $currentEditLayerChoice.on('change', function () {
     console.log('PINGWIN: $interaction_type.value', $interaction_type.value);
+    console.log('PINGWIN: $interaction_type', $interaction_type);
     if ($interaction_type.val() === 'draw') {
         if (this.value == 'rury_gazociagu') {
             addDrawInteraction($currentEditLayerChoice.val(), 'LineString');
