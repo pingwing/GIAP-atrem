@@ -51,6 +51,7 @@ function modifiedFeatures(event) {
     if (event.features.getLength() > 0) {
         _.each(modifiedFeatures, function (modifiedFeat) {
             var modifiedFeatureId = modifiedFeat.id_;
+            console.log('PINGWIN: featuresToUpdateObject', featuresToUpdateObject);
             featuresToUpdateObject[currentEditLayer][modifiedFeatureId] = modifiedFeat;
 
             var WKTWriter = new ol.format.WKT();
