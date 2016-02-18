@@ -34,12 +34,19 @@ $('#customControlSave').on('click', function () {
     clearDragIconPointFeatures();
 });
 
-$currentEditLayerChoice.on('change', function() {
+$currentEditLayerChoice.on('change', function () {
     if ($interaction_type.val() === 'draw') {
+        if (this.value == 'rury_gazociagu') {
+            addDrawInteraction($currentEditLayerChoice.val(), 'LineString');
+        }
+        else if (this.value == 'stacje_gazowe') {
+            addDrawInteraction($currentEditLayerChoice.val(), 'Point');
+        }
+        else {
+            addDrawInteraction($currentEditLayerChoice.val(), $drawGeometryType.val());
+        }
 
-        addDrawInteraction($currentEditLayerChoice.val(), $drawGeometryType.val());
     } else {
-        $drawGeometryType.prop( "disabled", true );
         addModifyInteraction($currentEditLayerChoice.val());
     }
 });
@@ -48,10 +55,10 @@ $currentEditLayerChoice.on('change', function() {
 $interaction_type.on('click', function (e) {
     // add new interaction
     if (this.value === 'draw') {
-        $drawGeometryType.prop( "disabled", false );
+        $drawGeometryType.prop("disabled", false);
         addDrawInteraction($currentEditLayerChoice.val(), $drawGeometryType.val());
     } else {
-        $drawGeometryType.prop( "disabled", true );
+        $drawGeometryType.prop("disabled", true);
         addModifyInteraction($currentEditLayerChoice.val());
     }
 });
@@ -59,7 +66,6 @@ $interaction_type.on('click', function (e) {
 // rebuild interaction when the geometry type is changed
 $drawGeometryType.on('change', function (e) {
     console.log('PINGWIN: $drawGeometryType.val()', $drawGeometryType.val());
-    map.removeInteraction(drawInteraction);
     addDrawInteraction($currentEditLayerChoice.val(), $drawGeometryType.val());
 });
 
