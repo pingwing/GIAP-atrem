@@ -57,10 +57,10 @@ $currentEditLayerChoice.on('change', function () {
 $interaction_type.on('click', function (e) {
     // add new interaction
     if (this.value === 'draw') {
-        $drawGeometryType.prop("disabled", false);
+        //$drawGeometryType.prop("disabled", false);
         addDrawInteraction($currentEditLayerChoice.val(), $drawGeometryType.val());
     } else {
-        $drawGeometryType.prop("disabled", true);
+        //$drawGeometryType.prop("disabled", true);
         addModifyInteraction($currentEditLayerChoice.val());
     }
 });
