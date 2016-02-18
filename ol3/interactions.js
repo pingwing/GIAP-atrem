@@ -103,7 +103,7 @@ function clearDragIconPointFeatures (currentEditLayer) {
 function onSelect(event) {
     if (event.deselected.length > 0) {
         map.removeInteraction(dragInteraction);
-
+        console.log('PINGWIN:onSelect deselect this', this);
         clearDragIconPointFeatures(this);
     }
 
