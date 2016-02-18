@@ -171,7 +171,8 @@ function onSelect(event) {
             draggedFeature: selectedFeature,
             initialPosition: initialPosition,
             dragIconPointFeature: dragIconPointFeature,
-            initialClonedGeometry: initialClonedGeometry
+            initialClonedGeometry: initialClonedGeometry,
+            currentEditLayerName: currentEditLayerName
         });
 
         map.addInteraction(dragInteraction);
@@ -186,7 +187,7 @@ function onDragPoint() {
     geometryToTranslate.translate(translationVector[0], translationVector[1]);
     this.draggedFeature.setGeometry(geometryToTranslate);
     var modifiedFeatureId = this.draggedFeature.id_;
-    featuresToUpdateObject[modifiedFeatureId] = this.draggedFeature;
+    featuresToUpdateObject[this.currentEditLayerName][modifiedFeatureId] = this.draggedFeature;
 }
 
 // creates a draw interaction
