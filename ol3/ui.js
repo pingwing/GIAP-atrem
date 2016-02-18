@@ -9,6 +9,7 @@ var $drawGeometryType = $('#geom_type');
 
 // get the interaction type
 var $interaction_type = $('[name="interaction_type"]');
+var $interaction_type_checked = $('[name="interaction_type"]:checked');
 
 $('#customControlDelete').on('click', function () {
     deleteFeatures();
@@ -36,8 +37,8 @@ $('#customControlSave').on('click', function () {
 
 $currentEditLayerChoice.on('change', function () {
     console.log('PINGWIN: $interaction_type.value', $interaction_type.value);
-    console.log('PINGWIN: $interaction_type', $interaction_type);
-    if ($interaction_type.val() === 'draw') {
+    console.log('PINGWIN: $interaction_type_checked', $interaction_type_checked.val());
+    if ($interaction_type_checked.val() === 'draw') {
         if (this.value == 'rury_gazociagu') {
             addDrawInteraction($currentEditLayerChoice.val(), 'LineString');
         }
