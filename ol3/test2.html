@@ -62,7 +62,7 @@
         format: new ol.format.GeoJSON(),
         url: function (extent) {
             return 'http://uslugi.giap.pl/geoserver/wfs?service=WFS&' +
-                    'version=1.1.0&request=GetFeature&typename=nowy_targ:dzialki&' +
+                    'version=1.1.0&request=GetFeature&typename=atrem:dzialki&' +
                     'outputFormat=application/json&srsname=EPSG:3857&' +
                     'bbox=' + extent.join(',') + ',EPSG:3857';
         },
@@ -338,7 +338,7 @@
 
     var formatWFS = new ol.format.WFS();
     var formatGML = new ol.format.GML({
-        featureNS: 'nowy_targ',
+        featureNS: 'atrem',
         featureType: 'dzialki',
         srsName: 'EPSG:2180'
     });
