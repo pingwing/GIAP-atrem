@@ -93,6 +93,9 @@ function uid() {
 function addModifyInteraction(currentEditLayer) {
     console.log('PINGWIN: addModifyInteraction: currentEditLayer', currentEditLayer);
     // remove other interactions
+    map.removeInteraction(selectInteraction);
+    map.removeInteraction(modifyInteraction);
+    map.removeInteraction(dragInteraction);
     map.removeInteraction(drawInteraction);
 
     selectInteraction = new ol.interaction.Select({layers: [editableLayers[currentEditLayer].vector]});
