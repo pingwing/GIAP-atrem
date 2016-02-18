@@ -127,14 +127,15 @@
             diameter = featureValue;
         }
 
+        var strokeColor = 'rgba(255, 239, 8, 255)';
         var strokeWidth = 3;
-        if (diameter < 150) strokeWidth = 1;
+        if (diameter < 150) {strokeWidth = 1; strokeColor = 'rgba(255, 133, 62, 255)'}
         else if (diameter >= 150 && diameter < 350) strokeWidth = 2;
         else if (diameter >= 350 && diameter < 500) strokeWidth = 3;
         else if (diameter >= 500) strokeWidth = 4;
 
         return new ol.style.Stroke({
-            color: 'rgba(255, 239, 8, 255)',
+            color: strokeColor,
             width: strokeWidth
         });
     }
