@@ -19,7 +19,7 @@ $('#customControlUndo').on('click', function () {
     featuresToUpdateObject = {};
     featuresToDelete = [];
     if (selectInteraction) selectInteraction.getFeatures().clear();
-    clearDragIconPointFeatures();
+    clearDragIconPointFeatures(editableLayers[$currentEditLayerChoice.val()].vectorSource);
     _.each(_.values(editableLayers), function (layer) {
         layer.vectorSource.clear();
     });
