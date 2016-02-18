@@ -11,26 +11,26 @@ var $drawGeometryType = $('#geom_type');
 var $interaction_type = $('[name="interaction_type"]');
 
 $('#customControlDelete').on('click', function () {
-    deleteFeatures();
+    deleteFeatures($currentEditLayerChoice.val());
 });
 
 $('#customControlUndo').on('click', function () {
     clearTransactionFeatures();
     if (selectInteraction) selectInteraction.getFeatures().clear();
-    clearDragIconPointFeatures(editableLayers[$currentEditLayerChoice.val()].vectorSource);
+    clearDragIconPointFeatures($currentEditLayerChoice.val());
     _.each(_.values(editableLayers), function (layer) {
         layer.vectorSource.clear();
     });
 });
 
 $('#customControlSave').on('click', function () {
-    console.log('PINGWIN: featuresToInsert', featuresToInsert);
+    /*console.log('PINGWIN: featuresToInsert', featuresToInsert);
     console.log('PINGWIN: featuresToUpdateObject', featuresToUpdateObject);
-    console.log('PINGWIN: featuresToDelete', featuresToDelete);
+    console.log('PINGWIN: featuresToDelete', featuresToDelete);*/
     transactWFS();
     clearTransactionFeatures();
     if (selectInteraction) selectInteraction.getFeatures().clear();
-    clearDragIconPointFeatures(editableLayers[$currentEditLayerChoice.val()].vectorSource);
+    clearDragIconPointFeatures($currentEditLayerChoice.val());
 });
 
 $currentEditLayerChoice.on('change', function () {

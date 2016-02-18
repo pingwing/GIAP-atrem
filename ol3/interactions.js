@@ -11,7 +11,7 @@ var featuresToInsert = {};
 var featuresToUpdateObject = {};
 var featuresToDelete = {};
 
-function clearTransactionFeatures() {
+function clearTransactionFeatures(currentEditLayerName) {
     featuresToInsert = {};
     featuresToUpdateObject = {};
     featuresToDelete = {};
@@ -25,18 +25,18 @@ function clearTransactionFeatures() {
 
 clearTransactionFeatures();
 
-function deleteFeatures() {
-    var currentEditLayer = this;
+function deleteFeatures(currentEditLayerName) {
+    var currentEditLayerName = this;
     var selectedFeat = selectInteraction.getFeatures();
     if (selectedFeat.getLength() > 0) {
         _.each(selectedFeat.getArray(), function (toDeleteFeat) {
-            vectorSource.removeFeature(toDeleteFeat);
-            featuresToDelete[currentEditLayer].push(toDeleteFeat);
+            editableLayers[currentEditLayerName].vectorSource.removeFeature(toDeleteFeat);
+            featuresToDelete[currentEditLayerName].push(toDeleteFeat);
         });
         selectedFeat.clear();
         _.each(_.values(editableLayers), function (layer) {
             console.log('PINGWIN: layer', layer);
-            clearDragIconPointFeatures(layer.vectorSource);
+            clearDragIconPointFeatures(layer.name);
         });
     }
     else
@@ -44,15 +44,15 @@ function deleteFeatures() {
 }
 
 function modifiedFeatures(event) {
-    var currentEditLayer = this;
-    console.log('PINGWIN w modifiedFeatures: currentEditLayer', currentEditLayer);
+    var currentEditLayerName = this;
+    console.log('PINGWIN w modifiedFeatures: currentEditLayerName', currentEditLayerName);
     console.log('PINGWIN: event', event);
     var modifiedFeatures = event.features.getArray();
     if (event.features.getLength() > 0) {
         _.each(modifiedFeatures, function (modifiedFeat) {
             var modifiedFeatureId = modifiedFeat.id_;
             console.log('PINGWIN: featuresToUpdateObject', featuresToUpdateObject);
-            featuresToUpdateObject[currentEditLayer][modifiedFeatureId] = modifiedFeat;
+            featuresToUpdateObject[currentEditLayerName][modifiedFeatureId] = modifiedFeat;
 
             /*var WKTWriter = new ol.format.WKT();
             var featureWKT = WKTWriter.writeFeature(modifiedFeat);
@@ -66,7 +66,7 @@ function modifiedFeatures(event) {
 }
 
 function addedFeatures(event) {
-    var currentEditLayer = this;
+    var currentEditLayerName = this;
     // create a unique id
     // it is later needed to delete features
     var id = uid();
@@ -79,7 +79,7 @@ function addedFeatures(event) {
     geometryInMapCRSClone.applyTransform(transformationFromWebToPL);
     addedFeature.set('geom', geometryInMapCRSClone);
 
-    featuresToInsert[currentEditLayer].push(addedFeature);
+    featuresToInsert[currentEditLayerName].push(addedFeature);
 }
 
 // creates unique id's
@@ -97,16 +97,16 @@ function removeAllInteractions () {
     map.removeInteraction(drawInteraction);
 }
 
-function addModifyInteraction(currentEditLayer) {
-    console.log('PINGWIN: addModifyInteraction: currentEditLayer', currentEditLayer);
+function addModifyInteraction(currentEditLayerName) {
+    console.log('PINGWIN: addModifyInteraction: currentEditLayerName', currentEditLayerName);
     // remove other interactions
     removeAllInteractions();
 
-    selectInteraction = new ol.interaction.Select({layers: [editableLayers[currentEditLayer].vector]});
+    selectInteraction = new ol.interaction.Select({layers: [editableLayers[currentEditLayerName].vector]});
     map.addInteraction(selectInteraction);
     var selectedFeat = selectInteraction.getFeatures();
 
-    selectInteraction.on('select', onSelect, currentEditLayer);
+    selectInteraction.on('select', onSelect, currentEditLayerName);
 
     modifyInteraction = new ol.interaction.Modify({
         features: selectedFeat,
@@ -117,24 +117,24 @@ function addModifyInteraction(currentEditLayer) {
     });
 
     map.addInteraction(modifyInteraction);
-    modifyInteraction.on('modifyend', modifiedFeatures, currentEditLayer);
+    modifyInteraction.on('modifyend', modifiedFeatures, currentEditLayerName);
 }
 
-function clearDragIconPointFeatures (currentEditLayerVectorSource) {
-    console.log('PINGWIN: currentEditLayer', currentEditLayerVectorSource);
+function clearDragIconPointFeatures (currentEditLayerName) {
+    console.log('PINGWIN: currentEditLayerName', currentEditLayerNameVectorSource);
     _.each(dragIconPointFeatures, function (toDeleteFeat) {
-        currentEditLayerVectorSource.removeFeature(toDeleteFeat);
+        editableLayers[currentEditLayerName].vectorSource.removeFeature(toDeleteFeat);
     });
 
     dragIconPointFeatures = [];
 }
 
 function onSelect(event) {
-    var currentEditLayer = this;
+    var currentEditLayerName = this;
     if (event.deselected.length > 0) {
         map.removeInteraction(dragInteraction);
-        console.log('PINGWIN:onSelect deselect currentEditLayer', currentEditLayer);
-        clearDragIconPointFeatures(editableLayers[currentEditLayer].vectorSource);
+        console.log('PINGWIN:onSelect deselect currentEditLayerName', currentEditLayerName);
+        clearDragIconPointFeatures(currentEditLayerName);
     }
 
     if (event.selected.length > 0) {
@@ -154,7 +154,7 @@ function onSelect(event) {
                 })
             })
         }));
-        editableLayers[currentEditLayer].vectorSource.addFeatures([dragIconPointFeature]);
+        editableLayers[currentEditLayerName].vectorSource.addFeatures([dragIconPointFeature]);
 
         dragInteraction = new ol.interaction.Modify({
             features: new ol.Collection([dragIconPointFeature])
@@ -185,19 +185,19 @@ function onDragPoint() {
 }
 
 // creates a draw interaction
-function addDrawInteraction(currentEditLayer, geometryType) {
-    console.log('PINGWIN: addDrawInteraction: currentEditLayer, geometryType', currentEditLayer, geometryType);
+function addDrawInteraction(currentEditLayerName, geometryType) {
+    console.log('PINGWIN: addDrawInteraction: currentEditLayerName, geometryType', currentEditLayerName, geometryType);
     // remove other interactions
     removeAllInteractions();
 
     // create the interaction
     drawInteraction = new ol.interaction.Draw({
-        source: editableLayers[currentEditLayer].vectorSource,
+        source: editableLayers[currentEditLayerName].vectorSource,
         type: /** @type {ol.geom.GeometryType} */ (geometryType)
     });
     // add it to the map
     map.addInteraction(drawInteraction);
 
     // when a new feature has been drawn...
-    drawInteraction.on('drawend', addedFeatures, currentEditLayer);
+    drawInteraction.on('drawend', addedFeatures, currentEditLayerName);
 }
