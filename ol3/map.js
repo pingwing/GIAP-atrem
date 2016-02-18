@@ -24,6 +24,8 @@ var map = new ol.Map({
 });
 
 var editableLayer = function (workspace, layerName, WFSurl) {
+    this.name = layerName;
+
     this.vectorSource = new ol.source.Vector({
         format: new ol.format.GeoJSON(),
         url: function (extent) {

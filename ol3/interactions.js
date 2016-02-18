@@ -17,9 +17,9 @@ function clearFeatures() {
     featuresToDelete = {};
     _.each(editableLayers, function (layer) {
         console.log('PINGWIN: layer', layer);
-        featuresToInsert[layer] = [];
-        featuresToUpdateObject[layer] = {};
-        featuresToDelete[layer] = [];
+        featuresToInsert[layer.name] = [];
+        featuresToUpdateObject[layer.name] = {};
+        featuresToDelete[layer.name] = [];
     });
 }
 
