@@ -36,7 +36,7 @@ $('#customControlSave').on('click', function () {
 
 $currentEditLayerChoice.on('change', function() {
     if ($interaction_type.val() === 'draw') {
-        $drawGeometryType.prop( "disabled", false )
+        $drawGeometryType.prop( "disabled", false );
         addDrawInteraction($currentEditLayerChoice.val(), $drawGeometryType.val());
     } else {
         $drawGeometryType.prop( "disabled", true );
