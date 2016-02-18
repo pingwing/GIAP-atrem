@@ -15,7 +15,7 @@ $('#customControlDelete').on('click', function () {
 });
 
 $('#customControlUndo').on('click', function () {
-    clearFeatures();
+    clearTransactionFeatures();
     if (selectInteraction) selectInteraction.getFeatures().clear();
     clearDragIconPointFeatures(editableLayers[$currentEditLayerChoice.val()].vectorSource);
     _.each(_.values(editableLayers), function (layer) {
@@ -28,7 +28,7 @@ $('#customControlSave').on('click', function () {
     console.log('PINGWIN: featuresToUpdateObject', featuresToUpdateObject);
     console.log('PINGWIN: featuresToDelete', featuresToDelete);
     //transactWFS();
-    clearFeatures();
+    clearTransactionFeatures();
     if (selectInteraction) selectInteraction.getFeatures().clear();
     clearDragIconPointFeatures(editableLayers[$currentEditLayerChoice.val()].vectorSource);
 });

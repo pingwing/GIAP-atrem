@@ -11,7 +11,7 @@ var featuresToInsert = {};
 var featuresToUpdateObject = {};
 var featuresToDelete = {};
 
-function clearFeatures() {
+function clearTransactionFeatures() {
     featuresToInsert = {};
     featuresToUpdateObject = {};
     featuresToDelete = {};
@@ -23,7 +23,7 @@ function clearFeatures() {
     });
 }
 
-clearFeatures();
+clearTransactionFeatures();
 
 function deleteFeatures() {
     var currentEditLayer = this;
@@ -54,9 +54,9 @@ function modifiedFeatures(event) {
             console.log('PINGWIN: featuresToUpdateObject', featuresToUpdateObject);
             featuresToUpdateObject[currentEditLayer][modifiedFeatureId] = modifiedFeat;
 
-            var WKTWriter = new ol.format.WKT();
+            /*var WKTWriter = new ol.format.WKT();
             var featureWKT = WKTWriter.writeFeature(modifiedFeat);
-            console.log('PINGWIN: WKT', featureWKT);
+            console.log('PINGWIN: WKT', featureWKT);*/
 
             var GeoJSONWriter = new ol.format.GeoJSON();
             var featureGeoJSON = GeoJSONWriter.writeFeature(modifiedFeat);
