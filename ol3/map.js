@@ -3,6 +3,34 @@
  */
 var scaleLineControl = new ol.control.ScaleLine();
 
+var editableLayer = function(workspace, layerName, WFSurl) {
+    this.vectorSource = new ol.source.Vector({
+        format: new ol.format.GeoJSON(),
+        url: function (extent) {
+            return WFSurl+'?service=WFS&' +
+                'version=1.1.0&request=GetFeature&typename='+workspace+':'+layerName+'&' +
+                'outputFormat=application/json&srsname=EPSG:3857&' +
+                'bbox=' + extent.join(',') + ',EPSG:3857';
+        },
+        strategy: ol.loadingstrategy.tile(ol.tilegrid.createXYZ({
+            maxZoom: 19
+        }))});
+
+    this.vector = new ol.layer.Vector({
+        source: this.vectorSource,
+        style: polygonStyleFunction,
+        //maxResolution: 50
+    });
+
+
+};
+
+var rury_gazociagu = new editableLayer('atrem', 'rury_gazociagu', 'http://uslugi.giap.pl/geoserver/wfs');
+
+console.log('PINGWIN: rury_gazociagu', rury_gazociagu);
+
+var editableLayers = {};
+
 var map = new ol.Map({
     target: 'map',
     layers: [
@@ -21,19 +49,6 @@ var map = new ol.Map({
     }).extend([
         scaleLineControl
     ])
-});
-
-var vectorSource = new ol.source.Vector({
-    format: new ol.format.GeoJSON(),
-    url: function (extent) {
-        return 'http://uslugi.giap.pl/geoserver/wfs?service=WFS&' +
-            'version=1.1.0&request=GetFeature&typename=atrem:rury_gazociagu&' +
-            'outputFormat=application/json&srsname=EPSG:3857&' +
-            'bbox=' + extent.join(',') + ',EPSG:3857';
-    },
-    strategy: ol.loadingstrategy.tile(ol.tilegrid.createXYZ({
-        maxZoom: 19
-    }))
 });
 
 var vectorSource2 = new ol.source.Vector({
@@ -135,13 +150,13 @@ function polygonStyleFunction(feature, resolution) {
     });
 }
 
-var vector = new ol.layer.Vector({
+/*var vector = new ol.layer.Vector({
     source: vectorSource,
     style: polygonStyleFunction,
     //maxResolution: 50
 });
 
-map.addLayer(vector);
+map.addLayer(vector);*/
 
 var vector2 = new ol.layer.Vector({
     source: vectorSource2,
