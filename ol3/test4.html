@@ -32,6 +32,7 @@
         Usuń wszystkie obiekty
     </div>
     <input type="button" id="customControlDelete" value="Usuń obiekt"/>
+    <input type="button" id="customControlUndo" value="Cofnij zmiany w warstwie"/>
     <input type="button" id="customControlSave" value="Zapisz zmiany w warstwie"/>
 </DIV>
 
@@ -370,6 +371,15 @@
 
     $('#customControlDelete').on('click', function () {
         deleteFeatures();
+    });
+
+    $('#customControlUndo').on('click', function () {
+        featuresToInsert = [];
+        featuresToUpdateObject = {};
+        featuresToDelete = [];
+        map.render();
+        if (selectInteraction) selectInteraction.getFeatures().clear();
+        clearDragIconPointFeatures();
     });
 
     $('#customControlSave').on('click', function () {
