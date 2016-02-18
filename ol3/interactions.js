@@ -24,7 +24,7 @@ function clearTransactionFeatures() {
     });
 }
 
-function clearDragIconPointFeatures() {
+function initiateDragIconPointFeatures() {
     dragIconPointFeatures = {};
     _.each(editableLayers, function (layer) {
         dragIconPointFeatures[layer.name] = [];
@@ -125,13 +125,13 @@ function addModifyInteraction(currentEditLayerName) {
 }
 
 function clearDragIconPointFeatures() {
-    _.each(_.values(editableLayers), function (layer) {
+    _.each(editableLayers, function (layer) {
         _.each(dragIconPointFeatures[layer.name], function (toDeleteFeat) {
             editableLayers[layer.name].vectorSource.removeFeature(toDeleteFeat);
         });
     });
 
-    clearDragIconPointFeatures();
+    initiateDragIconPointFeatures();
 }
 
 function onSelect(event) {
