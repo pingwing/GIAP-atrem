@@ -7,16 +7,31 @@ var modifyInteraction = null;
 var dragInteraction = null;
 var dragIconPointFeatures = [];
 
-var featuresToInsert = [];
+var featuresToInsert = {};
 var featuresToUpdateObject = {};
-var featuresToDelete = [];
+var featuresToDelete = {};
+
+function clearFeatures() {
+    featuresToInsert = {};
+    featuresToUpdateObject = {};
+    featuresToDelete = {};
+    _.each(editableLayers, function (layer) {
+        console.log('PINGWIN: layer', layer);
+        featuresToInsert[layer] = [];
+        featuresToUpdateObject[layer] = {};
+        featuresToDelete[layer] = [];
+    });
+}
+
+clearFeatures();
 
 function deleteFeatures() {
+    var currentEditLayer = this;
     var selectedFeat = selectInteraction.getFeatures();
     if (selectedFeat.getLength() > 0) {
         _.each(selectedFeat.getArray(), function (toDeleteFeat) {
             vectorSource.removeFeature(toDeleteFeat);
-            featuresToDelete.push(toDeleteFeat);
+            featuresToDelete[currentEditLayer].push(toDeleteFeat);
         });
         selectedFeat.clear();
         _.each(_.values(editableLayers), function (layer) {
@@ -29,12 +44,14 @@ function deleteFeatures() {
 }
 
 function modifiedFeatures(event) {
+    var currentEditLayer = this;
+    console.log('PINGWIN w modifiedFeatures: currentEditLayer', currentEditLayer);
     console.log('PINGWIN: event', event);
     var modifiedFeatures = event.features.getArray();
     if (event.features.getLength() > 0) {
         _.each(modifiedFeatures, function (modifiedFeat) {
             var modifiedFeatureId = modifiedFeat.id_;
-            featuresToUpdateObject[modifiedFeatureId] = modifiedFeat;
+            featuresToUpdateObject[currentEditLayer][modifiedFeatureId] = modifiedFeat;
 
             var WKTWriter = new ol.format.WKT();
             var featureWKT = WKTWriter.writeFeature(modifiedFeat);
@@ -48,6 +65,7 @@ function modifiedFeatures(event) {
 }
 
 function addedFeatures(event) {
+    var currentEditLayer = this;
     // create a unique id
     // it is later needed to delete features
     var id = uid();
@@ -60,7 +78,7 @@ function addedFeatures(event) {
     geometryInMapCRSClone.applyTransform(transformationFromWebToPL);
     addedFeature.set('geom', geometryInMapCRSClone);
 
-    featuresToInsert.push(addedFeature);
+    featuresToInsert[currentEditLayer].push(addedFeature);
 }
 
 // creates unique id's
@@ -91,7 +109,7 @@ function addModifyInteraction(currentEditLayer) {
     });
 
     map.addInteraction(modifyInteraction);
-    modifyInteraction.on('modifyend', modifiedFeatures);
+    modifyInteraction.on('modifyend', modifiedFeatures, currentEditLayer);
 }
 
 function clearDragIconPointFeatures (currentEditLayerVectorSource) {
@@ -104,10 +122,11 @@ function clearDragIconPointFeatures (currentEditLayerVectorSource) {
 }
 
 function onSelect(event) {
+    var currentEditLayer = this;
     if (event.deselected.length > 0) {
         map.removeInteraction(dragInteraction);
-        console.log('PINGWIN:onSelect deselect this', this);
-        clearDragIconPointFeatures(editableLayers[this].vectorSource);
+        console.log('PINGWIN:onSelect deselect currentEditLayer', currentEditLayer);
+        clearDragIconPointFeatures(editableLayers[currentEditLayer].vectorSource);
     }
 
     if (event.selected.length > 0) {
@@ -127,7 +146,7 @@ function onSelect(event) {
                 })
             })
         }));
-        editableLayers[this].vectorSource.addFeatures([dragIconPointFeature]);
+        editableLayers[currentEditLayer].vectorSource.addFeatures([dragIconPointFeature]);
 
         dragInteraction = new ol.interaction.Modify({
             features: new ol.Collection([dragIconPointFeature])
@@ -174,5 +193,5 @@ function addDrawInteraction(currentEditLayer, geometryType) {
     map.addInteraction(drawInteraction);
 
     // when a new feature has been drawn...
-    drawInteraction.on('drawend', addedFeatures);
+    drawInteraction.on('drawend', addedFeatures, currentEditLayer);
 }
