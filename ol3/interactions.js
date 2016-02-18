@@ -77,7 +77,7 @@ function addModifyInteraction(currentEditLayer) {
     map.addInteraction(selectInteraction);
     var selectedFeat = selectInteraction.getFeatures();
 
-    selectInteraction.on('select', onSelect);
+    selectInteraction.on('select', onSelect, currentEditLayer);
 
     modifyInteraction = new ol.interaction.Modify({
         features: selectedFeat,
@@ -123,7 +123,7 @@ function onSelect(event) {
                 })
             })
         }));
-        vectorSource.addFeatures([dragIconPointFeature]);
+        editableLayers[this].vectorSource.addFeatures([dragIconPointFeature]);
 
         dragInteraction = new ol.interaction.Modify({
             features: new ol.Collection([dragIconPointFeature])
