@@ -325,6 +325,7 @@
     };
 
     function modifiedFeatures(event) {
+        console.log('PINGWIN: event', event);
         var modifiedFeatures = event.features.getArray();
         if (event.features.getLength() > 0) {
             _.each(modifiedFeatures, function (modifiedFeat) {
