@@ -27,7 +27,7 @@ $('#customControlSave').on('click', function () {
     console.log('PINGWIN: featuresToInsert', featuresToInsert);
     console.log('PINGWIN: featuresToUpdateObject', featuresToUpdateObject);
     console.log('PINGWIN: featuresToDelete', featuresToDelete);
-    //transactWFS();
+    transactWFS();
     clearTransactionFeatures();
     if (selectInteraction) selectInteraction.getFeatures().clear();
     clearDragIconPointFeatures(editableLayers[$currentEditLayerChoice.val()].vectorSource);
