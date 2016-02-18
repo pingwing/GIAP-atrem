@@ -125,6 +125,7 @@ function addModifyInteraction(currentEditLayerName) {
 }
 
 function clearDragIconPointFeatures() {
+    console.log('PINGWIN: w clearDragIconPointFeatures');
     _.each(editableLayers, function (layer) {
         _.each(dragIconPointFeatures[layer.name], function (toDeleteFeat) {
             console.log('PINGWIN: toDeleteFeat', toDeleteFeat);
