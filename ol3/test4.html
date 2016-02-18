@@ -356,7 +356,7 @@
         var geometryInMapCRS = addedFeature.getGeometry();
         var geometryInMapCRSClone = geometryInMapCRS.clone();
         geometryInMapCRSClone.applyTransform(transformationFromWebToPL);
-        addedFeature.set('the_geom', geometryInMapCRSClone);
+        addedFeature.set('geom', geometryInMapCRSClone);
 
         featuresToInsert.push(addedFeature);
     }
@@ -426,7 +426,7 @@
             var geometryInMapCRSClone = geometryInMapCRS.clone();
             geometryInMapCRSClone.applyTransform(transformationFromWebToPL);
             geometryInMapCRSClone.applyTransform(transformationFlipCoords);
-            modifiedFeat.set('the_geom', geometryInMapCRSClone);
+            modifiedFeat.set('geom', geometryInMapCRSClone);
             featuresToUpdate.push(modifiedFeat);
         });
 
