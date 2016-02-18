@@ -34,7 +34,7 @@ var transactWFS = function () {
         var node = formatWFS.writeTransaction(_thisLayerFeaturesToInsert, _thisLayerFeaturesToUpdate, _thisLayerFeaturesToDelete, formatGML);
 
         if (_totalFeaturesInTransaction > 0) {
-            console.log('PINGWIN: w transactWFS');
+            console.log('PINGWIN: w transactWFS dla warstwy',layer.name, 'zmienia',_totalFeaturesInTransaction,'rekordów');
 
             removeLowerCaseGeometryNodeForInsert(node);
             removeNodeForWfsUpdate(node, "geometry");
