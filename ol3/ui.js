@@ -33,6 +33,7 @@ $('#customControlSave').on('click', function () {
 
 // get the interaction type
 var $interaction_type = $('[name="interaction_type"]');
+
 // rebuild interaction when changed
 $interaction_type.on('click', function (e) {
     // add new interaction
@@ -45,6 +46,7 @@ $interaction_type.on('click', function (e) {
 
 // rebuild interaction when the geometry type is changed
 $drawGeometryType.on('change', function (e) {
+    console.log('PINGWIN: drawingMode', drawingMode);
     map.removeInteraction(drawInteraction);
     addDrawInteraction(currentEditLayer, drawingMode);
 });
