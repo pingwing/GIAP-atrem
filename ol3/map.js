@@ -4,7 +4,7 @@
 var scaleLineControl = new ol.control.ScaleLine();
 
 var mousePositionControl = new ol.control.MousePosition({
-    coordinateFormat: ol.coordinate.createStringXY(4),
+    coordinateFormat: ol.coordinate.createStringXY(8),
     projection: 'EPSG:4326',
     // comment the following two lines to have the mouse position
     // be placed within the map.
