@@ -127,6 +127,7 @@ function addModifyInteraction(currentEditLayerName) {
 function clearDragIconPointFeatures() {
     _.each(editableLayers, function (layer) {
         _.each(dragIconPointFeatures[layer.name], function (toDeleteFeat) {
+            console.log('PINGWIN: toDeleteFeat', toDeleteFeat);
             editableLayers[layer.name].vectorSource.removeFeature(toDeleteFeat);
         });
     });
