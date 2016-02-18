@@ -36,7 +36,7 @@ $('#customControlSave').on('click', function () {
 
 $currentEditLayerChoice.on('change', function() {
     if ($interaction_type.val() === 'draw') {
-        $drawGeometryType.prop( "disabled", false );
+
         addDrawInteraction($currentEditLayerChoice.val(), $drawGeometryType.val());
     } else {
         $drawGeometryType.prop( "disabled", true );
@@ -48,8 +48,10 @@ $currentEditLayerChoice.on('change', function() {
 $interaction_type.on('click', function (e) {
     // add new interaction
     if (this.value === 'draw') {
+        $drawGeometryType.prop( "disabled", false );
         addDrawInteraction($currentEditLayerChoice.val(), $drawGeometryType.val());
     } else {
+        $drawGeometryType.prop( "disabled", true );
         addModifyInteraction($currentEditLayerChoice.val());
     }
 });
