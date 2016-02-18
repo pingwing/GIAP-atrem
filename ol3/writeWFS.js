@@ -1,9 +1,6 @@
 /**
  * Created by przemek on 18.02.2016.
  */
-/**
- * Created by przemek on 18.02.2016.
- */
 
 var formatWFS = new ol.format.WFS();
 var formatGML = new ol.format.GML({
