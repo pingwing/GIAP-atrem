@@ -31,7 +31,7 @@ $('#customControlSave').on('click', function () {
     featuresToUpdateObject = {};
     featuresToDelete = [];
     if (selectInteraction) selectInteraction.getFeatures().clear();
-    clearDragIconPointFeatures();
+    clearDragIconPointFeatures(editableLayers[$currentEditLayerChoice.val()].vectorSource);
 });
 
 $currentEditLayerChoice.on('change', function () {
