@@ -17,8 +17,9 @@ $('#customControlUndo').on('click', function () {
     featuresToDelete = [];
     if (selectInteraction) selectInteraction.getFeatures().clear();
     clearDragIconPointFeatures();
-    vector.getSource().clear();
-    vector2.getSource().clear();
+    _.each(_.values(editableLayers), function (layer) {
+        layer.vectorSource.clear();
+    });
 });
 
 $('#customControlSave').on('click', function () {

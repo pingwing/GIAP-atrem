@@ -161,7 +161,7 @@ function addDrawInteraction(currentEditLayer, geometryType) {
 
     // create the interaction
     drawInteraction = new ol.interaction.Draw({
-        source: currentEditLayer.vectorSource,
+        source: editableLayers[currentEditLayer].vectorSource,
         type: /** @type {ol.geom.GeometryType} */ (geometryType)
     });
     // add it to the map
