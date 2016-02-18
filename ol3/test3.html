@@ -120,12 +120,28 @@
         });
     };
 
+    function createStrokeStyle(feature, resolution) {
+        var featureValue = feature.get('srednica');
+        var diameter = 400;
+        if (featureValue) {
+            diameter = featureValue;
+        }
+
+        var strokeWidth = 3;
+        if (diameter < 150) strokeWidth = 1;
+        else if (diameter >= 150 && diameter < 350) strokeWidth = 2;
+        else if (diameter >= 350 && diameter < 500) strokeWidth = 3;
+        else if (diameter >= 500) strokeWidth = 4;
+
+        return new ol.style.Stroke({
+            color: 'rgba(255, 239, 8, 255)',
+            width: strokeWidth
+        });
+    }
+
     function polygonStyleFunction(feature, resolution) {
         return new ol.style.Style({
-            stroke: new ol.style.Stroke({
-                color: 'blue',
-                width: 3
-            }),
+            stroke: createStrokeStyle(feature, resolution),
             fill: new ol.style.Fill({
                 color: 'rgba(0, 0, 255, 0.05)'
             }),
