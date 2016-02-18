@@ -15,12 +15,10 @@ function clearTransactionFeatures() {
     featuresToInsert = {};
     featuresToUpdateObject = {};
     featuresToDelete = {};
-    dragIconPointFeatures = {};
     _.each(editableLayers, function (layer) {
         featuresToInsert[layer.name] = [];
         featuresToUpdateObject[layer.name] = {};
         featuresToDelete[layer.name] = [];
-        dragIconPointFeatures[layer.name] = [];
     });
 }
 
@@ -32,6 +30,7 @@ function initiateDragIconPointFeatures() {
 }
 
 clearTransactionFeatures();
+initiateDragIconPointFeatures();
 
 function deleteFeatures(currentEditLayerName) {
     var selectedFeat = selectInteraction.getFeatures();
