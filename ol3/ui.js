@@ -30,7 +30,7 @@ $('#customControlSave').on('click', function () {
     transactWFS();
     clearTransactionFeatures();
     if (selectInteraction) selectInteraction.getFeatures().clear();
-    clearDragIconPointFeatures($currentEditLayerChoice.val());
+    clearDragIconPointFeatures();
 });
 
 $currentEditLayerChoice.on('change', function () {

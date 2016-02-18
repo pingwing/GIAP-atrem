@@ -177,6 +177,7 @@ function onSelect(event) {
 
         map.addInteraction(dragInteraction);
         dragIconPointFeatures[currentEditLayerName].push(dragIconPointFeature);
+        console.log('PINGWIN: dragIconPointFeatures', dragIconPointFeatures);
     }
 }
 
