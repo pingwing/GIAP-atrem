@@ -377,7 +377,8 @@
         featuresToInsert = [];
         featuresToUpdateObject = {};
         featuresToDelete = [];
-        map.render();
+        vector.getSource().clear();
+        vector2.getSource().clear();
         if (selectInteraction) selectInteraction.getFeatures().clear();
         clearDragIconPointFeatures();
     });
