@@ -62,7 +62,7 @@ function createStrokeStyle(feature, resolution) {
     if (styleValue < 40) {strokeWidth = 2; strokeColor = 'rgba(255, 133, 62, 255)'}
     else if (styleValue >= 40 && styleValue < 60) strokeWidth = 3;
     else if (styleValue >= 60 && styleValue < 100) strokeWidth = 4;
-    else if (styleValue >= 100) strokeWidth = 5;
+    else if (styleValue >= 100) {strokeWidth = 5; strokeColor = 'rgba(0, 255, 0, 255)'}
 
     return new ol.style.Stroke({
         color: strokeColor,
