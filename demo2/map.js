@@ -72,20 +72,20 @@ var wielkopolskie_railways = new editableLayer('atrem', 'wielkopolskie-railways'
 var wielkopolskie_roads = new editableLayer('atrem', 'wielkopolskie-roads', 'http://uslugi.giap.pl/geoserver/wfs');
 
 var editableLayers = {
-    'lodzkie_buildings': lodzkie_buildings,
-    'lodzkie_railways': lodzkie_railways,
-    'lodzkie_roads': lodzkie_roads,
-    'malopolskie_buildings': malopolskie_buildings,
-    'malopolskie_railways': malopolskie_railways,
-    'malopolskie_roads': malopolskie_roads,
-    'podkarpackie_buildings': podkarpackie_buildings,
-    'podkarpackie_railways': podkarpackie_railways,
-    'swietokrzyskie_buildings': swietokrzyskie_buildings,
-    'swietokrzyskie_railways': swietokrzyskie_railways,
-    'swietokrzyskie_roads': swietokrzyskie_roads,
-    'wielkopolskie_buildings': wielkopolskie_buildings,
-    'wielkopolskie_railways': wielkopolskie_railways,
-    'wielkopolskie_roads': wielkopolskie_roads
+    'lodzkie-buildings': lodzkie_buildings,
+    'lodzkie-railways': lodzkie_railways,
+    'lodzkie-roads': lodzkie_roads,
+    'malopolskie-buildings': malopolskie_buildings,
+    'malopolskie-railways': malopolskie_railways,
+    'malopolskie-roads': malopolskie_roads,
+    'podkarpackie-buildings': podkarpackie_buildings,
+    'podkarpackie-railways': podkarpackie_railways,
+    'swietokrzyskie-buildings': swietokrzyskie_buildings,
+    'swietokrzyskie-railways': swietokrzyskie_railways,
+    'swietokrzyskie-roads': swietokrzyskie_roads,
+    'wielkopolskie-buildings': wielkopolskie_buildings,
+    'wielkopolskie-railways': wielkopolskie_railways,
+    'wielkopolskie-roads': wielkopolskie_roads
 };
 
 _.each(_.values(editableLayers), function (layer) {
