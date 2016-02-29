@@ -52,7 +52,7 @@ var editableLayer = function (workspace, layerName, WFSurl) {
     this.vector = new ol.layer.Vector({
         source: this.vectorSource,
         style: polygonStyleFunction,
-        maxResolution: 5
+        maxResolution: 2
     });
 };
 
