@@ -1,7 +1,7 @@
 /**
  * Created by przemek on 18.02.2016.
  */
-var getText = function(feature, resolution) {
+var getText = function (feature, resolution) {
     var type = 'normal';
     var maxResolution = 100;
     var featureValue = feature.get('atrs1');
@@ -23,7 +23,7 @@ var getText = function(feature, resolution) {
     return text;
 };
 
-var createTextStyle = function(feature, resolution) {
+var createTextStyle = function (feature, resolution) {
     var align = 'center';
     var baseline = 'middle';
     var size = '10px';
@@ -51,18 +51,28 @@ var createTextStyle = function(feature, resolution) {
 };
 
 function createStrokeStyle(feature, resolution) {
+    var maxResolution = 5;
     var featureValue = feature.get('maxspeed');
     var styleValue = 50;
     if (featureValue) {
         styleValue = featureValue;
     }
 
-    var strokeColor = 'rgba(255, 239, 8, 255)';
     var strokeWidth = 3;
-    if (styleValue < 40) {strokeWidth = 2; strokeColor = 'rgba(255, 133, 62, 255)'}
+    if (resolution > maxResolution) {
+        strokeWidth = 0;
+    }
+    var strokeColor = 'rgba(255, 239, 8, 255)';
+
+    if (styleValue < 40) {
+        strokeColor = 'rgba(255, 133, 62, 255)'
+    }
     else if (styleValue >= 40 && styleValue < 60) strokeWidth = 3;
     else if (styleValue >= 60 && styleValue < 100) strokeWidth = 4;
-    else if (styleValue >= 100) {strokeWidth = 5; strokeColor = 'rgba(0, 255, 0, 255)'}
+    else if (styleValue >= 100) {
+        strokeWidth = 5;
+        strokeColor = 'rgba(0, 255, 0, 255)'
+    }
 
     return new ol.style.Stroke({
         color: strokeColor,
