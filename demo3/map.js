@@ -44,7 +44,7 @@ var editableLayer = function (workspace, layerName, WFSurl, maxResolution, cqlFi
             console.log('PINGWIN: resolution', resolution);
             var _cqlFilter = cqlFilter(resolution);
             var _cqlFilterToURL = '';
-            if (length(_cqlFilter) > 0) _cqlFilterToURL = 'CQL_FILTER='+_cqlFilter;
+            if (_cqlFilter.length > 0) _cqlFilterToURL = 'CQL_FILTER='+_cqlFilter;
             console.log('PINGWIN: _cqlFilterToURL', _cqlFilterToURL);
             return WFSurl + '?service=WFS&' +
                 'version=1.1.0&request=GetFeature&typename=' + workspace + ':' + layerName + '&' +
