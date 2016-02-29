@@ -59,18 +59,18 @@ var editableLayer = function (workspace, layerName, WFSurl, maxResolution) {
 };
 
 var lodzkie_buildings = new editableLayer('atrem', 'lodzkie-buildings', 'http://uslugi.giap.pl/geoserver/wfs', 2);
-var lodzkie_railways = new editableLayer('atrem', 'lodzkie-railways', 'http://uslugi.giap.pl/geoserver/wfs', 1000);
+var lodzkie_railways = new editableLayer('atrem', 'lodzkie-railways', 'http://uslugi.giap.pl/geoserver/wfs', 10000);
 var lodzkie_roads = new editableLayer('atrem', 'lodzkie-roads', 'http://uslugi.giap.pl/geoserver/wfs', 30);
 var malopolskie_buildings = new editableLayer('atrem', 'malopolskie-buildings', 'http://uslugi.giap.pl/geoserver/wfs', 2);
-var malopolskie_railways = new editableLayer('atrem', 'malopolskie-railways', 'http://uslugi.giap.pl/geoserver/wfs', 1000);
+var malopolskie_railways = new editableLayer('atrem', 'malopolskie-railways', 'http://uslugi.giap.pl/geoserver/wfs', 10000);
 var malopolskie_roads = new editableLayer('atrem', 'malopolskie-roads', 'http://uslugi.giap.pl/geoserver/wfs', 30);
 var podkarpackie_buildings = new editableLayer('atrem', 'podkarpackie-buildings', 'http://uslugi.giap.pl/geoserver/wfs', 2);
-var podkarpackie_railways = new editableLayer('atrem', 'podkarpackie-railways', 'http://uslugi.giap.pl/geoserver/wfs', 1000);
+var podkarpackie_railways = new editableLayer('atrem', 'podkarpackie-railways', 'http://uslugi.giap.pl/geoserver/wfs', 10000);
 var swietokrzyskie_buildings = new editableLayer('atrem', 'swietokrzyskie-buildings', 'http://uslugi.giap.pl/geoserver/wfs', 2);
-var swietokrzyskie_railways = new editableLayer('atrem', 'swietokrzyskie-railways', 'http://uslugi.giap.pl/geoserver/wfs', 1000);
+var swietokrzyskie_railways = new editableLayer('atrem', 'swietokrzyskie-railways', 'http://uslugi.giap.pl/geoserver/wfs', 10000);
 var swietokrzyskie_roads = new editableLayer('atrem', 'swietokrzyskie-roads', 'http://uslugi.giap.pl/geoserver/wfs', 30);
 var wielkopolskie_buildings = new editableLayer('atrem', 'wielkopolskie-buildings', 'http://uslugi.giap.pl/geoserver/wfs', 2);
-var wielkopolskie_railways = new editableLayer('atrem', 'wielkopolskie-railways', 'http://uslugi.giap.pl/geoserver/wfs', 1000);
+var wielkopolskie_railways = new editableLayer('atrem', 'wielkopolskie-railways', 'http://uslugi.giap.pl/geoserver/wfs', 10000);
 var wielkopolskie_roads = new editableLayer('atrem', 'wielkopolskie-roads', 'http://uslugi.giap.pl/geoserver/wfs', 30);
 
 var editableLayers = {
