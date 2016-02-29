@@ -51,7 +51,7 @@ var createTextStyle = function (feature, resolution) {
 };
 
 function createStrokeStyle(feature, resolution) {
-    var maxResolution = 5;
+    var maxResolution = 4;
     var featureValue = feature.get('maxspeed');
     var styleValue = 50;
     if (featureValue) {
