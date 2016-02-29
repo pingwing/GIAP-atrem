@@ -40,7 +40,9 @@ var editableLayer = function (workspace, layerName, WFSurl, maxResolution) {
 
     this.vectorSource = new ol.source.Vector({
         format: new ol.format.GeoJSON(),
-        url: function (extent) {
+        url: function (extent, resolution, projection) {
+            console.log('PINGWIN: resolution', resolution);
+            console.log('PINGWIN: projection', projection);
             return WFSurl + '?service=WFS&' +
                 'version=1.1.0&request=GetFeature&typename=' + workspace + ':' + layerName + '&' +
                 'outputFormat=application/json&srsname=EPSG:3857&' +
