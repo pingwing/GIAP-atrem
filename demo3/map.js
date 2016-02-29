@@ -33,7 +33,7 @@ var map = new ol.Map({
     ])
 });
 
-var editableLayer = function (workspace, layerName, WFSurl, maxResolution) {
+var editableLayer = function (workspace, layerName, WFSurl, maxResolution, cqlFilter) {
     this.maxResolution = typeof this.maxResolution !== 'undefined' ? this.maxResolution : 2; //default value = 2
 
     this.name = layerName;
@@ -42,11 +42,15 @@ var editableLayer = function (workspace, layerName, WFSurl, maxResolution) {
         format: new ol.format.GeoJSON(),
         url: function (extent, resolution, projection) {
             console.log('PINGWIN: resolution', resolution);
-            console.log('PINGWIN: projection', projection);
+            var _cqlFilter = cqlFilter(resolution);
+            var _cqlFilterToURL = '';
+            if (length(_cqlFilter) > 0) _cqlFilterToURL = 'CQL_FILTER='+_cqlFilter;
+            console.log('PINGWIN: _cqlFilterToURL', _cqlFilterToURL);
             return WFSurl + '?service=WFS&' +
                 'version=1.1.0&request=GetFeature&typename=' + workspace + ':' + layerName + '&' +
                 'outputFormat=application/json&srsname=EPSG:3857&' +
-                'bbox=' + extent.join(',') + ',EPSG:3857';
+                'bbox=' + extent.join(',') + ',EPSG:3857&' +
+                _cqlFilterToURL;
         },
         strategy: ol.loadingstrategy.tile(ol.tilegrid.createXYZ({
             maxZoom: 19
@@ -60,7 +64,15 @@ var editableLayer = function (workspace, layerName, WFSurl, maxResolution) {
     });
 };
 
-var drogipolska = new editableLayer('atrem', 'drogipolska', 'http://uslugi.giap.pl/geoserver/wfs', 1000);
+var cqlFilterDrogiPolska = function(resolution) {
+    var _cqlFilter = '';
+    if (resolution > 5) {
+        _cqlFilter = 'maxspeed>80';
+    }
+    return _cqlFilter;
+};
+
+var drogipolska = new editableLayer('atrem', 'drogipolska', 'http://uslugi.giap.pl/geoserver/wfs', 1000, cqlFilterDrogiPolska);
 var ugg_all_l = new editableLayer('atrem', 'ugg_all_l', 'http://uslugi.giap.pl/geoserver/wfs', 2);
 var ugg_all_p = new editableLayer('atrem', 'ugg_all_p', 'http://uslugi.giap.pl/geoserver/wfs', 2);
 var ugg_all_s = new editableLayer('atrem', 'ugg_all_s', 'http://uslugi.giap.pl/geoserver/wfs', 2);
