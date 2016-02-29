@@ -33,7 +33,9 @@ var map = new ol.Map({
     ])
 });
 
-var editableLayer = function (workspace, layerName, WFSurl) {
+var editableLayer = function (workspace, layerName, WFSurl, maxResolution) {
+    this.maxResolution = typeof this.maxResolution !== 'undefined' ? this.maxResolution : 2; //default value = 2
+
     this.name = layerName;
 
     this.vectorSource = new ol.source.Vector({
@@ -52,24 +54,24 @@ var editableLayer = function (workspace, layerName, WFSurl) {
     this.vector = new ol.layer.Vector({
         source: this.vectorSource,
         style: polygonStyleFunction,
-        maxResolution: 2
+        maxResolution: maxResolution
     });
 };
 
-var lodzkie_buildings = new editableLayer('atrem', 'lodzkie-buildings', 'http://uslugi.giap.pl/geoserver/wfs');
-var lodzkie_railways = new editableLayer('atrem', 'lodzkie-railways', 'http://uslugi.giap.pl/geoserver/wfs');
-var lodzkie_roads = new editableLayer('atrem', 'lodzkie-roads', 'http://uslugi.giap.pl/geoserver/wfs');
-var malopolskie_buildings = new editableLayer('atrem', 'malopolskie-buildings', 'http://uslugi.giap.pl/geoserver/wfs');
-var malopolskie_railways = new editableLayer('atrem', 'malopolskie-railways', 'http://uslugi.giap.pl/geoserver/wfs');
-var malopolskie_roads = new editableLayer('atrem', 'malopolskie-roads', 'http://uslugi.giap.pl/geoserver/wfs');
-var podkarpackie_buildings = new editableLayer('atrem', 'podkarpackie-buildings', 'http://uslugi.giap.pl/geoserver/wfs');
-var podkarpackie_railways = new editableLayer('atrem', 'podkarpackie-railways', 'http://uslugi.giap.pl/geoserver/wfs');
-var swietokrzyskie_buildings = new editableLayer('atrem', 'swietokrzyskie-buildings', 'http://uslugi.giap.pl/geoserver/wfs');
-var swietokrzyskie_railways = new editableLayer('atrem', 'swietokrzyskie-railways', 'http://uslugi.giap.pl/geoserver/wfs');
-var swietokrzyskie_roads = new editableLayer('atrem', 'swietokrzyskie-roads', 'http://uslugi.giap.pl/geoserver/wfs');
-var wielkopolskie_buildings = new editableLayer('atrem', 'wielkopolskie-buildings', 'http://uslugi.giap.pl/geoserver/wfs');
-var wielkopolskie_railways = new editableLayer('atrem', 'wielkopolskie-railways', 'http://uslugi.giap.pl/geoserver/wfs');
-var wielkopolskie_roads = new editableLayer('atrem', 'wielkopolskie-roads', 'http://uslugi.giap.pl/geoserver/wfs');
+var lodzkie_buildings = new editableLayer('atrem', 'lodzkie-buildings', 'http://uslugi.giap.pl/geoserver/wfs', 2);
+var lodzkie_railways = new editableLayer('atrem', 'lodzkie-railways', 'http://uslugi.giap.pl/geoserver/wfs', 10);
+var lodzkie_roads = new editableLayer('atrem', 'lodzkie-roads', 'http://uslugi.giap.pl/geoserver/wfs', 10);
+var malopolskie_buildings = new editableLayer('atrem', 'malopolskie-buildings', 'http://uslugi.giap.pl/geoserver/wfs', 2);
+var malopolskie_railways = new editableLayer('atrem', 'malopolskie-railways', 'http://uslugi.giap.pl/geoserver/wfs', 10);
+var malopolskie_roads = new editableLayer('atrem', 'malopolskie-roads', 'http://uslugi.giap.pl/geoserver/wfs', 10);
+var podkarpackie_buildings = new editableLayer('atrem', 'podkarpackie-buildings', 'http://uslugi.giap.pl/geoserver/wfs', 2);
+var podkarpackie_railways = new editableLayer('atrem', 'podkarpackie-railways', 'http://uslugi.giap.pl/geoserver/wfs', 10);
+var swietokrzyskie_buildings = new editableLayer('atrem', 'swietokrzyskie-buildings', 'http://uslugi.giap.pl/geoserver/wfs', 2);
+var swietokrzyskie_railways = new editableLayer('atrem', 'swietokrzyskie-railways', 'http://uslugi.giap.pl/geoserver/wfs', 10);
+var swietokrzyskie_roads = new editableLayer('atrem', 'swietokrzyskie-roads', 'http://uslugi.giap.pl/geoserver/wfs', 10);
+var wielkopolskie_buildings = new editableLayer('atrem', 'wielkopolskie-buildings', 'http://uslugi.giap.pl/geoserver/wfs', 2);
+var wielkopolskie_railways = new editableLayer('atrem', 'wielkopolskie-railways', 'http://uslugi.giap.pl/geoserver/wfs', 10);
+var wielkopolskie_roads = new editableLayer('atrem', 'wielkopolskie-roads', 'http://uslugi.giap.pl/geoserver/wfs', 10);
 
 var editableLayers = {
     'lodzkie-buildings': lodzkie_buildings,
