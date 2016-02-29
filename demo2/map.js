@@ -22,7 +22,7 @@ var map = new ol.Map({
     ],
     view: new ol.View({
         center: ol.proj.fromLonLat([16.916667, 52.4]),
-        zoom: 16
+        zoom: 18
     }),
     controls: ol.control.defaults({
         attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
