@@ -51,18 +51,18 @@ var createTextStyle = function(feature, resolution) {
 };
 
 function createStrokeStyle(feature, resolution) {
-    var featureValue = feature.get('srednica');
-    var diameter = 400;
+    var featureValue = feature.get('maxspeed');
+    var styleValue = 50;
     if (featureValue) {
-        diameter = featureValue;
+        styleValue = featureValue;
     }
 
     var strokeColor = 'rgba(255, 239, 8, 255)';
     var strokeWidth = 3;
-    if (diameter < 150) {strokeWidth = 2; strokeColor = 'rgba(255, 133, 62, 255)'}
-    else if (diameter >= 150 && diameter < 350) strokeWidth = 3;
-    else if (diameter >= 350 && diameter < 500) strokeWidth = 4;
-    else if (diameter >= 500) strokeWidth = 5;
+    if (styleValue < 40) {strokeWidth = 2; strokeColor = 'rgba(255, 133, 62, 255)'}
+    else if (styleValue >= 40 && styleValue < 60) strokeWidth = 3;
+    else if (styleValue >= 60 && styleValue < 100) strokeWidth = 4;
+    else if (styleValue >= 100) strokeWidth = 5;
 
     return new ol.style.Stroke({
         color: strokeColor,
