@@ -45,7 +45,7 @@ var editableLayer = function (workspace, layerName, WFSurl, maxResolution, cqlFi
             };
             var _cqlFilterToURL = '';
             if (_cqlFilter.length > 0) {
-                _cqlFilterToURL = 'CQL_FILTER=' + _cqlFilter + ' AND BBOX(geom, ' + extent.join(',') + ')';
+                _cqlFilterToURL = 'CQL_FILTER=' + _cqlFilter;// + ' AND BBOX(geom, ' + extent.join(',') + ')';
             }
             else _cqlFilterToURL = 'bbox=' + extent.join(',') + ',EPSG:3857';
 
