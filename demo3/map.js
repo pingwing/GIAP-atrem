@@ -72,6 +72,8 @@ var cqlFilterDrogiPolska = function (resolution) {
     var _cqlFilter = '';
     if (resolution > 5) {
         _cqlFilter = 'maxspeed>100';
+    } else if (resolution > 350) {
+        _cqlFilter = 'maxspeed>80';
     }
     return _cqlFilter;
 };
