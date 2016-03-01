@@ -33,27 +33,16 @@ var map = new ol.Map({
     ])
 });
 
-var cqlFilter;
 var editableLayer = function (workspace, layerName, WFSurl, maxResolution, cqlFilter) {
-    this.maxResolution = typeof maxResolution !== 'undefined' ? maxResolution : 2; //default value = 2
-    console.log('PINGWIN: cqlFilter', cqlFilter);
-    if (typeof cqlFilter !== 'undefined') {
-        this.cqlFilter = cqlFilter;
-    } else {
-        console.log('PINGWIN: here');
-        this.cqlFilter = function () {
-            return '';
-        };
-    } //default cqlFilter function
-
     this.name = layerName;
 
     this.vectorSource = new ol.source.Vector({
         format: new ol.format.GeoJSON(),
         url: function (extent, resolution, projection) {
             console.log('PINGWIN: resolution', resolution);
-            console.log('PINGWIN: this.cqlFilter', this.cqlFilter);
-            var _cqlFilter = this.cqlFilter(resolution);
+            var _cqlFilter = typeof cqlFilter !== 'undefined' ? cqlFilter(resolution) : function () {
+                return '';
+            };
             var _cqlFilterToURL = '';
             if (_cqlFilter.length > 0) {
                 _cqlFilterToURL = 'CQL_FILTER=' + _cqlFilter + ' AND BBOX(geom, ' + extent.join(',') + ')';
@@ -74,8 +63,9 @@ var editableLayer = function (workspace, layerName, WFSurl, maxResolution, cqlFi
     this.vector = new ol.layer.Vector({
         source: this.vectorSource,
         style: polygonStyleFunction,
-        maxResolution: this.maxResolution
-    });
+        maxResolution: typeof maxResolution !== 'undefined' ? maxResolution : 2
+    })
+    ;
 };
 
 var cqlFilterDrogiPolska = function (resolution) {
