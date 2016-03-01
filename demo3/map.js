@@ -33,12 +33,14 @@ var map = new ol.Map({
     ])
 });
 
+var cqlFilter;
 var editableLayer = function (workspace, layerName, WFSurl, maxResolution, cqlFilter) {
     this.maxResolution = typeof maxResolution !== 'undefined' ? maxResolution : 2; //default value = 2
     console.log('PINGWIN: cqlFilter', cqlFilter);
     if (typeof cqlFilter !== 'undefined') {
         this.cqlFilter = cqlFilter;
     } else {
+        console.log('PINGWIN: here');
         this.cqlFilter = function () {
             return '';
         };
