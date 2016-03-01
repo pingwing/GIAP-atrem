@@ -76,7 +76,7 @@ var cqlFilterDrogiPolska = function (resolution) {
     return _cqlFilter;
 };
 
-var drogipolska = new editableLayer('atrem', 'drogipolska', 'http://uslugi.giap.pl/geoserver/wfs', 1000, cqlFilterDrogiPolska);
+var drogipolska = new editableLayer('atrem', 'drogipolska', 'http://uslugi.giap.pl/geoserver/wfs', 5000, cqlFilterDrogiPolska);
 var ugg_all_l = new editableLayer('atrem', 'ugg_all_l', 'http://uslugi.giap.pl/geoserver/wfs', 2);
 var ugg_all_p = new editableLayer('atrem', 'ugg_all_p', 'http://uslugi.giap.pl/geoserver/wfs', 2);
 var ugg_all_s = new editableLayer('atrem', 'ugg_all_s', 'http://uslugi.giap.pl/geoserver/wfs', 2);
