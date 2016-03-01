@@ -44,12 +44,15 @@ var editableLayer = function (workspace, layerName, WFSurl, maxResolution, cqlFi
             console.log('PINGWIN: resolution', resolution);
             var _cqlFilter = cqlFilter(resolution);
             var _cqlFilterToURL = '';
-            if (_cqlFilter.length > 0) _cqlFilterToURL = 'CQL_FILTER='+_cqlFilter;
+            if (_cqlFilter.length > 0) {
+                _cqlFilterToURL = 'CQL_FILTER=' + _cqlFilter + ' AND BBOX(geom, '+extent.join(',')+')';
+            }
+            else _cqlFilterToURL = 'bbox=' + extent.join(',') + ',EPSG:3857';
+
             console.log('PINGWIN: _cqlFilterToURL', _cqlFilterToURL);
             return WFSurl + '?service=WFS&' +
                 'version=1.1.0&request=GetFeature&typename=' + workspace + ':' + layerName + '&' +
                 'outputFormat=application/json&srsname=EPSG:3857&' +
-                'bbox=' + extent.join(',') + ',EPSG:3857&' +
                 _cqlFilterToURL;
         },
         strategy: ol.loadingstrategy.tile(ol.tilegrid.createXYZ({
@@ -64,7 +67,7 @@ var editableLayer = function (workspace, layerName, WFSurl, maxResolution, cqlFi
     });
 };
 
-var cqlFilterDrogiPolska = function(resolution) {
+var cqlFilterDrogiPolska = function (resolution) {
     var _cqlFilter = '';
     if (resolution > 5) {
         _cqlFilter = 'maxspeed>80';
