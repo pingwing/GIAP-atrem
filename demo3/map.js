@@ -50,6 +50,7 @@ var editableLayer = function (workspace, layerName, WFSurl, maxResolution, cqlFi
         format: new ol.format.GeoJSON(),
         url: function (extent, resolution, projection) {
             console.log('PINGWIN: resolution', resolution);
+            console.log('PINGWIN: this.cqlFilter', this.cqlFilter);
             var _cqlFilter = this.cqlFilter(resolution);
             var _cqlFilterToURL = '';
             if (_cqlFilter.length > 0) {
