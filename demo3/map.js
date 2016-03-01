@@ -35,6 +35,7 @@ var map = new ol.Map({
 
 var editableLayer = function (workspace, layerName, WFSurl, maxResolution, cqlFilter) {
     this.maxResolution = typeof this.maxResolution !== 'undefined' ? this.maxResolution : 2; //default value = 2
+    this.cqlFilter = typeof this.cqlFilter !== 'undefined' ? this.cqlFilter : function() {return ''}; //default cqlFilter function
 
     this.name = layerName;
 
