@@ -34,8 +34,8 @@ var map = new ol.Map({
 });
 
 var editableLayer = function (workspace, layerName, WFSurl, maxResolution, cqlFilter) {
-    this.maxResolution = typeof this.maxResolution !== 'undefined' ? this.maxResolution : 2; //default value = 2
-    this.cqlFilter = typeof this.cqlFilter !== 'undefined' ? this.cqlFilter : function() {return ''}; //default cqlFilter function
+    this.maxResolution = typeof maxResolution !== 'undefined' ? this.maxResolution : 2; //default value = 2
+    this.cqlFilter = typeof cqlFilter !== 'undefined' ? this.cqlFilter : function() {return ''}; //default cqlFilter function
 
     this.name = layerName;
 
@@ -43,7 +43,7 @@ var editableLayer = function (workspace, layerName, WFSurl, maxResolution, cqlFi
         format: new ol.format.GeoJSON(),
         url: function (extent, resolution, projection) {
             console.log('PINGWIN: resolution', resolution);
-            var _cqlFilter = cqlFilter(resolution);
+            var _cqlFilter = this.cqlFilter(resolution);
             var _cqlFilterToURL = '';
             if (_cqlFilter.length > 0) {
                 _cqlFilterToURL = 'CQL_FILTER=' + _cqlFilter + ' AND BBOX(geom, '+extent.join(',')+')';
@@ -64,7 +64,7 @@ var editableLayer = function (workspace, layerName, WFSurl, maxResolution, cqlFi
     this.vector = new ol.layer.Vector({
         source: this.vectorSource,
         style: polygonStyleFunction,
-        maxResolution: maxResolution
+        maxResolution: this.maxResolution
     });
 };
 
