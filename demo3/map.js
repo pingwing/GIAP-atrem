@@ -93,7 +93,7 @@ var editableLayersToLoad = [
 
 var editableLayers = {};
 _.each(editableLayersToLoad, function (editableLayerToLoad) {
-    var newLayer = new editableLayer.apply(editableLayerToLoad);
+    var newLayer = new editableLayer(...editableLayerToLoad);
     editableLayers[newLayer.name] = newLayer;
 });
 
