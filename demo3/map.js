@@ -91,9 +91,17 @@ var editableLayersToLoad = [
     ['atrem', 'uww_all_t', 'http://uslugi.giap.pl/geoserver/wfs', 2]
 ];
 
+function construct(constructor, args) {
+    function F() {
+        return constructor.apply(this, args);
+    }
+    F.prototype = constructor.prototype;
+    return new F();
+}
+
 var editableLayers = {};
 _.each(editableLayersToLoad, function (editableLayerToLoad) {
-    var newLayer = new editableLayer(...editableLayerToLoad);
+    var newLayer = construct(editableLayer, editableLayerToLoad);
     editableLayers[newLayer.name] = newLayer;
 });
 
