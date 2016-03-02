@@ -34,7 +34,7 @@ var map = new ol.Map({
     ])
 });
 
-var editableLayer = function (workspace, layerName, WFSurl, maxResolution, cqlFilter) {
+var editableLayer = function (workspace, layerName, WFSurl, resolutionVisibility, cqlFilter) {
     this.name = layerName;
 
     this.vectorSource = new ol.source.Vector({
@@ -64,7 +64,8 @@ var editableLayer = function (workspace, layerName, WFSurl, maxResolution, cqlFi
     this.vector = new ol.layer.Vector({
         source: this.vectorSource,
         style: polygonStyleFunction,
-        maxResolution: typeof maxResolution !== 'undefined' ? maxResolution : 2
+        maxResolution: typeof resolutionVisibility.maxResolution !== 'undefined' ? resolutionVisibility.maxResolution : 2,
+        minResolution: typeof resolutionVisibility.minResolution !== 'undefined' ? resolutionVisibility.minResolution : 0
     })
     ;
 };
@@ -79,22 +80,23 @@ var cqlFilterDrogiPolska = function (resolution) {
     return _cqlFilter;
 };
 
-var nonEditableVectorLayersToLoad = [['atrem', 'drogipolska', 'http://uslugi.giap.pl/geoserver/wfs', 5000, cqlFilterDrogiPolska]];
+var nonEditableVectorLayersToLoad = [['atrem', 'drogipolska', 'http://uslugi.giap.pl/geoserver/wfs', {maxResolution: 5000, minResolution: 5.000001}, cqlFilterDrogiPolska]];
 
 var editableLayersToLoad = [
-    ['atrem', 'drogipolska', 'http://uslugi.giap.pl/geoserver/wfs', 5000, cqlFilterDrogiPolska],
-    ['atrem', 'ugg_all_l', 'http://uslugi.giap.pl/geoserver/wfs', 2],
-    ['atrem', 'ugg_all_p', 'http://uslugi.giap.pl/geoserver/wfs', 2],
-    ['atrem', 'ugg_all_s', 'http://uslugi.giap.pl/geoserver/wfs', 2],
-    ['atrem', 'ugg_all_t', 'http://uslugi.giap.pl/geoserver/wfs', 2],
-    ['atrem', 'uww_all_l', 'http://uslugi.giap.pl/geoserver/wfs', 2],
-    ['atrem', 'uww_all_p', 'http://uslugi.giap.pl/geoserver/wfs', 2],
-    ['atrem', 'uww_all_s', 'http://uslugi.giap.pl/geoserver/wfs', 2],
-    ['atrem', 'uww_all_t', 'http://uslugi.giap.pl/geoserver/wfs', 2]
+    ['atrem', 'drogipolska', 'http://uslugi.giap.pl/geoserver/wfs', {maxResolution: 5}],
+    ['atrem', 'ugg_all_l', 'http://uslugi.giap.pl/geoserver/wfs', {maxResolution: 2}],
+    ['atrem', 'ugg_all_p', 'http://uslugi.giap.pl/geoserver/wfs', {maxResolution: 2}],
+    ['atrem', 'ugg_all_s', 'http://uslugi.giap.pl/geoserver/wfs', {maxResolution: 2}],
+    ['atrem', 'ugg_all_t', 'http://uslugi.giap.pl/geoserver/wfs', {maxResolution: 2}],
+    ['atrem', 'uww_all_l', 'http://uslugi.giap.pl/geoserver/wfs', {maxResolution: 2}],
+    ['atrem', 'uww_all_p', 'http://uslugi.giap.pl/geoserver/wfs', {maxResolution: 2}],
+    ['atrem', 'uww_all_s', 'http://uslugi.giap.pl/geoserver/wfs', {maxResolution: 2}],
+    ['atrem', 'uww_all_t', 'http://uslugi.giap.pl/geoserver/wfs', {maxResolution: 2}]
 ];
 
 var nonEditableLayers = createLayers(nonEditableVectorLayersToLoad);
 
+// this variable name is important, it is also used by UI, so always use this variable name
 var editableLayers = createLayers(editableLayersToLoad);
 
 addLayers(editableLayers);
