@@ -79,27 +79,23 @@ var cqlFilterDrogiPolska = function (resolution) {
     return _cqlFilter;
 };
 
-var drogipolska = new editableLayer('atrem', 'drogipolska', 'http://uslugi.giap.pl/geoserver/wfs', 5000, cqlFilterDrogiPolska);
-var ugg_all_l = new editableLayer('atrem', 'ugg_all_l', 'http://uslugi.giap.pl/geoserver/wfs', 2);
-var ugg_all_p = new editableLayer('atrem', 'ugg_all_p', 'http://uslugi.giap.pl/geoserver/wfs', 2);
-var ugg_all_s = new editableLayer('atrem', 'ugg_all_s', 'http://uslugi.giap.pl/geoserver/wfs', 2);
-var ugg_all_t = new editableLayer('atrem', 'ugg_all_t', 'http://uslugi.giap.pl/geoserver/wfs', 2);
-var uww_all_l = new editableLayer('atrem', 'uww_all_l', 'http://uslugi.giap.pl/geoserver/wfs', 2);
-var uww_all_p = new editableLayer('atrem', 'uww_all_p', 'http://uslugi.giap.pl/geoserver/wfs', 2);
-var uww_all_s = new editableLayer('atrem', 'uww_all_s', 'http://uslugi.giap.pl/geoserver/wfs', 2);
-var uww_all_t = new editableLayer('atrem', 'uww_all_t', 'http://uslugi.giap.pl/geoserver/wfs', 2);
+var editableLayersToLoad = [
+    ['atrem', 'drogipolska', 'http://uslugi.giap.pl/geoserver/wfs', 5000, cqlFilterDrogiPolska],
+    ['atrem', 'ugg_all_l', 'http://uslugi.giap.pl/geoserver/wfs', 2],
+    ['atrem', 'ugg_all_p', 'http://uslugi.giap.pl/geoserver/wfs', 2],
+    ['atrem', 'ugg_all_s', 'http://uslugi.giap.pl/geoserver/wfs', 2],
+    ['atrem', 'ugg_all_t', 'http://uslugi.giap.pl/geoserver/wfs', 2],
+    ['atrem', 'uww_all_l', 'http://uslugi.giap.pl/geoserver/wfs', 2],
+    ['atrem', 'uww_all_p', 'http://uslugi.giap.pl/geoserver/wfs', 2],
+    ['atrem', 'uww_all_s', 'http://uslugi.giap.pl/geoserver/wfs', 2],
+    ['atrem', 'uww_all_t', 'http://uslugi.giap.pl/geoserver/wfs', 2]
+];
 
-var editableLayers = {
-    'drogipolska': drogipolska,
-    'ugg_all_l': ugg_all_l,
-    'ugg_all_p': ugg_all_p,
-    'ugg_all_s': ugg_all_s,
-    'ugg_all_t': ugg_all_t,
-    'uww_all_l': uww_all_l,
-    'uww_all_p': uww_all_p,
-    'uww_all_s': uww_all_s,
-    'uww_all_t': uww_all_t,
-};
+var editableLayers = {};
+_.each(editableLayersToLoad, function (editableLayerToLoad) {
+    var newLayer = new editableLayer.apply(editableLayerToLoad);
+    editableLayers[newLayer.name] = newLayer;
+});
 
 _.each(_.values(editableLayers), function (layer) {
     map.addLayer(layer.vector);
