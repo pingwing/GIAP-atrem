@@ -79,6 +79,8 @@ var cqlFilterDrogiPolska = function (resolution) {
     return _cqlFilter;
 };
 
+var nonEditableVectorLayersToLoad = [['atrem', 'drogipolska', 'http://uslugi.giap.pl/geoserver/wfs', 5000, cqlFilterDrogiPolska]];
+
 var editableLayersToLoad = [
     ['atrem', 'drogipolska', 'http://uslugi.giap.pl/geoserver/wfs', 5000, cqlFilterDrogiPolska],
     ['atrem', 'ugg_all_l', 'http://uslugi.giap.pl/geoserver/wfs', 2],
@@ -91,25 +93,12 @@ var editableLayersToLoad = [
     ['atrem', 'uww_all_t', 'http://uslugi.giap.pl/geoserver/wfs', 2]
 ];
 
-function construct(constructor, args) {
-    function F() {
-        return constructor.apply(this, args);
-    }
-    F.prototype = constructor.prototype;
-    return new F();
-}
+var nonEditableLayers = createLayers(nonEditableVectorLayersToLoad);
 
-var editableLayers = {};
-_.each(editableLayersToLoad, function (editableLayerToLoad) {
-    var newLayer = construct(editableLayer, editableLayerToLoad);
-    editableLayers[newLayer.name] = newLayer;
-});
+var editableLayers = createLayers(editableLayersToLoad);
 
-console.log('PINGWIN: editableLayers', editableLayers);
-
-_.each(_.values(editableLayers), function (layer) {
-    map.addLayer(layer.vector);
-});
+addLayers(editableLayers);
+addLayers(nonEditableLayers);
 
 /*var deleteFeature = function () {
  selectInteraction.getFeatures().on('change:length', function (e) {

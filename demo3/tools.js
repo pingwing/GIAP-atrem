@@ -30,3 +30,26 @@ function removeNodeForWfsUpdate(node, valueToRemove) {
         }
     }
 }
+
+function construct(constructor, args) {
+    function F() {
+        return constructor.apply(this, args);
+    }
+    F.prototype = constructor.prototype;
+    return new F();
+}
+
+var createLayers = function(layersToCreate) {
+    var layers = {};
+    _.each(layersToCreate, function (layerToLoad) {
+        var newLayer = construct(editableLayer, layerToLoad);
+        layers[newLayer.name] = newLayer;
+    });
+    return layers;
+};
+
+var addLayers = function(layersToAddToMap) {
+    _.each(_.values(layersToAddToMap), function (layer) {
+        map.addLayer(layer.vector);
+    });
+};
