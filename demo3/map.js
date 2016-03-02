@@ -97,6 +97,8 @@ _.each(editableLayersToLoad, function (editableLayerToLoad) {
     editableLayers[newLayer.name] = newLayer;
 });
 
+console.log('PINGWIN: editableLayers', editableLayers);
+
 _.each(_.values(editableLayers), function (layer) {
     map.addLayer(layer.vector);
 });
