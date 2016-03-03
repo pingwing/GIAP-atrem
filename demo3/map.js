@@ -83,7 +83,7 @@ var cqlFilterDrogiPolska = function (resolution) {
     return _cqlFilter;
 };
 
-var nonEditableVectorLayersToLoad = [['atrem', 'drogipolska', 'http://uslugi.giap.pl/geoserver/wfs', {maxResolution: 5000, minResolution: 10.000001}, cqlFilterDrogiPolska]];
+var nonEditableVectorLayersToLoad = [['Drogi w Polsce o prędkości powyżej 85 km/h', 'atrem', 'drogipolska', 'http://uslugi.giap.pl/geoserver/wfs', {maxResolution: 5000, minResolution: 10.000001}, cqlFilterDrogiPolska]];
 
 var editableLayersToLoad = [
     ['Drogi w Polsce', 'atrem', 'drogipolska', 'http://uslugi.giap.pl/geoserver/wfs', {maxResolution: 10}],
