@@ -86,7 +86,7 @@ var cqlFilterDrogiPolska = function (resolution) {
 var nonEditableVectorLayersToLoad = [['atrem', 'drogipolska', 'http://uslugi.giap.pl/geoserver/wfs', {maxResolution: 5000, minResolution: 10.000001}, cqlFilterDrogiPolska]];
 
 var editableLayersToLoad = [
-    ['drogi w Polsce', atrem', 'drogipolska', 'http://uslugi.giap.pl/geoserver/wfs', {maxResolution: 10}],
+    ['drogi w Polsce', 'atrem', 'drogipolska', 'http://uslugi.giap.pl/geoserver/wfs', {maxResolution: 10}],
     ['Gazociągi Lubaczów Linie', 'atrem', 'ugg_all_l', 'http://uslugi.giap.pl/geoserver/wfs', {maxResolution: 2, style: gasPipeStyleFunction}],
     ['Gazociągi Lubaczów Punkty', 'atrem', 'ugg_all_p', 'http://uslugi.giap.pl/geoserver/wfs', {maxResolution: 2}],
     ['Gazociągi Lubaczów Stacje', 'atrem', 'ugg_all_s', 'http://uslugi.giap.pl/geoserver/wfs', {maxResolution: 2}],
