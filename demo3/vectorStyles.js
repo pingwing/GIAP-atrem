@@ -95,3 +95,41 @@ function polygonStyleFunction(feature, resolution) {
         text: createTextStyle(feature, resolution)
     });
 }
+
+function waterPipeStyleFunction(feature, resolution) {
+    return new ol.style.Style({
+        stroke: new ol.style.Stroke({
+            color: 'rgba(0, 255, 0)',
+            width: 3
+        }),
+        fill: new ol.style.Fill({
+            color: 'rgba(0, 0, 255, 0.05)'
+        }),
+        image: new ol.style.Circle({
+            radius: 5,
+            fill: new ol.style.Fill({
+                color: '#0000ff'
+            })
+        }),
+        text: createTextStyle(feature, resolution)
+    });
+}
+
+function gasPipeStyleFunction(feature, resolution) {
+    return new ol.style.Style({
+        stroke: new ol.style.Stroke({
+            color: 'rgba(255, 0, 0)',
+            width: 3
+        }),
+        fill: new ol.style.Fill({
+            color: 'rgba(0, 0, 255, 0.05)'
+        }),
+        image: new ol.style.Circle({
+            radius: 5,
+            fill: new ol.style.Fill({
+                color: '#0000ff'
+            })
+        }),
+        text: createTextStyle(feature, resolution)
+    });
+}

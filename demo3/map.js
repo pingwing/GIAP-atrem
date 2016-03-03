@@ -34,7 +34,7 @@ var map = new ol.Map({
     ])
 });
 
-var editableLayer = function (workspace, layerName, WFSurl, resolutionVisibility, cqlFilter) {
+var editableLayer = function (workspace, layerName, WFSurl, styling, cqlFilter) {
     this.name = layerName;
 
     this.vectorSource = new ol.source.Vector({
@@ -63,9 +63,9 @@ var editableLayer = function (workspace, layerName, WFSurl, resolutionVisibility
 
     this.vector = new ol.layer.Vector({
         source: this.vectorSource,
-        style: polygonStyleFunction,
-        maxResolution: typeof resolutionVisibility.maxResolution !== 'undefined' ? resolutionVisibility.maxResolution : 2,
-        minResolution: typeof resolutionVisibility.minResolution !== 'undefined' ? resolutionVisibility.minResolution : 0
+        style: typeof styling.style !== 'undefined' ? styling.style : polygonStyleFunction,
+        maxResolution: typeof styling.maxResolution !== 'undefined' ? styling.maxResolution : 2,
+        minResolution: typeof styling.minResolution !== 'undefined' ? styling.minResolution : 0
     })
     ;
 };
@@ -86,11 +86,11 @@ var nonEditableVectorLayersToLoad = [['atrem', 'drogipolska', 'http://uslugi.gia
 
 var editableLayersToLoad = [
     ['atrem', 'drogipolska', 'http://uslugi.giap.pl/geoserver/wfs', {maxResolution: 10}],
-    ['atrem', 'ugg_all_l', 'http://uslugi.giap.pl/geoserver/wfs', {maxResolution: 2}],
+    ['atrem', 'ugg_all_l', 'http://uslugi.giap.pl/geoserver/wfs', {maxResolution: 2, style: gasPipeStyleFunction}],
     ['atrem', 'ugg_all_p', 'http://uslugi.giap.pl/geoserver/wfs', {maxResolution: 2}],
     ['atrem', 'ugg_all_s', 'http://uslugi.giap.pl/geoserver/wfs', {maxResolution: 2}],
     ['atrem', 'ugg_all_t', 'http://uslugi.giap.pl/geoserver/wfs', {maxResolution: 2}],
-    ['atrem', 'uww_all_l', 'http://uslugi.giap.pl/geoserver/wfs', {maxResolution: 2}],
+    ['atrem', 'uww_all_l', 'http://uslugi.giap.pl/geoserver/wfs', {maxResolution: 2, style: waterPipeStyleFunction}],
     ['atrem', 'uww_all_p', 'http://uslugi.giap.pl/geoserver/wfs', {maxResolution: 2}],
     ['atrem', 'uww_all_s', 'http://uslugi.giap.pl/geoserver/wfs', {maxResolution: 2}],
     ['atrem', 'uww_all_t', 'http://uslugi.giap.pl/geoserver/wfs', {maxResolution: 2}]
