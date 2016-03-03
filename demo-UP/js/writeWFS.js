@@ -8,13 +8,13 @@ var transactWFS = function () {
     _.each(editableLayers, function (layer) {
         var formatGML = new ol.format.GML({
             featureNS: 'atrem',
-            featureType: layer.name,
+            featureType: layer.layerName,
             srsName: 'EPSG:2180'
         });
 
-        var _thisLayerFeaturesToInsert = featuresToInsert[layer.name];
-        var _thisLayerFeaturesToUpdateObject = featuresToUpdateObject[layer.name];
-        var _thisLayerFeaturesToDelete = featuresToDelete[layer.name];
+        var _thisLayerFeaturesToInsert = featuresToInsert[layer.layerName];
+        var _thisLayerFeaturesToUpdateObject = featuresToUpdateObject[layer.layerName];
+        var _thisLayerFeaturesToDelete = featuresToDelete[layer.layerName];
 
         var _thisLayerFeaturesToUpdate = [];
         _.each(_.values(_thisLayerFeaturesToUpdateObject), function (modifiedFeat) {
@@ -34,7 +34,7 @@ var transactWFS = function () {
         var node = formatWFS.writeTransaction(_thisLayerFeaturesToInsert, _thisLayerFeaturesToUpdate, _thisLayerFeaturesToDelete, formatGML);
 
         if (_totalFeaturesInTransaction > 0) {
-            //console.log('PINGWIN: w transactWFS dla warstwy',layer.name, 'zmienia',_totalFeaturesInTransaction,'rekordów');
+            //console.log('PINGWIN: w transactWFS dla warstwy',layer.layerName, 'zmienia',_totalFeaturesInTransaction,'rekordów');
 
             removeLowerCaseGeometryNodeForInsert(node);
             removeNodeForWfsUpdate(node, "geometry");
