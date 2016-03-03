@@ -37,6 +37,7 @@ var map = new ol.Map({
 var editableLayer = function (niceName, workspace, layerName, WFSurl, styling, cqlFilter) {
 
     this.name = niceName;
+    this.layerName = layerName;
 
     this.vectorSource = new ol.source.Vector({
         format: new ol.format.GeoJSON(),
