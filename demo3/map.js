@@ -34,8 +34,9 @@ var map = new ol.Map({
     ])
 });
 
-var editableLayer = function (workspace, layerName, WFSurl, styling, cqlFilter) {
-    this.name = layerName;
+var editableLayer = function (niceName, workspace, layerName, WFSurl, styling, cqlFilter) {
+
+    this.name = niceName;
 
     this.vectorSource = new ol.source.Vector({
         format: new ol.format.GeoJSON(),
@@ -85,15 +86,15 @@ var cqlFilterDrogiPolska = function (resolution) {
 var nonEditableVectorLayersToLoad = [['atrem', 'drogipolska', 'http://uslugi.giap.pl/geoserver/wfs', {maxResolution: 5000, minResolution: 10.000001}, cqlFilterDrogiPolska]];
 
 var editableLayersToLoad = [
-    ['atrem', 'drogipolska', 'http://uslugi.giap.pl/geoserver/wfs', {maxResolution: 10}],
-    ['atrem', 'ugg_all_l', 'http://uslugi.giap.pl/geoserver/wfs', {maxResolution: 2, style: gasPipeStyleFunction}],
-    ['atrem', 'ugg_all_p', 'http://uslugi.giap.pl/geoserver/wfs', {maxResolution: 2}],
-    ['atrem', 'ugg_all_s', 'http://uslugi.giap.pl/geoserver/wfs', {maxResolution: 2}],
-    ['atrem', 'ugg_all_t', 'http://uslugi.giap.pl/geoserver/wfs', {maxResolution: 2}],
-    ['atrem', 'uww_all_l', 'http://uslugi.giap.pl/geoserver/wfs', {maxResolution: 2, style: waterPipeStyleFunction}],
-    ['atrem', 'uww_all_p', 'http://uslugi.giap.pl/geoserver/wfs', {maxResolution: 2}],
-    ['atrem', 'uww_all_s', 'http://uslugi.giap.pl/geoserver/wfs', {maxResolution: 2}],
-    ['atrem', 'uww_all_t', 'http://uslugi.giap.pl/geoserver/wfs', {maxResolution: 2}]
+    ['drogi w Polsce', atrem', 'drogipolska', 'http://uslugi.giap.pl/geoserver/wfs', {maxResolution: 10}],
+    ['Gazociągi Lubaczów Linie', 'atrem', 'ugg_all_l', 'http://uslugi.giap.pl/geoserver/wfs', {maxResolution: 2, style: gasPipeStyleFunction}],
+    ['Gazociągi Lubaczów Punkty', 'atrem', 'ugg_all_p', 'http://uslugi.giap.pl/geoserver/wfs', {maxResolution: 2}],
+    ['Gazociągi Lubaczów Stacje', 'atrem', 'ugg_all_s', 'http://uslugi.giap.pl/geoserver/wfs', {maxResolution: 2}],
+    ['Gazociągi Lubaczów T', 'atrem', 'ugg_all_t', 'http://uslugi.giap.pl/geoserver/wfs', {maxResolution: 2}],
+    ['Wodociągi Lubaczów Linie', 'atrem', 'uww_all_l', 'http://uslugi.giap.pl/geoserver/wfs', {maxResolution: 2, style: waterPipeStyleFunction}],
+    ['Wodociągi Lubaczów Punkty', 'atrem', 'uww_all_p', 'http://uslugi.giap.pl/geoserver/wfs', {maxResolution: 2}],
+    ['Wodociągi Lubaczów Stacje', 'atrem', 'uww_all_s', 'http://uslugi.giap.pl/geoserver/wfs', {maxResolution: 2}],
+    ['Wodociągi Lubaczów T', 'atrem', 'uww_all_t', 'http://uslugi.giap.pl/geoserver/wfs', {maxResolution: 2}]
 ];
 
 var nonEditableLayers = createLayers(nonEditableVectorLayersToLoad);
