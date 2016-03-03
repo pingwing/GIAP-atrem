@@ -12,6 +12,7 @@ var $interaction_type = $('[name="interaction_type"]');
 
 var layer_to_edit = document.getElementById('layer_to_edit');
 _.each(editableLayers, function(editableLayer) {
+    console.log('PINGWIN: editableLayer', editableLayer);
     layer_to_edit.options[layer_to_edit.options.length] = new Option(editableLayer.name, editableLayer.layerName);
 });
 
