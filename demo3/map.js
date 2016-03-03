@@ -72,11 +72,13 @@ var editableLayer = function (workspace, layerName, WFSurl, resolutionVisibility
 
 var cqlFilterDrogiPolska = function (resolution) {
     var _cqlFilter = '';
-    if (resolution > 5 && resolution <= 650) {
+    /*if (resolution > 5 && resolution <= 650) {
         _cqlFilter = 'maxspeed>80';
     } else if (resolution > 650) {
         _cqlFilter = 'maxspeed>100';
-    }
+    }*/
+
+    _cqlFilter = 'maxspeed>100';
     return _cqlFilter;
 };
 
