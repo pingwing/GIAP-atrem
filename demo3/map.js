@@ -40,7 +40,7 @@ var editableLayer = function (workspace, layerName, WFSurl, styling, cqlFilter) 
     this.vectorSource = new ol.source.Vector({
         format: new ol.format.GeoJSON(),
         url: function (extent, resolution, projection) {
-            console.log('PINGWIN: resolution', resolution);
+            //console.log('PINGWIN: resolution', resolution);
             var _cqlFilter = typeof cqlFilter !== 'undefined' ? cqlFilter(resolution) : function () {
                 return '';
             };
@@ -50,7 +50,7 @@ var editableLayer = function (workspace, layerName, WFSurl, styling, cqlFilter) 
             }
             else _cqlFilterToURL = 'bbox=' + extent.join(',') + ',EPSG:3857';
 
-            console.log('PINGWIN: _cqlFilterToURL', _cqlFilterToURL);
+            //console.log('PINGWIN: _cqlFilterToURL', _cqlFilterToURL);
             return WFSurl + '?service=WFS&' +
                 'version=1.1.0&request=GetFeature&typename=' + workspace + ':' + layerName + '&' +
                 'outputFormat=application/json&srsname=EPSG:3857&' +

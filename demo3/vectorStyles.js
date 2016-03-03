@@ -99,7 +99,7 @@ function polygonStyleFunction(feature, resolution) {
 function waterPipeStyleFunction(feature, resolution) {
     return new ol.style.Style({
         stroke: new ol.style.Stroke({
-            color: 'rgba(0, 255, 0)',
+            color: 'rgba(0, 255, 0, 0.5)',
             width: 3
         }),
         fill: new ol.style.Fill({
@@ -118,7 +118,7 @@ function waterPipeStyleFunction(feature, resolution) {
 function gasPipeStyleFunction(feature, resolution) {
     return new ol.style.Style({
         stroke: new ol.style.Stroke({
-            color: 'rgba(255, 0, 0)',
+            color: 'rgba(255, 0, 0, 0.5)',
             width: 3
         }),
         fill: new ol.style.Fill({
