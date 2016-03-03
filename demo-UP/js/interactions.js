@@ -15,9 +15,9 @@ function clearTransactionFeatures() {
     featuresToUpdateObject = {};
     featuresToDelete = {};
     _.each(editableLayers, function (layer) {
-        featuresToInsert[layer.name] = [];
-        featuresToUpdateObject[layer.name] = {};
-        featuresToDelete[layer.name] = [];
+        featuresToInsert[layer.layerName] = [];
+        featuresToUpdateObject[layer.layerName] = {};
+        featuresToDelete[layer.layerName] = [];
     });
 }
 
@@ -25,7 +25,7 @@ var dragIconPointFeatures = {};
 function initiateDragIconPointFeatures() {
     dragIconPointFeatures = {};
     _.each(editableLayers, function (layer) {
-        dragIconPointFeatures[layer.name] = [];
+        dragIconPointFeatures[layer.layerName] = [];
     });
 }
 
@@ -125,8 +125,8 @@ function addModifyInteraction(currentEditLayerName) {
 
 function clearDragIconPointFeatures() {
     _.each(editableLayers, function (layer) {
-        _.each(dragIconPointFeatures[layer.name], function (toDeleteFeat) {
-            editableLayers[layer.name].vectorSource.removeFeature(toDeleteFeat);
+        _.each(dragIconPointFeatures[layer.layerName], function (toDeleteFeat) {
+            editableLayers[layer.layerName].vectorSource.removeFeature(toDeleteFeat);
         });
     });
 
