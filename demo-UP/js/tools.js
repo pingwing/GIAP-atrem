@@ -43,7 +43,7 @@ var createLayers = function(layersToCreate) {
     var layers = {};
     _.each(layersToCreate, function (layerToLoad) {
         var newLayer = construct(editableLayer, layerToLoad);
-        layers[newLayer.name] = newLayer;
+        layers[newLayer.layerName] = newLayer;
     });
     return layers;
 };
