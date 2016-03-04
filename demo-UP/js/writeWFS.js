@@ -26,12 +26,22 @@ var transactWFS = function () {
             _thisLayerFeaturesToUpdate.push(modifiedFeat);
         });
 
-        var _totalFeaturesInTransaction = _thisLayerFeaturesToInsert.length + _thisLayerFeaturesToUpdate.length + _thisLayerFeaturesToDelete.length;
+        var _thisLayerFeaturesToInsertDestinationCRS = [];
+        _.each(_thisLayerFeaturesToInsert, function (insertFeat) {
+            var geometryInMapCRS = insertFeat.getGeometry();
+            var geometryInMapCRSClone = geometryInMapCRS.clone();
+            geometryInMapCRSClone.applyTransform(getTransformFunction(layer.srsName));
+            if (layer.srsName === 'EPSG:2180') geometryInMapCRSClone.applyTransform(transformationFlipCoords);
+            insertFeat.set('geom', geometryInMapCRSClone);
+            _thisLayerFeaturesToInsertDestinationCRS.push(insertFeat);
+        });
+
+        var _totalFeaturesInTransaction = _thisLayerFeaturesToInsertDestinationCRS.length + _thisLayerFeaturesToUpdate.length + _thisLayerFeaturesToDelete.length;
 
         /*console.log('PINGWIN: _thisLayerFeaturesToInsert', _thisLayerFeaturesToInsert);
         console.log('PINGWIN: _thisLayerFeaturesToUpdate', _thisLayerFeaturesToUpdate);
         console.log('PINGWIN: _thisLayerFeaturesToDelete', _thisLayerFeaturesToDelete);*/
-        var node = formatWFS.writeTransaction(_thisLayerFeaturesToInsert, _thisLayerFeaturesToUpdate, _thisLayerFeaturesToDelete, formatGML);
+        var node = formatWFS.writeTransaction(_thisLayerFeaturesToInsertDestinationCRS, _thisLayerFeaturesToUpdate, _thisLayerFeaturesToDelete, formatGML);
 
         if (_totalFeaturesInTransaction > 0) {
             //console.log('PINGWIN: w transactWFS dla warstwy',layer.layerName, 'zmienia',_totalFeaturesInTransaction,'rekordów');

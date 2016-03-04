@@ -77,11 +77,6 @@ function addedFeatures(event) {
     var addedFeature = event.feature;
     addedFeature.setId(id);
 
-    var geometryInMapCRS = addedFeature.getGeometry();
-    var geometryInMapCRSClone = geometryInMapCRS.clone();
-    geometryInMapCRSClone.applyTransform(transformationFromWebToPL);
-    addedFeature.set('geom', geometryInMapCRSClone);
-
     featuresToInsert[currentEditLayerName].push(addedFeature);
 }
 
