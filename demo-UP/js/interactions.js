@@ -190,7 +190,7 @@ function onDragPoint() {
 
 // creates a draw interaction
 function addDrawInteraction(currentEditLayerName, geometryType) {
-    console.log('PINGWIN: currentEditLayerName', currentEditLayerName);
+    //console.log('PINGWIN: currentEditLayerName', currentEditLayerName);
     // remove other interactions
     removeAllInteractions();
 

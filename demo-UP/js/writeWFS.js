@@ -26,21 +26,11 @@ var transactWFS = function () {
             _thisLayerFeaturesToUpdate.push(modifiedFeat);
         });
 
-        /*var _thisLayerFeaturesToInsertCRS = [];
-        _.each(_thisLayerFeaturesToInsert, function (insertFeat) {
-            var geometryInMapCRS = insertFeat.getGeometry();
-            var geometryInMapCRSClone = geometryInMapCRS.clone();//
-            geometryInMapCRSClone.applyTransform(transformationFromWebToPL);
-            //geometryInMapCRSClone.applyTransform(transformationFlipCoords);
-            insertFeat.set('geom', geometryInMapCRSClone);
-            _thisLayerFeaturesToInsertCRS.push(insertFeat);
-        });*/
-
         var _totalFeaturesInTransaction = _thisLayerFeaturesToInsert.length + _thisLayerFeaturesToUpdate.length + _thisLayerFeaturesToDelete.length;
 
-        console.log('PINGWIN: _thisLayerFeaturesToInsert', _thisLayerFeaturesToInsert);
+        /*console.log('PINGWIN: _thisLayerFeaturesToInsert', _thisLayerFeaturesToInsert);
         console.log('PINGWIN: _thisLayerFeaturesToUpdate', _thisLayerFeaturesToUpdate);
-        console.log('PINGWIN: _thisLayerFeaturesToDelete', _thisLayerFeaturesToDelete);
+        console.log('PINGWIN: _thisLayerFeaturesToDelete', _thisLayerFeaturesToDelete);*/
         var node = formatWFS.writeTransaction(_thisLayerFeaturesToInsert, _thisLayerFeaturesToUpdate, _thisLayerFeaturesToDelete, formatGML);
 
         if (_totalFeaturesInTransaction > 0) {
