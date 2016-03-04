@@ -33,7 +33,7 @@ var transactWFS = function () {
             geometryInMapCRSClone.applyTransform(transformationFromWebToPL);
             //geometryInMapCRSClone.applyTransform(transformationFlipCoords);
             insertFeat.set('geom', geometryInMapCRSClone);
-            _thisLayerFeaturesToUpdate.push(insertFeat);
+            _thisLayerFeaturesToInsertCRS.push(insertFeat);
         });
 
         var _totalFeaturesInTransaction = _thisLayerFeaturesToInsert.length + _thisLayerFeaturesToUpdate.length + _thisLayerFeaturesToDelete.length;
