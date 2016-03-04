@@ -31,6 +31,8 @@ var transactWFS = function () {
             var geometryInMapCRS = insertFeat.getGeometry();
             var geometryInMapCRSClone = geometryInMapCRS.clone();
             geometryInMapCRSClone.applyTransform(getTransformFunction(layer.srsName));
+            console.log('PINGWIN: layer.srsName', layer.srsName);
+            console.log('PINGWIN: layer.srsName === 'EPSG:2180'', layer.srsName === 'EPSG:2180');
             if (layer.srsName === 'EPSG:2180') geometryInMapCRSClone.applyTransform(transformationFlipCoords);
             insertFeat.set('geom', geometryInMapCRSClone);
             _thisLayerFeaturesToInsertDestinationCRS.push(insertFeat);
