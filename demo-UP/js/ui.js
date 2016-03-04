@@ -23,7 +23,7 @@ $('#customControlDelete').on('click', function () {
 $('#customControlUndo').on('click', function () {
     clearTransactionFeatures();
     if (selectInteraction) selectInteraction.getFeatures().clear();
-    clearDragIconMultiPointFeatures($currentEditLayerChoice.val());
+    clearDragIconPointFeatures($currentEditLayerChoice.val());
     _.each(_.values(editableLayers), function (layer) {
         layer.vectorSource.clear();
     });
@@ -36,17 +36,17 @@ $('#customControlSave').on('click', function () {
     transactWFS();
     clearTransactionFeatures();
     if (selectInteraction) selectInteraction.getFeatures().clear();
-    clearDragIconMultiPointFeatures();
+    clearDragIconPointFeatures();
 });
 
 $currentEditLayerChoice.on('change', function () {
     if ($('[name="interaction_type"]:checked').val() === 'draw') {
         if (this.value == 'rury_gazociagu') {
-            $drawGeometryType.val("MultiLineString");
+            $drawGeometryType.val("LineString");
             addDrawInteraction($currentEditLayerChoice.val(), 'MultiLineString');
         }
         else if (this.value == 'stacje_gazowe') {
-            $drawGeometryType.val("MultiPoint");
+            $drawGeometryType.val("Point");
             addDrawInteraction($currentEditLayerChoice.val(), 'MultiPoint');
         }
         else {
@@ -55,10 +55,10 @@ $currentEditLayerChoice.on('change', function () {
 
     } else {
         if (this.value == 'rury_gazociagu') {
-            $drawGeometryType.val("MultiLineString");
+            $drawGeometryType.val("LineString");
         }
         else if (this.value == 'stacje_gazowe') {
-            $drawGeometryType.val("MultiPoint");
+            $drawGeometryType.val("Point");
         }
         addModifyInteraction($currentEditLayerChoice.val());
     }
