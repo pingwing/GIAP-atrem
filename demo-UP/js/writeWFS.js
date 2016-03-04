@@ -30,8 +30,8 @@ var transactWFS = function () {
         _.each(_thisLayerFeaturesToInsert, function (insertFeat) {
             var geometryInMapCRS = insertFeat.getGeometry();
             var geometryInMapCRSClone = geometryInMapCRS.clone();
-            geometryInMapCRSClone.applyTransform(transformationFromWebToPL);
-            geometryInMapCRSClone.applyTransform(transformationFlipCoords);
+            //geometryInMapCRSClone.applyTransform(transformationFromWebToPL);
+            //geometryInMapCRSClone.applyTransform(transformationFlipCoords);
             insertFeat.set('geom', geometryInMapCRSClone);
             _thisLayerFeaturesToUpdate.push(insertFeat);
         });
