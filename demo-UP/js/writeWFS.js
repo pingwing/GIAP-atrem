@@ -31,7 +31,7 @@ var transactWFS = function () {
             var geometryInMapCRS = insertFeat.getGeometry();
             var geometryInMapCRSClone = geometryInMapCRS.clone();//
             geometryInMapCRSClone.applyTransform(transformationFromWebToPL);
-            geometryInMapCRSClone.applyTransform(transformationFlipCoords);
+            //geometryInMapCRSClone.applyTransform(transformationFlipCoords);
             insertFeat.set('geom', geometryInMapCRSClone);
             _thisLayerFeaturesToUpdate.push(insertFeat);
         });
