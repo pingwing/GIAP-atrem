@@ -26,7 +26,7 @@ var transactWFS = function () {
             _thisLayerFeaturesToUpdate.push(modifiedFeat);
         });
 
-        var _thisLayerFeaturesToInsertCRS = [];
+        /*var _thisLayerFeaturesToInsertCRS = [];
         _.each(_thisLayerFeaturesToInsert, function (insertFeat) {
             var geometryInMapCRS = insertFeat.getGeometry();
             var geometryInMapCRSClone = geometryInMapCRS.clone();//
@@ -34,7 +34,7 @@ var transactWFS = function () {
             //geometryInMapCRSClone.applyTransform(transformationFlipCoords);
             insertFeat.set('geom', geometryInMapCRSClone);
             _thisLayerFeaturesToInsertCRS.push(insertFeat);
-        });
+        });*/
 
         var _totalFeaturesInTransaction = _thisLayerFeaturesToInsert.length + _thisLayerFeaturesToUpdate.length + _thisLayerFeaturesToDelete.length;
 
