@@ -1,7 +1,8 @@
 proj4.defs("EPSG:2180", "+proj=tmerc +lat_0=0 +lon_0=19 +k=0.9993 +x_0=500000 +y_0=-5300000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs");
 proj4.defs("EPSG:4326", "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs");
 
-var transformationFromWebToPL = ol.proj.getTransform('EPSG:3857', 'EPSG:4326');
+var transformationFromWebToPL = ol.proj.getTransform('EPSG:3857', 'EPSG:2180');
+var transformationFromWebToMerc = ol.proj.getTransform('EPSG:3857', 'EPSG:4326');
 
 var transformationFlipCoords = function (a) {
     for (var i = 0; i < a.length; i += 2) {
