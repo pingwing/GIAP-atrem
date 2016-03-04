@@ -23,7 +23,7 @@ $('#customControlDelete').on('click', function () {
 $('#customControlUndo').on('click', function () {
     clearTransactionFeatures();
     if (selectInteraction) selectInteraction.getFeatures().clear();
-    clearDragIconPointFeatures($currentEditLayerChoice.val());
+    clearDragIconMultiPointFeatures($currentEditLayerChoice.val());
     _.each(_.values(editableLayers), function (layer) {
         layer.vectorSource.clear();
     });
@@ -36,18 +36,18 @@ $('#customControlSave').on('click', function () {
     transactWFS();
     clearTransactionFeatures();
     if (selectInteraction) selectInteraction.getFeatures().clear();
-    clearDragIconPointFeatures();
+    clearDragIconMultiPointFeatures();
 });
 
 $currentEditLayerChoice.on('change', function () {
     if ($('[name="interaction_type"]:checked').val() === 'draw') {
         if (this.value == 'rury_gazociagu') {
-            $drawGeometryType.val("LineString");
-            addDrawInteraction($currentEditLayerChoice.val(), 'LineString');
+            $drawGeometryType.val("MultiLineString");
+            addDrawInteraction($currentEditLayerChoice.val(), 'MultiLineString');
         }
         else if (this.value == 'stacje_gazowe') {
-            $drawGeometryType.val("Point");
-            addDrawInteraction($currentEditLayerChoice.val(), 'Point');
+            $drawGeometryType.val("MultiPoint");
+            addDrawInteraction($currentEditLayerChoice.val(), 'MultiPoint');
         }
         else {
             addDrawInteraction($currentEditLayerChoice.val(), $drawGeometryType.val());
@@ -55,10 +55,10 @@ $currentEditLayerChoice.on('change', function () {
 
     } else {
         if (this.value == 'rury_gazociagu') {
-            $drawGeometryType.val("LineString");
+            $drawGeometryType.val("MultiLineString");
         }
         else if (this.value == 'stacje_gazowe') {
-            $drawGeometryType.val("Point");
+            $drawGeometryType.val("MultiPoint");
         }
         addModifyInteraction($currentEditLayerChoice.val());
     }
