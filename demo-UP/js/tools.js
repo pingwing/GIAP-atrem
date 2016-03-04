@@ -1,8 +1,18 @@
 proj4.defs("EPSG:2180", "+proj=tmerc +lat_0=0 +lon_0=19 +k=0.9993 +x_0=500000 +y_0=-5300000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs");
 proj4.defs("EPSG:4326", "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs");
 
-var transformationFromWebToPL = ol.proj.getTransform('EPSG:3857', 'EPSG:2180');
-var transformationFromWebToMerc = ol.proj.getTransform('EPSG:3857', 'EPSG:4326');
+var transformationFromWebTo2180 = ol.proj.getTransform('EPSG:3857', 'EPSG:2180');
+var transformationFromWebTo4326 = ol.proj.getTransform('EPSG:3857', 'EPSG:4326');
+
+
+var getTransformFunction = function (destinationSrsName) {
+    if (destinationSrsName === 'EPSG:2180') {
+        return transformationFromWebTo2180;
+    }
+    else if (destinationSrsName === 'EPSG:4326') {
+        return transformationFromWebTo4326;
+    }
+};
 
 var transformationFlipCoords = function (a) {
     for (var i = 0; i < a.length; i += 2) {
@@ -36,11 +46,12 @@ function construct(constructor, args) {
     function F() {
         return constructor.apply(this, args);
     }
+
     F.prototype = constructor.prototype;
     return new F();
 }
 
-var createLayers = function(layersToCreate) {
+var createLayers = function (layersToCreate) {
     var layers = {};
     _.each(layersToCreate, function (layerToLoad) {
         var newLayer = construct(editableLayer, layerToLoad);
@@ -49,7 +60,7 @@ var createLayers = function(layersToCreate) {
     return layers;
 };
 
-var addLayers = function(layersToAddToMap) {
+var addLayers = function (layersToAddToMap) {
     _.each(_.values(layersToAddToMap), function (layer) {
         map.addLayer(layer.vector);
     });

@@ -34,10 +34,11 @@ var map = new ol.Map({
     ])
 });
 
-var editableLayer = function (niceName, workspace, layerName, WFSurl, styling, cqlFilter) {
+var editableLayer = function (niceName, workspace, layerName, WFSurl, srsName, styling, cqlFilter) {
 
     this.name = niceName;
     this.layerName = layerName;
+    this.srsName = srsName;
 
     this.vectorSource = new ol.source.Vector({
         format: new ol.format.GeoJSON(),
@@ -84,18 +85,18 @@ var cqlFilterDrogiPolska = function (resolution) {
     return _cqlFilter;
 };
 
-var nonEditableVectorLayersToLoad = [['Drogi w Polsce o prędkości powyżej 85 km/h', 'atrem', 'drogipolska', 'http://uslugi.giap.pl/geoserver/wfs', {maxResolution: 5000, minResolution: 10.000001}, cqlFilterDrogiPolska]];
+var nonEditableVectorLayersToLoad = [['Drogi w Polsce o prędkości powyżej 85 km/h', 'atrem', 'drogipolska', 'http://uslugi.giap.pl/geoserver/wfs', 'EPSG:2180', {maxResolution: 5000, minResolution: 10.000001}, cqlFilterDrogiPolska]];
 
 var editableLayersToLoad = [
-    ['Drogi w Polsce', 'atrem', 'drogipolska', 'http://uslugi.giap.pl/geoserver/wfs', {maxResolution: 10}],
-    ['Gazociągi Lubaczów Linie', 'atrem', 'ugg_all_l', 'http://uslugi.giap.pl/geoserver/wfs', {maxResolution: 2, style: gasPipeStyleFunction}],
-    ['Gazociągi Lubaczów Punkty', 'atrem', 'ugg_all_p', 'http://uslugi.giap.pl/geoserver/wfs', {maxResolution: 2}],
-    ['Gazociągi Lubaczów Stacje', 'atrem', 'ugg_all_s', 'http://uslugi.giap.pl/geoserver/wfs', {maxResolution: 2}],
-    ['Gazociągi Lubaczów T', 'atrem', 'ugg_all_t', 'http://uslugi.giap.pl/geoserver/wfs', {maxResolution: 2}],
-    ['Wodociągi Lubaczów Linie', 'atrem', 'uww_all_l', 'http://uslugi.giap.pl/geoserver/wfs', {maxResolution: 2, style: waterPipeStyleFunction}],
-    ['Wodociągi Lubaczów Punkty', 'atrem', 'uww_all_p', 'http://uslugi.giap.pl/geoserver/wfs', {maxResolution: 2}],
-    ['Wodociągi Lubaczów Stacje', 'atrem', 'uww_all_s', 'http://uslugi.giap.pl/geoserver/wfs', {maxResolution: 2}],
-    ['Wodociągi Lubaczów T', 'atrem', 'uww_all_t', 'http://uslugi.giap.pl/geoserver/wfs', {maxResolution: 2}]
+    ['Drogi w Polsce', 'atrem', 'drogipolska', 'http://uslugi.giap.pl/geoserver/wfs', 'EPSG:2180', {maxResolution: 10}],
+    ['Gazociągi Lubaczów Linie', 'atrem', 'ugg_all_l', 'http://uslugi.giap.pl/geoserver/wfs', 'EPSG:4326', {maxResolution: 2, style: gasPipeStyleFunction}],
+    ['Gazociągi Lubaczów Punkty', 'atrem', 'ugg_all_p', 'http://uslugi.giap.pl/geoserver/wfs', 'EPSG:4326', {maxResolution: 2}],
+    ['Gazociągi Lubaczów Stacje', 'atrem', 'ugg_all_s', 'http://uslugi.giap.pl/geoserver/wfs', 'EPSG:4326', {maxResolution: 2}],
+    ['Gazociągi Lubaczów T', 'atrem', 'ugg_all_t', 'http://uslugi.giap.pl/geoserver/wfs', 'EPSG:4326', {maxResolution: 2}],
+    ['Wodociągi Lubaczów Linie', 'atrem', 'uww_all_l', 'http://uslugi.giap.pl/geoserver/wfs', 'EPSG:4326', {maxResolution: 2, style: waterPipeStyleFunction}],
+    ['Wodociągi Lubaczów Punkty', 'atrem', 'uww_all_p', 'http://uslugi.giap.pl/geoserver/wfs', 'EPSG:4326', {maxResolution: 2}],
+    ['Wodociągi Lubaczów Stacje', 'atrem', 'uww_all_s', 'http://uslugi.giap.pl/geoserver/wfs', 'EPSG:4326', {maxResolution: 2}],
+    ['Wodociągi Lubaczów T', 'atrem', 'uww_all_t', 'http://uslugi.giap.pl/geoserver/wfs', 'EPSG:4326', {maxResolution: 2}]
 ];
 
 var nonEditableLayers = createLayers(nonEditableVectorLayersToLoad);

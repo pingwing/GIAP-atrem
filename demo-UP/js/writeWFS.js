@@ -9,7 +9,7 @@ var transactWFS = function () {
         var formatGML = new ol.format.GML({
             featureNS: 'atrem',
             featureType: layer.layerName,
-            srsName: 'EPSG:2180'
+            srsName: layer.srsName
         });
 
         var _thisLayerFeaturesToInsert = featuresToInsert[layer.layerName];
@@ -20,8 +20,8 @@ var transactWFS = function () {
         _.each(_.values(_thisLayerFeaturesToUpdateObject), function (modifiedFeat) {
             var geometryInMapCRS = modifiedFeat.getGeometry();
             var geometryInMapCRSClone = geometryInMapCRS.clone();
-            geometryInMapCRSClone.applyTransform(transformationFromWebToPL);
-            geometryInMapCRSClone.applyTransform(transformationFlipCoords);
+            geometryInMapCRSClone.applyTransform(getTransformFunction(layer.srsName));
+            if (layer.srsName === 'EPSG:2180') geometryInMapCRSClone.applyTransform(transformationFlipCoords);
             modifiedFeat.set('geom', geometryInMapCRSClone);
             _thisLayerFeaturesToUpdate.push(modifiedFeat);
         });
