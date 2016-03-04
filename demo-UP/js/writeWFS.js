@@ -30,6 +30,7 @@ var transactWFS = function () {
         _.each(_thisLayerFeaturesToInsert, function (insertFeat) {
             var geometryInMapCRS = insertFeat.getGeometry();
             var geometryInMapCRSClone = geometryInMapCRS.clone();
+            console.log('PINGWIN: getTransformFunction(layer.srsName)', getTransformFunction(layer.srsName));
             geometryInMapCRSClone.applyTransform(getTransformFunction(layer.srsName));
             console.log('PINGWIN: layer.srsName', layer.srsName);
             console.log('PINGWIN: layer.srsName === EPSG:2180', (layer.srsName === 'EPSG:2180'));
