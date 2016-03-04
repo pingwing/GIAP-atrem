@@ -1,8 +1,10 @@
 proj4.defs("EPSG:2180", "+proj=tmerc +lat_0=0 +lon_0=19 +k=0.9993 +x_0=500000 +y_0=-5300000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs");
+proj4.defs("EPSG:2179", "+proj=tmerc +lat_0=0 +lon_0=24 +k=0.999923 +x_0=8500000 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs");
 proj4.defs("EPSG:4326", "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs");
 
 var transformationFromWebTo2180 = ol.proj.getTransform('EPSG:3857', 'EPSG:2180');
 var transformationFromWebTo4326 = ol.proj.getTransform('EPSG:3857', 'EPSG:4326');
+var transformationFromWebTo2179 = ol.proj.getTransform('EPSG:3857', 'EPSG:2179');
 
 
 var getTransformFunction = function (destinationSrsName) {
@@ -11,6 +13,9 @@ var getTransformFunction = function (destinationSrsName) {
     }
     else if (destinationSrsName === 'EPSG:4326') {
         return transformationFromWebTo4326;
+    }
+    else if (destinationSrsName === 'EPSG:2179') {
+        return transformationFromWebTo2179;
     }
 };
 
