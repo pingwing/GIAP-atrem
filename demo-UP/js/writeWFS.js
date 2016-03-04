@@ -22,6 +22,7 @@ var transactWFS = function () {
             var geometryInMapCRSClone = geometryInMapCRS.clone();
             geometryInMapCRSClone.applyTransform(getTransformFunction(layer.srsName));
             if (layer.srsName === 'EPSG:2180') geometryInMapCRSClone.applyTransform(transformationFlipCoords);
+            if (layer.srsName === 'EPSG:2179') geometryInMapCRSClone.applyTransform(transformationFlipCoords);
             modifiedFeat.set('geom', geometryInMapCRSClone);
             _thisLayerFeaturesToUpdate.push(modifiedFeat);
         });
@@ -30,11 +31,7 @@ var transactWFS = function () {
         _.each(_thisLayerFeaturesToInsert, function (insertFeat) {
             var geometryInMapCRS = insertFeat.getGeometry();
             var geometryInMapCRSClone = geometryInMapCRS.clone();
-            console.log('PINGWIN: getTransformFunction(layer.srsName)', getTransformFunction(layer.srsName));
             geometryInMapCRSClone.applyTransform(getTransformFunction(layer.srsName));
-            console.log('PINGWIN: layer.srsName', layer.srsName);
-            console.log('PINGWIN: layer.srsName === EPSG:2180', (layer.srsName === 'EPSG:2180'));
-            if (layer.srsName === 'EPSG:4326') geometryInMapCRSClone.applyTransform(transformationFlipCoords);
             insertFeat.set('geom', geometryInMapCRSClone);
             _thisLayerFeaturesToInsertDestinationCRS.push(insertFeat);
         });
