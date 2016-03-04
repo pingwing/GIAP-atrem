@@ -38,9 +38,9 @@ var transactWFS = function () {
 
         var _totalFeaturesInTransaction = _thisLayerFeaturesToInsert.length + _thisLayerFeaturesToUpdate.length + _thisLayerFeaturesToDelete.length;
 
-        /*console.log('PINGWIN: _thisLayerFeaturesToInsert', _thisLayerFeaturesToInsert);
+        console.log('PINGWIN: _thisLayerFeaturesToInsert', _thisLayerFeaturesToInsert);
         console.log('PINGWIN: _thisLayerFeaturesToUpdate', _thisLayerFeaturesToUpdate);
-        console.log('PINGWIN: _thisLayerFeaturesToDelete', _thisLayerFeaturesToDelete);*/
+        console.log('PINGWIN: _thisLayerFeaturesToDelete', _thisLayerFeaturesToDelete);
         var node = formatWFS.writeTransaction(_thisLayerFeaturesToInsertCRS, _thisLayerFeaturesToUpdate, _thisLayerFeaturesToDelete, formatGML);
 
         if (_totalFeaturesInTransaction > 0) {
