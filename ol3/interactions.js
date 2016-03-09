@@ -48,13 +48,13 @@ function deleteFeatures(currentEditLayerName) {
 
 function modifiedFeatures(event) {
     var currentEditLayerName = this;
-    console.log('PINGWIN w modifiedFeatures: currentEditLayerName', currentEditLayerName);
-    console.log('PINGWIN: event', event);
+    //console.log('PINGWIN w modifiedFeatures: currentEditLayerName', currentEditLayerName);
+    //console.log('PINGWIN: event', event);
     var modifiedFeatures = event.features.getArray();
     if (event.features.getLength() > 0) {
         _.each(modifiedFeatures, function (modifiedFeat) {
             var modifiedFeatureId = modifiedFeat.id_;
-            console.log('PINGWIN: featuresToUpdateObject', featuresToUpdateObject);
+            //console.log('PINGWIN: featuresToUpdateObject', featuresToUpdateObject);
             featuresToUpdateObject[currentEditLayerName][modifiedFeatureId] = modifiedFeat;
 
             /*var WKTWriter = new ol.format.WKT();
@@ -89,7 +89,7 @@ function addedFeatures(event) {
 var id = 0;
 function uid() {
     id = id + 1;
-    console.log('PINGWIN: id', id);
+    //console.log('PINGWIN: id', id);
     return id;
 }
 
@@ -101,7 +101,7 @@ function removeAllInteractions () {
 }
 
 function addModifyInteraction(currentEditLayerName) {
-    console.log('PINGWIN: addModifyInteraction: currentEditLayerName', currentEditLayerName);
+    //console.log('PINGWIN: addModifyInteraction: currentEditLayerName', currentEditLayerName);
     // remove other interactions
     removeAllInteractions();
 
@@ -124,13 +124,8 @@ function addModifyInteraction(currentEditLayerName) {
 }
 
 function clearDragIconPointFeatures() {
-    console.log('PINGWIN: w clearDragIconPointFeatures');
-    console.log('PINGWIN: dragIconPointFeatures', dragIconPointFeatures);
     _.each(editableLayers, function (layer) {
-        console.log('PINGWIN: layer', layer);
-        console.log('PINGWIN: dragIconPointFeatures[layer.name]', dragIconPointFeatures[layer.name]);
         _.each(dragIconPointFeatures[layer.name], function (toDeleteFeat) {
-            console.log('PINGWIN: toDeleteFeat', toDeleteFeat);
             editableLayers[layer.name].vectorSource.removeFeature(toDeleteFeat);
         });
     });
@@ -142,7 +137,6 @@ function onSelect(event) {
     var currentEditLayerName = this;
     if (event.deselected.length > 0) {
         map.removeInteraction(dragInteraction);
-        console.log('PINGWIN:onSelect deselect currentEditLayerName', currentEditLayerName);
         clearDragIconPointFeatures();
     }
 
@@ -181,7 +175,6 @@ function onSelect(event) {
 
         map.addInteraction(dragInteraction);
         dragIconPointFeatures[currentEditLayerName].push(dragIconPointFeature);
-        console.log('PINGWIN: dragIconPointFeatures', dragIconPointFeatures);
     }
 }
 
@@ -197,7 +190,6 @@ function onDragPoint() {
 
 // creates a draw interaction
 function addDrawInteraction(currentEditLayerName, geometryType) {
-    console.log('PINGWIN: addDrawInteraction: currentEditLayerName, geometryType', currentEditLayerName, geometryType);
     // remove other interactions
     removeAllInteractions();
 
